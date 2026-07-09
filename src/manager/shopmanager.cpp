@@ -272,6 +272,12 @@ void CShopManager::OnShopPacket(CReceivePacket* msg, IExtendedSocket* socket)
 	case ShopPacketType::RequestBuyProduct:
 		BuyProduct(user, msg->ReadUInt8(), msg->ReadUInt8());
 		break;
+	case ShopPacketType::UpdateRecommendedProducts:
+		g_PacketManager.SendShopRecommendedProducts(socket, {});
+		break;
+	case ShopPacketType::UpdatePopularProducts:
+		g_PacketManager.SendShopPopularProducts(socket, {});
+		break;
 	}
 }
 

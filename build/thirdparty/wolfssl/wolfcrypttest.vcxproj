@@ -1,0 +1,274 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F29B1E50-DC2C-3D0B-9E36-ED92D271009E}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <Platform>Win32</Platform>
+    <ProjectName>wolfcrypttest</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl\wolfcrypt\test\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">wolfcrypttest.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">testwolfcrypt</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl\wolfcrypt\test\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">wolfcrypttest.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">testwolfcrypt</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl\wolfcrypt\test\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">wolfcrypttest.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">testwolfcrypt</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;HAVE_CONFIG_H;WOLFSSL_IGNORE_FILE_WARN;HAVE_THREAD_LS;TFM_TIMING_RESISTANT;ECC_TIMING_RESISTANT;WC_RSA_BLINDING;OPENSSL_EXTRA;GCM_TABLE_4BIT;HAVE_AESGCM;WOLFSSL_USE_ALIGN;WOLFSSL_SHA512;WOLFSSL_SHA384;HAVE_HKDF;NO_DSA;HAVE_ECC;TFM_ECC256;ECC_SHAMIR;WC_RSA_PSS;WOLFSSL_PSS_LONG_SALT;WOLFSSL_BASE64_ENCODE;WOLFSSL_SHA224;WOLFSSL_SHA3;WOLFSSL_NO_SHAKE256;WOLFSSL_NO_SHAKE128;HAVE_POLY1305;HAVE_ONE_TIME_AUTH;HAVE_CHACHA;HAVE_HASHDRBG;HAVE_TLS_EXTENSIONS;HAVE_SUPPORTED_CURVES;HAVE_FFDHE_2048;WOLFSSL_TLS13;HAVE_EXTENDED_MASTER;HAVE_ENCRYPT_THEN_MAC;NO_PSK;NO_MD4;WOLFSSL_ENCRYPTED_KEYS;WOLFSSL_X86_64_BUILD;WC_NO_ASYNC_THREADING;HAVE_DH_DEFAULT_PARAMS;NO_DES3;WOLFSSL_SYS_CA_CERTS;HAVE_SNI;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;HAVE_CONFIG_H;WOLFSSL_IGNORE_FILE_WARN;HAVE_THREAD_LS;TFM_TIMING_RESISTANT;ECC_TIMING_RESISTANT;WC_RSA_BLINDING;OPENSSL_EXTRA;GCM_TABLE_4BIT;HAVE_AESGCM;WOLFSSL_USE_ALIGN;WOLFSSL_SHA512;WOLFSSL_SHA384;HAVE_HKDF;NO_DSA;HAVE_ECC;TFM_ECC256;ECC_SHAMIR;WC_RSA_PSS;WOLFSSL_PSS_LONG_SALT;WOLFSSL_BASE64_ENCODE;WOLFSSL_SHA224;WOLFSSL_SHA3;WOLFSSL_NO_SHAKE256;WOLFSSL_NO_SHAKE128;HAVE_POLY1305;HAVE_ONE_TIME_AUTH;HAVE_CHACHA;HAVE_HASHDRBG;HAVE_TLS_EXTENSIONS;HAVE_SUPPORTED_CURVES;HAVE_FFDHE_2048;WOLFSSL_TLS13;HAVE_EXTENDED_MASTER;HAVE_ENCRYPT_THEN_MAC;NO_PSK;NO_MD4;WOLFSSL_ENCRYPTED_KEYS;WOLFSSL_X86_64_BUILD;WC_NO_ASYNC_THREADING;HAVE_DH_DEFAULT_PARAMS;NO_DES3;WOLFSSL_SYS_CA_CERTS;HAVE_SNI;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>Debug\wolfssl.lib;ws2_32.lib;crypt32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/project/CSONLINE/CSNZ_Server/build/thirdparty/wolfssl/Debug/wolfcrypttest.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/project/CSONLINE/CSNZ_Server/build/thirdparty/wolfssl/wolfcrypt/test/Debug/testwolfcrypt.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_CONFIG_H;WOLFSSL_IGNORE_FILE_WARN;HAVE_THREAD_LS;TFM_TIMING_RESISTANT;ECC_TIMING_RESISTANT;WC_RSA_BLINDING;OPENSSL_EXTRA;GCM_TABLE_4BIT;HAVE_AESGCM;WOLFSSL_USE_ALIGN;WOLFSSL_SHA512;WOLFSSL_SHA384;HAVE_HKDF;NO_DSA;HAVE_ECC;TFM_ECC256;ECC_SHAMIR;WC_RSA_PSS;WOLFSSL_PSS_LONG_SALT;WOLFSSL_BASE64_ENCODE;WOLFSSL_SHA224;WOLFSSL_SHA3;WOLFSSL_NO_SHAKE256;WOLFSSL_NO_SHAKE128;HAVE_POLY1305;HAVE_ONE_TIME_AUTH;HAVE_CHACHA;HAVE_HASHDRBG;HAVE_TLS_EXTENSIONS;HAVE_SUPPORTED_CURVES;HAVE_FFDHE_2048;WOLFSSL_TLS13;HAVE_EXTENDED_MASTER;HAVE_ENCRYPT_THEN_MAC;NO_PSK;NO_MD4;WOLFSSL_ENCRYPTED_KEYS;WOLFSSL_X86_64_BUILD;WC_NO_ASYNC_THREADING;HAVE_DH_DEFAULT_PARAMS;NO_DES3;WOLFSSL_SYS_CA_CERTS;HAVE_SNI;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_CONFIG_H;WOLFSSL_IGNORE_FILE_WARN;HAVE_THREAD_LS;TFM_TIMING_RESISTANT;ECC_TIMING_RESISTANT;WC_RSA_BLINDING;OPENSSL_EXTRA;GCM_TABLE_4BIT;HAVE_AESGCM;WOLFSSL_USE_ALIGN;WOLFSSL_SHA512;WOLFSSL_SHA384;HAVE_HKDF;NO_DSA;HAVE_ECC;TFM_ECC256;ECC_SHAMIR;WC_RSA_PSS;WOLFSSL_PSS_LONG_SALT;WOLFSSL_BASE64_ENCODE;WOLFSSL_SHA224;WOLFSSL_SHA3;WOLFSSL_NO_SHAKE256;WOLFSSL_NO_SHAKE128;HAVE_POLY1305;HAVE_ONE_TIME_AUTH;HAVE_CHACHA;HAVE_HASHDRBG;HAVE_TLS_EXTENSIONS;HAVE_SUPPORTED_CURVES;HAVE_FFDHE_2048;WOLFSSL_TLS13;HAVE_EXTENDED_MASTER;HAVE_ENCRYPT_THEN_MAC;NO_PSK;NO_MD4;WOLFSSL_ENCRYPTED_KEYS;WOLFSSL_X86_64_BUILD;WC_NO_ASYNC_THREADING;HAVE_DH_DEFAULT_PARAMS;NO_DES3;WOLFSSL_SYS_CA_CERTS;HAVE_SNI;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>Release\wolfssl.lib;ws2_32.lib;crypt32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/project/CSONLINE/CSNZ_Server/build/thirdparty/wolfssl/Release/wolfcrypttest.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/project/CSONLINE/CSNZ_Server/build/thirdparty/wolfssl/wolfcrypt/test/Release/testwolfcrypt.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_CONFIG_H;WOLFSSL_IGNORE_FILE_WARN;HAVE_THREAD_LS;TFM_TIMING_RESISTANT;ECC_TIMING_RESISTANT;WC_RSA_BLINDING;OPENSSL_EXTRA;GCM_TABLE_4BIT;HAVE_AESGCM;WOLFSSL_USE_ALIGN;WOLFSSL_SHA512;WOLFSSL_SHA384;HAVE_HKDF;NO_DSA;HAVE_ECC;TFM_ECC256;ECC_SHAMIR;WC_RSA_PSS;WOLFSSL_PSS_LONG_SALT;WOLFSSL_BASE64_ENCODE;WOLFSSL_SHA224;WOLFSSL_SHA3;WOLFSSL_NO_SHAKE256;WOLFSSL_NO_SHAKE128;HAVE_POLY1305;HAVE_ONE_TIME_AUTH;HAVE_CHACHA;HAVE_HASHDRBG;HAVE_TLS_EXTENSIONS;HAVE_SUPPORTED_CURVES;HAVE_FFDHE_2048;WOLFSSL_TLS13;HAVE_EXTENDED_MASTER;HAVE_ENCRYPT_THEN_MAC;NO_PSK;NO_MD4;WOLFSSL_ENCRYPTED_KEYS;WOLFSSL_X86_64_BUILD;WC_NO_ASYNC_THREADING;HAVE_DH_DEFAULT_PARAMS;NO_DES3;WOLFSSL_SYS_CA_CERTS;HAVE_SNI;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_CONFIG_H;WOLFSSL_IGNORE_FILE_WARN;HAVE_THREAD_LS;TFM_TIMING_RESISTANT;ECC_TIMING_RESISTANT;WC_RSA_BLINDING;OPENSSL_EXTRA;GCM_TABLE_4BIT;HAVE_AESGCM;WOLFSSL_USE_ALIGN;WOLFSSL_SHA512;WOLFSSL_SHA384;HAVE_HKDF;NO_DSA;HAVE_ECC;TFM_ECC256;ECC_SHAMIR;WC_RSA_PSS;WOLFSSL_PSS_LONG_SALT;WOLFSSL_BASE64_ENCODE;WOLFSSL_SHA224;WOLFSSL_SHA3;WOLFSSL_NO_SHAKE256;WOLFSSL_NO_SHAKE128;HAVE_POLY1305;HAVE_ONE_TIME_AUTH;HAVE_CHACHA;HAVE_HASHDRBG;HAVE_TLS_EXTENSIONS;HAVE_SUPPORTED_CURVES;HAVE_FFDHE_2048;WOLFSSL_TLS13;HAVE_EXTENDED_MASTER;HAVE_ENCRYPT_THEN_MAC;NO_PSK;NO_MD4;WOLFSSL_ENCRYPTED_KEYS;WOLFSSL_X86_64_BUILD;WC_NO_ASYNC_THREADING;HAVE_DH_DEFAULT_PARAMS;NO_DES3;WOLFSSL_SYS_CA_CERTS;HAVE_SNI;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>RelWithDebInfo\wolfssl.lib;ws2_32.lib;crypt32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/project/CSONLINE/CSNZ_Server/build/thirdparty/wolfssl/RelWithDebInfo/wolfcrypttest.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/project/CSONLINE/CSNZ_Server/build/thirdparty/wolfssl/wolfcrypt/test/RelWithDebInfo/testwolfcrypt.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule D:/project/CSONLINE/CSNZ_Server/src/thirdparty/wolfssl/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/project/CSONLINE/CSNZ_Server/src -BD:/project/CSONLINE/CSNZ_Server/build --check-stamp-file D:/project/CSONLINE/CSNZ_Server/build/thirdparty/wolfssl/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Program Files\CMake\share\cmake-4.0\Modules\BasicConfigVersion-AnyNewerVersion.cmake.in;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeASMInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakePackageConfigHelpers.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckFunctionExists.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckIncludeFileCXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckTypeSize.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-ASM.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\GNUInstallDirs.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeASMLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\GNU.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-ASM.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-GNU-ASM.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-GNU.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\TestBigEndian.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\WriteBasicConfigVersionFile.cmake;D:\project\CSONLINE\CSNZ_Server\build\CMakeFiles\4.0.2\CMakeASMCompiler.cmake;D:\project\CSONLINE\CSNZ_Server\build\CMakeFiles\4.0.2\CMakeCCompiler.cmake;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl\cmake\Config.cmake.in;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl\cmake\config.in;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl\cmake\functions.cmake;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl\support\wolfssl.pc.in;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\test\test_paths.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule D:/project/CSONLINE/CSNZ_Server/src/thirdparty/wolfssl/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/project/CSONLINE/CSNZ_Server/src -BD:/project/CSONLINE/CSNZ_Server/build --check-stamp-file D:/project/CSONLINE/CSNZ_Server/build/thirdparty/wolfssl/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Program Files\CMake\share\cmake-4.0\Modules\BasicConfigVersion-AnyNewerVersion.cmake.in;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeASMInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakePackageConfigHelpers.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckFunctionExists.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckIncludeFileCXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckTypeSize.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-ASM.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\GNUInstallDirs.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeASMLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\GNU.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-ASM.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-GNU-ASM.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-GNU.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\TestBigEndian.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\WriteBasicConfigVersionFile.cmake;D:\project\CSONLINE\CSNZ_Server\build\CMakeFiles\4.0.2\CMakeASMCompiler.cmake;D:\project\CSONLINE\CSNZ_Server\build\CMakeFiles\4.0.2\CMakeCCompiler.cmake;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl\cmake\Config.cmake.in;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl\cmake\config.in;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl\cmake\functions.cmake;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl\support\wolfssl.pc.in;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\test\test_paths.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule D:/project/CSONLINE/CSNZ_Server/src/thirdparty/wolfssl/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/project/CSONLINE/CSNZ_Server/src -BD:/project/CSONLINE/CSNZ_Server/build --check-stamp-file D:/project/CSONLINE/CSNZ_Server/build/thirdparty/wolfssl/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Program Files\CMake\share\cmake-4.0\Modules\BasicConfigVersion-AnyNewerVersion.cmake.in;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeASMInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakePackageConfigHelpers.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckFunctionExists.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckIncludeFileCXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckTypeSize.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-ASM.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\GNUInstallDirs.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeASMLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\GNU.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-ASM.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-GNU-ASM.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-GNU.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\TestBigEndian.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\WriteBasicConfigVersionFile.cmake;D:\project\CSONLINE\CSNZ_Server\build\CMakeFiles\4.0.2\CMakeASMCompiler.cmake;D:\project\CSONLINE\CSNZ_Server\build\CMakeFiles\4.0.2\CMakeCCompiler.cmake;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl\cmake\Config.cmake.in;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl\cmake\config.in;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl\cmake\functions.cmake;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl\support\wolfssl.pc.in;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\test\test_paths.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\test\test.c" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="D:\project\CSONLINE\CSNZ_Server\build\ZERO_CHECK.vcxproj">
+      <Project>{FB189190-3BBF-35FD-A725-BEB895BC2338}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl\wolfssl.vcxproj">
+      <Project>{15800151-2783-333C-90BD-03AEB6AA02E2}</Project>
+      <Name>wolfssl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

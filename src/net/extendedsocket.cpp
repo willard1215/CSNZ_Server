@@ -11,6 +11,28 @@
 
 using namespace std;
 
+static string HexPreview(const vector<unsigned char>& data, size_t limit = 64)
+{
+	static const char* kHex = "0123456789ABCDEF";
+	string out;
+	size_t count = min(data.size(), limit);
+	out.reserve(count * 3 + 16);
+
+	for (size_t i = 0; i < count; ++i)
+	{
+		if (i)
+			out.push_back(' ');
+		unsigned char b = data[i];
+		out.push_back(kHex[b >> 4]);
+		out.push_back(kHex[b & 0x0F]);
+	}
+
+	if (data.size() > limit)
+		out += " ...";
+
+	return out;
+}
+
 /**
  * Constructor.
  * @param id
@@ -315,6 +337,9 @@ CReceivePacket* CExtendedSocket::Read()
 
 	m_pMsg->GetData().setReadOffset(0);
 	m_pMsg->ParseHeader();
+	Logger().Info("RX packet from %s: seq=%d, size=%d, id=%d, hex=%s\n",
+		GetIP().c_str(), m_pMsg->GetSequence(), m_pMsg->GetLength() + PACKET_HEADER_SIZE,
+		m_pMsg->GetID(), HexPreview(m_pMsg->GetData().getBuffer()).c_str());
 
 	return m_pMsg;
 }
@@ -332,9 +357,7 @@ int CExtendedSocket::Send(vector<unsigned char>& buffer, bool serverHelloMsg)
 		return 0;
 	}
 
-#ifdef _DEBUG
 	auto rawBuffer = buffer;
-#endif
 
 	if (m_bCryptOutput)
 	{
@@ -386,10 +409,10 @@ int CExtendedSocket::Send(vector<unsigned char>& buffer, bool serverHelloMsg)
 			m_nBytesSent = 0;
 	} while (m_nPacketSentSize != buffer.size());
 
-#ifdef _DEBUG
 	if (!serverHelloMsg)
-		Logger().Debug("CExtendedSocket::Send(%s) seq: %d, buffer.size(): %d, id: %d\n", GetIP().c_str(), rawBuffer[1], rawBuffer.size(), rawBuffer[4]);
-#endif
+		Logger().Info("TX packet to %s: seq=%d, size=%d, id=%d, hex=%s\n",
+			GetIP().c_str(), rawBuffer[1], rawBuffer.size(), rawBuffer[4],
+			HexPreview(rawBuffer).c_str());
 
 	return m_nPacketSentSize;
 }
@@ -413,9 +436,6 @@ int CExtendedSocket::Send(CSendPacket* msg, bool ignoreQueue)
 	{
 		auto data = msg->SetPacketLength();
 		result = Send(data);
-
-		if (result > 0 && msg->m_nPacketID == 7 && !m_bCryptOutput)
-			SetCryptOutput(true);
 
 		if (GetNetworkError() != WSAEWOULDBLOCK)
 			delete msg;

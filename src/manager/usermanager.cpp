@@ -14,15 +14,50 @@
 #include "csvtable.h"
 #include "serverinstance.h"
 #include "serverconfig.h"
+#include "main.h"
+#include "common/utils.h"
+
+#include <thread>
 
 using namespace std;
 
-#define SUPPORTED_CLIENT_BUILD "30.11.24"
+#define SUPPORTED_CLIENT_BUILD "06.07.26"
+#define ENABLE_LOCAL_BOOTSTRAP 0
+#define LATEST_LOGIN_BOOTSTRAP_PHASE 1
 
 #define ZOMBIE_WAR_WEAPON_LIST_VERSION 1
 #define RANDOM_WEAPON_LIST_VERSION 1
 
 CUserManager g_UserManager;
+
+static void QueueDelayedLocalHandshake(IExtendedSocket* socket)
+{
+	std::thread([socket]()
+	{
+		SleepMS(2500);
+		g_Events.AddEventFunction([socket]()
+		{
+			if (!g_pServerInstance->IsServerActive())
+				return;
+
+			Logger().Info("Delayed local version reply after client UI startup\n");
+			g_PacketManager.SendVersion(socket, 0);
+		});
+
+		SleepMS(500);
+		g_Events.AddEventFunction([socket]()
+		{
+			if (!g_pServerInstance->IsServerActive())
+				return;
+
+			if (g_UserManager.GetUserBySocket(socket))
+				return;
+
+			Logger().Info("Delayed local bootstrap after version packet\n");
+			g_UserManager.BootstrapLocalUser(socket, false);
+		});
+	}).detach();
+}
 
 CUserManager::CUserManager() : CBaseManager("UserManager", true)
 {
@@ -146,12 +181,42 @@ bool CUserManager::OnLoginPacket(CReceivePacket* msg, IExtendedSocket* socket)
 	Logger().Info("Client (%s) sent login packet\n", socket->GetIP().c_str());
 
 	string steamID = msg->ReadString();
-	int size = msg->ReadUInt16();
-	vector<unsigned char> authSessionTicket = msg->ReadArray(size); // AuthSessionTicket - Reference: https://partner.steamgames.com/doc/features/auth
-	vector<unsigned char> hwid = msg->ReadArray(16);
-	int pcBang = msg->ReadUInt32(); // PCBang (PC Cafe) identification by running executable
-	int ip = msg->ReadUInt32();
-	string locale = msg->ReadString();
+	vector<unsigned char> hwid;
+	Buffer& data = msg->GetData();
+	const vector<unsigned char>& raw = data.getBuffer();
+	unsigned long long afterSteamID = data.getReadOffset();
+	unsigned int passportSize = 0;
+	if (afterSteamID + 2 <= raw.size())
+		passportSize = (unsigned int)raw[afterSteamID] | ((unsigned int)raw[afterSteamID + 1] << 8);
+	unsigned long long thirdStart = afterSteamID + 2 + passportSize;
+	unsigned long long thirdEnd = thirdStart;
+	while (thirdEnd < raw.size() && raw[thirdEnd] != '\0')
+		thirdEnd++;
+
+	if (passportSize > 0 && thirdEnd < raw.size() && thirdEnd + 1 + 16 + 8 <= raw.size())
+	{
+		int size = msg->ReadUInt16();
+		vector<unsigned char> passport = msg->ReadArray(size);
+		string locale = msg->ReadString();
+		hwid = msg->ReadArray(16);
+		int pcBang = msg->ReadUInt32(); // PCBang (PC Cafe) identification by running executable
+		int ip = msg->ReadUInt32();
+
+		Logger().Info("Client (%s) login packet parsed as latest layout: steamID='%s', passportSize=%d, locale='%s', pcBang=%d, ip=%s\n",
+			socket->GetIP().c_str(), steamID.c_str(), size, locale.c_str(), pcBang, ip_to_string(ip).c_str());
+	}
+	else
+	{
+		int size = msg->ReadUInt16();
+		vector<unsigned char> authSessionTicket = msg->ReadArray(size); // AuthSessionTicket - Reference: https://partner.steamgames.com/doc/features/auth
+		hwid = msg->ReadArray(16);
+		int pcBang = msg->ReadUInt32(); // PCBang (PC Cafe) identification by running executable
+		int ip = msg->ReadUInt32();
+		string locale = msg->ReadString();
+
+		Logger().Info("Client (%s) login packet parsed as legacy layout: steamID='%s', ticketSize=%d, locale='%s', pcBang=%d, ip=%s\n",
+			socket->GetIP().c_str(), steamID.c_str(), size, locale.c_str(), pcBang, ip_to_string(ip).c_str());
+	}
 
 	socket->SetHWID(hwid);
 
@@ -164,7 +229,7 @@ bool CUserManager::OnLoginPacket(CReceivePacket* msg, IExtendedSocket* socket)
 		return true;
 	}
 
-	SendCrypt(socket);
+	BootstrapLocalUser(socket, true);
 
 	return true;
 }
@@ -313,10 +378,17 @@ bool CUserManager::OnVersionPacket(CReceivePacket* msg, IExtendedSocket* socket)
 
 		GuestData_s& data = socket->GetGuestData();
 		if (!data.isGuest)
-			g_PacketManager.SendVersion(socket, 0);
-		else
-			SendGuestUserPacket(socket);
-
+		{
+			if (ENABLE_LOCAL_BOOTSTRAP || (launcherVersion == 67 && gameVersion == 26 && socket->GetIP() == "127.0.0.1"))
+			{
+				Logger().Info("Latest local client detected after version packet, scheduling delayed local handshake\n");
+				QueueDelayedLocalHandshake(socket);
+			}
+			else
+			{
+				g_PacketManager.SendVersion(socket, 0);
+			}
+		}
 		data.isGuest = true;
 		data.launcherVersion = launcherVersion;
 
@@ -397,6 +469,11 @@ bool CUserManager::OnFavoriteSetBookmark(CReceivePacket* msg, IUser* user)
 
 void CUserManager::SendUserInventory(IUser* user)
 {
+	// Latest hw.dll expects a different inventory/default-item bootstrap layout.
+	// Do not push the legacy snapshots during login; item packets should be
+	// re-enabled only after the current 152/154 layouts are mapped.
+	return;
+
 	vector<CUserInventoryItem> items;
 	g_UserDatabase.GetInventoryItems(user->GetID(), items);
 
@@ -572,12 +649,65 @@ void CUserManager::SendGuestUserPacket(IExtendedSocket* socket)
 	g_PacketManager.SendUMsgNoticeMessageInChat(socket, OBFUSCATE("Server developers: Jusic, Hardee, NekoMeow, Smilex_Gamer, xRiseless. Our Discord: https://discord.gg/EvUAY6D"));
 }
 
+bool CUserManager::BootstrapLocalUser(IExtendedSocket* socket, bool sendLoginReply)
+{
+	if (GetUserBySocket(socket))
+		return true;
+
+	const string localUserName = "localuser";
+	const string localPassword = "localpass1";
+	const string localCharacterName = "LocalPlayer";
+
+	int loginResult = LoginUser(socket, localUserName, localPassword, sendLoginReply, false);
+	if (loginResult == LOGIN_NO_SUCH_USER)
+	{
+		int registerResult = RegisterUser(socket, localUserName, localPassword);
+		Logger().Info("Local auto-register result: %d\n", registerResult);
+		loginResult = LoginUser(socket, localUserName, localPassword, sendLoginReply, false);
+	}
+
+	if (loginResult != LOGIN_OK)
+	{
+		Logger().Warn("Local bootstrap login failed (code: %d)\n", loginResult);
+		return false;
+	}
+
+	IUser* user = GetUserBySocket(socket);
+	if (user != NULL && !user->IsCharacterExists())
+	{
+		int replyCode = ChangeUserNickname(user, localCharacterName, true);
+		if (replyCode != 1)
+		{
+			Logger().Warn("Local bootstrap character create failed (code: %d)\n", replyCode);
+			return false;
+		}
+
+		CUserCharacter character = user->GetCharacter(UFLAG_LOW_ALL, UFLAG_HIGH_ALL);
+
+		g_ItemManager.OnUserLogin(user);
+		g_ClanManager.OnUserLogin(user);
+		g_QuestManager.OnUserLogin(user);
+
+		SendLoginPacket(user, character);
+	}
+
+	return true;
+}
+
 void CUserManager::SendLoginPacket(IUser* user, const CUserCharacter& character)
 {
 	IExtendedSocket* socket = user->GetExtendedSocket();
+	(void)character;
 
-	g_PacketManager.SendUserStart(socket, user->GetID(), user->GetUsername(), character.gameName, true);
-	g_PacketManager.SendUserUpdateInfo(socket, user, character);
+	const int loginLowFlags =
+		UFLAG_LOW_GAMENAME |
+		UFLAG_LOW_UNK27;
+	const int loginHighFlags = 0;
+	CUserCharacter loginCharacter = user->GetCharacter(loginLowFlags, loginHighFlags);
+
+	g_PacketManager.SendUserStartStep(socket, 0);
+	g_PacketManager.SendUserStart(socket, user->GetID(), user->GetUsername(), loginCharacter.gameName, true);
+	g_PacketManager.SendUserUpdateInfo(socket, user, loginCharacter);
 
 	CUserCharacterExtended characterExtended = user->GetCharacterExtended(EXT_UFLAG_CONFIG | EXT_UFLAG_BANSETTINGS);
 	if (characterExtended.config.size())
@@ -588,7 +718,15 @@ void CUserManager::SendLoginPacket(IUser* user, const CUserCharacter& character)
 	if (!banList.empty())
 		g_PacketManager.SendBanList(socket, banList);
 
-	g_PacketManager.SendBanSettings(socket, characterExtended.banSettings);
+	// Latest hw.dll does not need the legacy Ban(74) settings during login.
+	// Sending it keeps the client in the same timeout path as the old bootstrap.
+
+	if (LATEST_LOGIN_BOOTSTRAP_PHASE <= 1)
+	{
+		Logger().Info("Latest login bootstrap phase 1: minimal user/lobby packets only\n");
+		g_ChannelManager.JoinChannel(user, g_ChannelManager.channelServers[0]->GetID(), g_ChannelManager.channelServers[0]->GetChannels()[0]->GetID(), false);
+		return;
+	}
 
 	SendMetadata(socket);
 
@@ -608,38 +746,42 @@ void CUserManager::SendLoginPacket(IUser* user, const CUserCharacter& character)
 
 	SendUserInventory(user);
 	SendUserLoadout(user);
-	SendUserNotices(user);
 
-	g_PacketManager.SendShopUpdate(socket, g_ShopManager.GetProducts());
-	g_PacketManager.SendShopRecommendedProducts(socket, g_ShopManager.GetRecommendedProducts());
-	g_PacketManager.SendShopPopularProducts(socket, g_ShopManager.GetPopularProducts());
-
-	// CN: 欢迎来到CSN:S服务器! 我们的服务器是非商业性的, 不要相信任何人说的售卖CSOL私服的信息.\n官方Discord: https://discord.gg/EvUAY6D \n
-	const char* text = OBFUSCATE("EN: Welcome to the CSN:S server! The project is non-commercial. Don't trust people trying to sell you a server.\nServer developer Discord: https://discord.gg/EvUAY6D \n");
-	g_PacketManager.SendUMsgNoticeMsgBoxToUuid(socket, text);
-
-	if (!g_pServerConfig->welcomeMessage.empty())
-		g_PacketManager.SendUMsgNoticeMsgBoxToUuid(socket, g_pServerConfig->welcomeMessage);
+	// Latest hw.dll requests shop panels explicitly. Avoid pushing the legacy
+	// full shop payload during login; it is parsed by the latest client with a
+	// different layout.
 
 	g_ChannelManager.JoinChannel(user, g_ChannelManager.channelServers[0]->GetID(), g_ChannelManager.channelServers[0]->GetChannels()[0]->GetID(), false);
 
-	for (auto& survey : g_pServerConfig->surveys)
-	{
-		if (!g_UserDatabase.IsSurveyAnswered(user->GetID(), survey.id))
-			g_PacketManager.SendUserSurvey(socket, survey);
-	}
-
-	g_PacketManager.SendLeaguePacket(socket);
-
-	// FROM ~X.03.24: without this packet, client doesn't show inventory and user info on top left, weird
-	g_PacketManager.SendUpdateInfo(socket);
-
-	g_PacketManager.SendVoxelURLs(socket, g_pServerConfig->voxelVxlURL, g_pServerConfig->voxelVmgURL);
+	// Optional post-login packets (notices, surveys, league, update-info and
+	// voxel URLs) use older layouts and can terminate the latest client during
+	// startup. The latest client also closes after the legacy final start-step,
+	// so leave startup in the post-login loading state until that packet is mapped.
 }
 
 void CUserManager::SendMetadata(IExtendedSocket* socket)
 {
 	uint64_t flag = g_pServerConfig->metadataToSend;
+
+	// Latest hw.dll uses a different metadata table. Disable entries that are
+	// absent from that table or whose local payload format is known mismatched.
+	flag &= ~kMetadataFlag_ClientTable;
+	flag &= ~kMetadataFlag_ItemBox;
+	flag &= ~kMetadataFlag_WeaponPaints;
+	flag &= ~kMetadataFlag_Unk3;
+	flag &= ~kMetadataFlag_Unk8;
+	flag &= ~kMetadataFlag_ZombieWarWeaponList;
+	flag &= ~kMetadataFlag_Unk20;
+	flag &= ~kMetadataFlag_Encyclopedia;
+	flag &= ~kMetadataFlag_ReinforceItemsExp;
+	flag &= ~kMetadataFlag_Unk31;
+	flag &= ~kMetadataFlag_CodisData;
+	flag &= ~kMetadataFlag_WeaponProp;
+	flag &= ~kMetadataFlag_Unk43;
+	flag &= ~kMetadataFlag_Unk49;
+	flag &= ~kMetadataFlag_RandomWeaponList;
+	flag &= ~kMetadataFlag_Unk54;
+	flag &= ~kMetadataFlag_Unk55;
 	if (flag & kMetadataFlag_MapList)
 		g_PacketManager.SendMetadataMaplist(socket);
 	if (flag & kMetadataFlag_ClientTable)
@@ -736,14 +878,39 @@ void CUserManager::SendCrypt(IExtendedSocket* socket)
 			unsigned char* iv = socket->GetCryptIV();
 
 			g_PacketManager.SendCrypt(socket, 0, key, iv);
-
 			g_PacketManager.SendCrypt(socket, 1, key, iv);
 		}
 	}
 }
 
+static bool SendLatestLoginCrypt(IExtendedSocket* socket)
+{
+	Logger().Info("Latest login crypt bootstrap deferred; waiting for client follow-up\n");
+	return true;
+
+	if (!socket->SetupCrypt())
+	{
+		Logger().Info("Client (%s) latest login crypt setup failed\n", socket->GetIP().c_str());
+		return false;
+	}
+
+	unsigned char* key = socket->GetCryptKey();
+	unsigned char* iv = socket->GetCryptIV();
+
+	g_PacketManager.SendCrypt(socket, 0, key, iv);
+	socket->SetCryptOutput(true);
+	socket->SetCryptInput(true);
+	g_PacketManager.SendCrypt(socket, 1, key, iv);
+	Logger().Info("Latest login crypt bootstrap sent with RC4 stream cipher\n");
+	return true;
+}
+
 void CUserManager::SendUserLoadout(IUser* user)
 {
+	// Latest hw.dll rejects the legacy Favorite(77) loadout/buy-menu payloads.
+	// Skip them during startup until the latest favorite/loadout layout is mapped.
+	return;
+
 	vector<CUserLoadout> loadouts;
 	g_UserDatabase.GetLoadouts(user->GetID(), loadouts);
 
@@ -939,6 +1106,11 @@ void CUserManager::SendNoticeMsgBoxToAll(const string& msg)
 
 int CUserManager::LoginUser(IExtendedSocket* socket, const string& userName, const string& password)
 {
+	return LoginUser(socket, userName, password, true, true);
+}
+
+int CUserManager::LoginUser(IExtendedSocket* socket, const string& userName, const string& password, bool sendLoginReply, bool sendCharacterPrompt)
+{
 	UserBan ban = {};
 	int userID = g_UserDatabase.Login(userName, password, socket, ban, NULL);
 	if (userID <= 0)
@@ -1000,11 +1172,20 @@ int CUserManager::LoginUser(IExtendedSocket* socket, const string& userName, con
 
 	g_UserDatabase.UpdateUserData(userID, data);
 		
-	g_PacketManager.SendReply(socket, ServerReply::S_REPLY_YES);
+	if (sendLoginReply)
+	{
+		g_PacketManager.SendReply(socket, ServerReply::S_REPLY_YES);
+		if (SendLatestLoginCrypt(socket))
+		{
+			Logger().Info("Waiting for latest client crypt acknowledgement before login bootstrap\n");
+			return true;
+		}
+	}
 
 	if (!newUser->IsCharacterExists())
 	{
-		g_PacketManager.SendCharacter(socket);
+		if (sendCharacterPrompt)
+			g_PacketManager.SendCharacter(socket);
 	}
 	else
 	{
@@ -1344,8 +1525,14 @@ bool CUserManager::OnLeaguePacket(CReceivePacket* msg, IExtendedSocket* socket)
 
 bool CUserManager::OnCryptPacket(CReceivePacket* msg, IExtendedSocket* socket)
 {
-	if (!socket->GetSSLObject() && g_pServerConfig->crypt)
-		socket->SetCryptInput(true);
+	Logger().Info("Client (%s) crypt acknowledgement received\n", socket->GetIP().c_str());
+
+	IUser* user = GetUserBySocket(socket);
+	if (user != NULL && user->IsCharacterExists())
+	{
+		CUserCharacter character = user->GetCharacter(UFLAG_LOW_ALL, UFLAG_HIGH_ALL);
+		SendLoginPacket(user, character);
+	}
 
 	return true;
 }

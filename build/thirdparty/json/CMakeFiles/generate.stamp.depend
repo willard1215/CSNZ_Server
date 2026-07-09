@@ -1,0 +1,10 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-4.0/Modules/CMakePackageConfigHelpers.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/ExternalProject.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/ExternalProject/shared_internal_commands.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/GNUInstallDirs.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/WriteBasicConfigVersionFile.cmake
+D:/project/CSONLINE/CSNZ_Server/src/thirdparty/json/CMakeLists.txt
+D:/project/CSONLINE/CSNZ_Server/src/thirdparty/json/cmake/config.cmake.in
+D:/project/CSONLINE/CSNZ_Server/src/thirdparty/json/cmake/nlohmann_jsonConfigVersion.cmake.in
+D:/project/CSONLINE/CSNZ_Server/src/thirdparty/json/cmake/pkg-config.pc.in

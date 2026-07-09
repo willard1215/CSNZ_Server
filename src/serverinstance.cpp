@@ -305,9 +305,11 @@ void* ReadConsoleThread(void*)
 	while (g_pServerInstance->IsServerActive())
 	{
 		string cmd;
-		getline(cin, cmd);
+		if (!getline(cin, cmd))
+			break;
 
-		// TODO: ignore empty line?
+		if (cmd.empty())
+			continue;
 
 		g_Events.AddEventFunction(std::bind(&CServerInstance::OnCommand, g_pServerInstance, cmd));
 	}

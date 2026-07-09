@@ -39,7 +39,9 @@ public:
 	void SendNoticeMsgBoxToAll(const std::string& msg);
 
 	int LoginUser(IExtendedSocket* socket, const std::string& userName, const std::string& password);
+	int LoginUser(IExtendedSocket* socket, const std::string& userName, const std::string& password, bool sendLoginReply, bool sendCharacterPrompt);
 	int RegisterUser(IExtendedSocket* socket, const std::string& userName, const std::string& password);
+	bool BootstrapLocalUser(IExtendedSocket* socket, bool sendLoginReply);
 	void DisconnectUser(IUser* user);
 	void DisconnectAllFromServer();
 	IUser* AddUser(IExtendedSocket* socket, int userID, const std::string& userName);

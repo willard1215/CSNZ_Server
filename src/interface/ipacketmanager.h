@@ -43,6 +43,7 @@ public:
 
 	virtual void SendVersion(IExtendedSocket* socket, int result) = 0;
 
+	virtual void SendUserStartStep(IExtendedSocket* socket, int step) = 0;
 	virtual void SendUserStart(IExtendedSocket* socket, int userID, const std::string& userName, const std::string& gameName, bool firstConnect) = 0;
 	virtual void SendUserUpdateInfo(IExtendedSocket* socket, IUser* user, const CUserCharacter& character) = 0;
 	virtual void SendUserSurvey(IExtendedSocket* socket, const Survey& survey) = 0;

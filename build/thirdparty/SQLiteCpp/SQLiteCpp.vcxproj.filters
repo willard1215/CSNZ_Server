@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\src\Backup.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\src\Column.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\src\Database.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\src\Exception.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\src\Savepoint.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\src\Statement.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\src\Transaction.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\SQLiteCpp.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\Assertion.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\Backup.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\Column.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\Database.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\Exception.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\Savepoint.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\Statement.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\Transaction.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\VariadicBind.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\ExecuteMany.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\cmake\SQLiteCppConfig.cmake.in">
+      <Filter>scripts</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\README.md">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\LICENSE.txt">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\CHANGELOG.md">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\TODO.txt">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\.editorconfig">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\.gitbugtraq">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\.github\workflows\cmake.yml">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\.github\workflows\cmake_subdir_example.yml">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\.github\workflows\meson.yml">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\.gitignore">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\.gitmodules">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\.travis.yml">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\appveyor.yml">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\build.bat">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\build.sh">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\cpplint.py">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\Doxyfile">
+      <Filter>scripts</Filter>
+    </None>
+    <None Include="D:\project\CSONLINE\CSNZ_Server\src\thirdparty\SQLiteCpp\cmake\FindSQLite3.cmake">
+      <Filter>scripts</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="doc">
+      <UniqueIdentifier>{DFD30A1E-241F-3D23-BDFC-7184AA4852E7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{B9B74576-6011-3714-8124-48DB529AB90E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts">
+      <UniqueIdentifier>{24E09A79-F987-3B57-911D-6D15FF7C32BF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{9951536D-0ABD-324E-AAE6-0427DF45FA76}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

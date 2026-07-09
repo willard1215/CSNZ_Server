@@ -58,29 +58,29 @@ CPacketManager::~CPacketManager()
 
 bool CPacketManager::Init()
 {
-	m_pMapListZip = LoadBinaryMetadata("MapList.csv", true);
+	m_pMapListZip = LoadBinaryMetadata("MapList.csv", true, "resource/MapList.csv");
 	m_pClientTableZip = LoadBinaryMetadata("ClientTable.csv", true);
-	m_pWeaponPartsZip = LoadBinaryMetadata("weaponparts.csv", true);
+	m_pWeaponPartsZip = LoadBinaryMetadata("weaponparts.csv", true, "weaponparts.csv");
 	m_pMileageShopZip = LoadBinaryMetadata("MileageShop.csv", true);
-	m_pMatchingZip = LoadBinaryMetadata("MatchOption.csv", true);
-	m_pProgressUnlockZip = LoadBinaryMetadata("progress_unlock.csv", true);
-	m_pGameModeListZip = LoadBinaryMetadata("GameModeList.csv", true);
+	m_pMatchingZip = LoadBinaryMetadata("MatchOption.csv", true, "Matching.csv");
+	m_pProgressUnlockZip = LoadBinaryMetadata("progress_unlock.csv", true, "resource/zombiez/progress_unlock.csv");
+	m_pGameModeListZip = LoadBinaryMetadata("GameModeList.csv", true, "resource/GameModeList.csv");
 	m_pReinforceMaxLvlZip = LoadBinaryMetadata("ReinforceMaxLv.csv", true);
 	m_pReinforceMaxExpZip = LoadBinaryMetadata("ReinforceMaxEXP.csv", true);
-	m_pItemExpireTimeZip = LoadBinaryMetadata("ItemExpireTime.csv", true);
-	m_pHonorMoneyShopZip = LoadBinaryMetadata("HonorMoneyShop.csv", true);
-	m_pScenarioTX_CommonZip = LoadBinaryMetadata("scenariotx_common.json", true);
-	m_pScenarioTX_DediZip = LoadBinaryMetadata("scenariotx_dedi.json", true);
-	m_pShopItemList_DediZip = LoadBinaryMetadata("shopitemlist_dedi.json", true);
-	m_pZBCompetitiveZip = LoadBinaryMetadata("ZBCompetitive.json", true);
-	m_pPPSystemZip = LoadBinaryMetadata("ppsystem.json", true);
-	m_pItemZip = LoadBinaryMetadata("Item.csv", true);
+	m_pItemExpireTimeZip = LoadBinaryMetadata("ItemExpireTime.csv", true, "resource/ItemExpireTime.csv");
+	m_pHonorMoneyShopZip = LoadBinaryMetadata("HonorMoneyShop.csv", true, "HonorShop.csv");
+	m_pScenarioTX_CommonZip = LoadBinaryMetadata("scenariotx_common.json", true, "resource/scenariotx/scenariotx_common.json");
+	m_pScenarioTX_DediZip = LoadBinaryMetadata("scenariotx_dedi.json", true, "resource/scenariotx/scenariotx_dedi.json");
+	m_pShopItemList_DediZip = LoadBinaryMetadata("shopitemlist_dedi.json", true, "resource/scenariotx/shopitemlist_dedi.json");
+	m_pZBCompetitiveZip = LoadBinaryMetadata("ZBCompetitive.json", true, "resource/zombiecompetitive/ZBCompetitive.json");
+	m_pPPSystemZip = LoadBinaryMetadata("ppsystem.json", true, "ppsystem/config.json");
+	m_pItemZip = LoadBinaryMetadata("Item.csv", true, "resource/item.csv");
 	m_pCodisDataZip = LoadBinaryMetadata("CodisData.csv", true);
 	m_pWeaponPropZip = LoadBinaryMetadata("WeaponProp.json", true);
-	m_pModeEventZip = LoadBinaryMetadata("ModeEvent.csv", true);
-	m_pEventShopZip = LoadBinaryMetadata("EventShop.csv", true);
-	m_pFamilyTotalWarMapZip = LoadBinaryMetadata("FamilyTotalWarMap.csv", true);
-	m_pFamilyTotalWarZip = LoadBinaryMetadata("FamilyTotalWar.json", true);
+	m_pModeEventZip = LoadBinaryMetadata("ModeEvent.csv", true, "resource/ModeEvent/ModeEvent.csv");
+	m_pEventShopZip = LoadBinaryMetadata("EventShop.csv", true, "resource/CPShop/EventShop.csv");
+	m_pFamilyTotalWarMapZip = LoadBinaryMetadata("FamilyTotalWarMap.csv", true, "resource/ClanWar/FamilyTotalWarMap.csv");
+	m_pFamilyTotalWarZip = LoadBinaryMetadata("FamilyTotalWar.json", true, "resource/ClanWar/FamilyTotalWar.json");
 	m_pReinforceItemsExp = LoadBinaryMetadata("Metadata_ReinforceItemsExp.bin");
 	m_pUnk3 = LoadBinaryMetadata("Metadata_Unk3.bin");
 	m_pUnk8 = LoadBinaryMetadata("Metadata_Unk8.bin");
@@ -180,7 +180,7 @@ CSendPacket* CPacketManager::CreatePacket(IExtendedSocket* socket, int msgID)
 	return new CSendPacket(socket->GetSeq(), msgID);
 }
 
-CBinMetadata* CPacketManager::LoadBinaryMetadata(const char* fileName, bool zip)
+CBinMetadata* CPacketManager::LoadBinaryMetadata(const char* fileName, bool zip, const char* zipEntryName)
 {
 	char path[MAX_PATH];
 	snprintf(path, MAX_PATH, "Data/%s", fileName);
@@ -219,7 +219,7 @@ CBinMetadata* CPacketManager::LoadBinaryMetadata(const char* fileName, bool zip)
 	{
 		// create zip and get stream data
 		zip_t *zipStream = zip_stream_open(NULL, 0, ZIP_DEFAULT_COMPRESSION_LEVEL, 'w');
-		zip_entry_open(zipStream, fileName);
+		zip_entry_open(zipStream, zipEntryName ? zipEntryName : fileName);
 		zip_entry_write(zipStream, buffer, result);
 		zip_entry_close(zipStream);
 
@@ -616,6 +616,17 @@ void CPacketManager::SendStatistic(IExtendedSocket* socket)
 
 void CPacketManager::SendInventoryAdd(IExtendedSocket* socket, const vector<CUserInventoryItem>& items, int curSlot)
 {
+	// Latest hw.dll no longer accepts the legacy packed Inventory(154) item
+	// layout used by this server. Keep the login/lobby flow alive by sending an
+	// empty legacy inventory snapshot until the split latest inventory packets
+	// (ClassInven/PartsInven/ItemInven/etc.) are mapped.
+	CSendPacket* emptyMsg = CreatePacket(socket, PacketId::Inventory);
+	emptyMsg->BuildHeader();
+	emptyMsg->WriteUInt32(0);
+	emptyMsg->WriteUInt16(0);
+	socket->Send(emptyMsg);
+	return;
+
 	int itemsToSend = items.size();
 	int itemStart = 0;
 	int itemSent = 0;
@@ -739,6 +750,14 @@ void CPacketManager::SendVersion(IExtendedSocket* socket, int result)
 	socket->Send(msg);
 }
 
+void CPacketManager::SendUserStartStep(IExtendedSocket* socket, int step)
+{
+	CSendPacket* msg = CreatePacket(socket, PacketId::UserStartStep);
+	msg->BuildHeader();
+	msg->WriteUInt8(step);
+	socket->Send(msg);
+}
+
 void CPacketManager::SendUserStart(IExtendedSocket* socket, int userID, const string& userName, const string& gameName, bool firstConnect)
 {
 	CSendPacket* msg = CreatePacket(socket, PacketId::UserStart);
@@ -750,7 +769,6 @@ void CPacketManager::SendUserStart(IExtendedSocket* socket, int userID, const st
 	msg->WriteUInt8(0); // country code
 	msg->WriteUInt8(0); // region code
 	msg->WriteUInt32(0); // UserSN
-	msg->WriteUInt8(0); // unk
 	socket->Send(msg);
 }
 
@@ -1504,7 +1522,7 @@ void CPacketManager::SendReply(IExtendedSocket* socket, int type)
 	msg->WriteString("S_REPLY_OK");
 	msg->WriteUInt8(0);
 
-	socket->Send(msg);
+	socket->Send(msg, true);
 }
 
 unsigned char rawData1[5] = {
@@ -1745,23 +1763,17 @@ void CPacketManager::SendItemGachapon(IExtendedSocket* socket, int gachaponItem)
 
 void CPacketManager::SendLobbyJoin(IExtendedSocket* socket, CChannel* channel)
 {
-	CSendPacket* msg = CreatePacket(socket, PacketId::Lobby);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(LobbyPacketType::Join);
-	msg->WriteUInt16(channel->GetOutsideUsers().size());
-	for (auto user : channel->GetOutsideUsers())
-	{
-		msg->WriteUInt32(user->GetID());
-		msg->WriteString("test_lobby");
-		CPacketHelper_FullUserInfo fullUserInfo;
-		fullUserInfo.Build(msg->m_OutStream, user->GetID(), user->GetCharacter(UFLAG_LOW_ALL, UFLAG_HIGH_ALL));
-	}
-	socket->Send(msg);
+	// Latest hw.dll rejects the legacy Lobby(153) join layout even when the
+	// user list is empty. Skip it until the latest lobby/user-info payload is
+	// mapped.
+	return;
 }
 
 void CPacketManager::SendLobbyUserJoin(IExtendedSocket* socket, IUser* joinedUser)
 {
+	// See SendLobbyJoin: the latest client does not accept this legacy layout.
+	return;
+
 	CSendPacket* msg = CreatePacket(socket, PacketId::Lobby);
 	msg->BuildHeader();
 
@@ -1977,6 +1989,11 @@ void BuildRoomInfo(CSendPacket* msg, IRoom* room, int lFlag, int hFlag)
 
 void CPacketManager::SendRoomListFull(IExtendedSocket* socket, const vector<IRoom*>& rooms)
 {
+	// Latest hw.dll does not accept the legacy GameMatchRoomList(151) layout.
+	// Keep channel membership server-side, but do not push the old room list
+	// until the current client payload is mapped.
+	return;
+
 	CSendPacket* msg = CreatePacket(socket, PacketId::GameMatchRoomList);
 	msg->BuildHeader();
 
@@ -3256,6 +3273,12 @@ void CPacketManager::SendDefaultItems(IExtendedSocket* socket, const vector<CUse
 {
 	CSendPacket* msg = CreatePacket(socket, PacketId::DefaultItems);
 	msg->BuildHeader();
+	// Latest hw.dll rejects the legacy default-item slot payload. Send an empty
+	// snapshot and let the latest split inventory packets be mapped separately.
+	msg->WriteUInt16(0);
+	socket->Send(msg);
+	return;
+
 	msg->WriteUInt16(items.size());
 	for (auto& item : items)
 	{
@@ -7061,11 +7084,10 @@ void CPacketManager::SendCrypt(IExtendedSocket* socket, int type, unsigned char*
 	msg->WriteUInt8(type);
 	msg->WriteUInt8(2); // crypt method(0,1 - something related to ssl ?, 2 - rc4, 3 - rc40, 4 - none)
 
-	// if TLSv1 used, key is 32 bytes
-	msg->WriteData(key, 64);
-	msg->WriteData(iv, 64);
+	msg->WriteData(key, 32);
+	msg->WriteData(iv, 32);
 
-	socket->Send(msg);
+	socket->Send(msg, true);
 }
 
 void CPacketManager::SendUpdateInfo(IExtendedSocket* socket)

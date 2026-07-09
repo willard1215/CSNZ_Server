@@ -238,10 +238,14 @@ void CTCPServer::Listen()
 				int readResult = socket->GetReadResult();
 				if (readResult == 0)
 				{
+					Logger().Info("TCP read closed by peer (%d, %s): readResult=%d, pendingMsg=%d, revents=0x%X\n",
+						socket->GetID(), socket->GetIP().c_str(), readResult, socket->GetMsg() ? 1 : 0, it->revents);
 					it->revents |= POLLHUP;
 				}
 				else if (readResult == SOCKET_ERROR)
 				{
+					Logger().Warn("TCP read socket error (%d, %s): readResult=%d, WSAGetLastError=%d, pendingMsg=%d, revents=0x%X\n",
+						socket->GetID(), socket->GetIP().c_str(), readResult, GetNetworkError(), socket->GetMsg() ? 1 : 0, it->revents);
 					it->revents |= POLLERR;
 
 					if (m_pListener)
@@ -253,6 +257,8 @@ void CTCPServer::Listen()
 					// exclude case when message is not fully read
 					if (!socket->GetMsg())
 					{
+						Logger().Warn("TCP read invalid packet (%d, %s): readResult=%d, revents=0x%X\n",
+							socket->GetID(), socket->GetIP().c_str(), readResult, it->revents);
 						it->revents |= POLLERR;
 
 						if (m_pListener)
@@ -309,6 +315,12 @@ void CTCPServer::Listen()
 		if (it->revents & (POLLERR | POLLHUP) && it->fd != m_Socket)
 		{
 			IExtendedSocket* socket = GetExSocketBySocket(it->fd);
+			if (socket)
+			{
+				Logger().Info("TCP disconnect requested (%d, %s): revents=0x%X, bytesSent=%d, bytesReceived=%d, sendQueue=%d, pendingMsg=%d\n",
+					socket->GetID(), socket->GetIP().c_str(), it->revents, socket->GetBytesSent(), socket->GetBytesReceived(),
+					socket->GetPacketsToSend().size(), socket->GetMsg() ? 1 : 0);
+			}
 			if (socket)
 				DisconnectClient(socket);
 
@@ -412,6 +424,11 @@ IExtendedSocket* CTCPServer::Accept(unsigned int id)
 			ret = wolfSSL_accept(newSSL);
 			err = wolfSSL_get_error(newSSL, ret);
 		} while (err == WOLFSSL_ERROR_WANT_READ || err == WOLFSSL_ERROR_WANT_WRITE);
+
+		if (ret != WOLFSSL_SUCCESS)
+			Logger().Error("wolfSSL_accept() failed for client (%s): ret=%d, err=%d\n", ip, ret, err);
+		else
+			Logger().Info("TLS handshake completed with client (%s)\n", ip);
 
 		newSocket->SetSSLObject(newSSL);
 	}

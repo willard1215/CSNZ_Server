@@ -1,0 +1,5 @@
+[07/05/26 01:15:44] [INFO]  [Shop] Loaded 86 products.
+[07/05/26 01:15:44] [INFO]  Server starts listening. Server developers: Jusic, Hardee, NekoMeow, Smilex_Gamer, xRiseless. Thx to Ochii for CSO2 server.
+For more information visit discord.gg/EvUAY6D
+[07/05/26 01:15:44] [INFO]  Server build: 2633, Private Release
+[07/05/26 01:15:44] [INFO]  Memory usage: 17.56mb. Connected users: 0. Logged in users: 0. Connected dedicated servers: 0.

@@ -1,0 +1,17 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeCInformation.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeCommonLanguageInclude.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeLanguageInformation.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Compiler/CMakeCommonCompilerMacros.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Compiler/MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Compiler/MSVC.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CMakeCLinkerInformation.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CMakeCommonLinkerInformation.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Linker/MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Linker/MSVC.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Platform/Linker/Windows-MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Platform/Linker/Windows-MSVC.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Platform/Windows-MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Platform/Windows-MSVC.cmake
+D:/project/CSONLINE/CSNZ_Server/build/CMakeFiles/4.0.2/CMakeCCompiler.cmake
+D:/project/CSONLINE/CSNZ_Server/src/test/CMakeLists.txt

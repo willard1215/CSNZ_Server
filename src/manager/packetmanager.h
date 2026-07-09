@@ -70,6 +70,7 @@ public:
 
 	void SendVersion(IExtendedSocket* socket, int result);
 
+	void SendUserStartStep(IExtendedSocket* socket, int step);
 	void SendUserStart(IExtendedSocket* socket, int userID, const std::string& userName, const std::string& gameName, bool firstConnect);
 	void SendUserUpdateInfo(IExtendedSocket* socket, IUser* user, const CUserCharacter& character);
 	void SendUserSurvey(IExtendedSocket* socket, const Survey& survey);
@@ -286,7 +287,7 @@ public:
 	void SendVoxelUnk58(IExtendedSocket* socket);
 
 private:
-	CBinMetadata* LoadBinaryMetadata(const char* fileName, bool zip = false);
+	CBinMetadata* LoadBinaryMetadata(const char* fileName, bool zip = false, const char* zipEntryName = NULL);
 
 	CBinMetadata* m_pMapListZip;
 	CBinMetadata* m_pClientTableZip;

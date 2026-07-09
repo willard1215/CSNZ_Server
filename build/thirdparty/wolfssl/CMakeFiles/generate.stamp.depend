@@ -1,0 +1,45 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-4.0/Modules/BasicConfigVersion-AnyNewerVersion.cmake.in
+C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeASMInformation.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeCInformation.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeCommonLanguageInclude.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/CMakeLanguageInformation.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/CMakePackageConfigHelpers.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/CheckCSourceCompiles.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/CheckFunctionExists.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/CheckIncludeFile.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/CheckIncludeFileCXX.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/CheckLibraryExists.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/CheckTypeSize.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Compiler/CMakeCommonCompilerMacros.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Compiler/MSVC-ASM.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Compiler/MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Compiler/MSVC.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/FindPackageMessage.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/FindThreads.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/GNUInstallDirs.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CMakeASMLinkerInformation.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CMakeCLinkerInformation.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CMakeCommonLinkerInformation.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Internal/CheckSourceCompiles.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Linker/MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Linker/MSVC.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Platform/Linker/GNU.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Platform/Linker/Windows-ASM.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Platform/Linker/Windows-GNU-ASM.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Platform/Linker/Windows-GNU.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Platform/Linker/Windows-MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Platform/Linker/Windows-MSVC.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Platform/Windows-MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/Platform/Windows-MSVC.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/TestBigEndian.cmake
+C:/Program Files/CMake/share/cmake-4.0/Modules/WriteBasicConfigVersionFile.cmake
+D:/project/CSONLINE/CSNZ_Server/build/CMakeFiles/4.0.2/CMakeASMCompiler.cmake
+D:/project/CSONLINE/CSNZ_Server/build/CMakeFiles/4.0.2/CMakeCCompiler.cmake
+D:/project/CSONLINE/CSNZ_Server/src/thirdparty/wolfssl/CMakeLists.txt
+D:/project/CSONLINE/CSNZ_Server/src/thirdparty/wolfssl/cmake/Config.cmake.in
+D:/project/CSONLINE/CSNZ_Server/src/thirdparty/wolfssl/cmake/config.in
+D:/project/CSONLINE/CSNZ_Server/src/thirdparty/wolfssl/cmake/functions.cmake
+D:/project/CSONLINE/CSNZ_Server/src/thirdparty/wolfssl/support/wolfssl.pc.in
+D:/project/CSONLINE/CSNZ_Server/src/thirdparty/wolfssl/wolfcrypt/test/test_paths.h.in

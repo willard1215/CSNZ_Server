@@ -1,0 +1,242 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A7A63C46-5A6D-39C4-A9B4-4E873463540E}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <Platform>Win32</Platform>
+    <ProjectName>net</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\project\CSONLINE\CSNZ_Server\build\net\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">net.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">net</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\project\CSONLINE\CSNZ_Server\build\net\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">net.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">net</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\project\CSONLINE\CSNZ_Server\build\net\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">net.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">net</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\project\CSONLINE\CSNZ_Server\src\net\..;D:\project\CSONLINE\CSNZ_Server\src\net\..\public;D:\project\CSONLINE\CSNZ_Server\src\net\..\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\src\net\..\thirdparty\json\include;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;HAVE_THREAD_LS;TFM_TIMING_RESISTANT;ECC_TIMING_RESISTANT;WC_RSA_BLINDING;OPENSSL_EXTRA;GCM_TABLE_4BIT;HAVE_AESGCM;WOLFSSL_USE_ALIGN;WOLFSSL_SHA512;WOLFSSL_SHA384;HAVE_HKDF;NO_DSA;HAVE_ECC;TFM_ECC256;ECC_SHAMIR;WC_RSA_PSS;WOLFSSL_PSS_LONG_SALT;WOLFSSL_BASE64_ENCODE;WOLFSSL_SHA224;WOLFSSL_SHA3;WOLFSSL_NO_SHAKE256;WOLFSSL_NO_SHAKE128;HAVE_POLY1305;HAVE_ONE_TIME_AUTH;HAVE_CHACHA;HAVE_HASHDRBG;HAVE_TLS_EXTENSIONS;HAVE_SUPPORTED_CURVES;HAVE_FFDHE_2048;WOLFSSL_TLS13;HAVE_EXTENDED_MASTER;HAVE_ENCRYPT_THEN_MAC;NO_PSK;NO_MD4;WOLFSSL_ENCRYPTED_KEYS;WOLFSSL_X86_64_BUILD;WC_NO_ASYNC_THREADING;HAVE_DH_DEFAULT_PARAMS;NO_DES3;WOLFSSL_SYS_CA_CERTS;HAVE_SNI;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;HAVE_THREAD_LS;TFM_TIMING_RESISTANT;ECC_TIMING_RESISTANT;WC_RSA_BLINDING;OPENSSL_EXTRA;GCM_TABLE_4BIT;HAVE_AESGCM;WOLFSSL_USE_ALIGN;WOLFSSL_SHA512;WOLFSSL_SHA384;HAVE_HKDF;NO_DSA;HAVE_ECC;TFM_ECC256;ECC_SHAMIR;WC_RSA_PSS;WOLFSSL_PSS_LONG_SALT;WOLFSSL_BASE64_ENCODE;WOLFSSL_SHA224;WOLFSSL_SHA3;WOLFSSL_NO_SHAKE256;WOLFSSL_NO_SHAKE128;HAVE_POLY1305;HAVE_ONE_TIME_AUTH;HAVE_CHACHA;HAVE_HASHDRBG;HAVE_TLS_EXTENSIONS;HAVE_SUPPORTED_CURVES;HAVE_FFDHE_2048;WOLFSSL_TLS13;HAVE_EXTENDED_MASTER;HAVE_ENCRYPT_THEN_MAC;NO_PSK;NO_MD4;WOLFSSL_ENCRYPTED_KEYS;WOLFSSL_X86_64_BUILD;WC_NO_ASYNC_THREADING;HAVE_DH_DEFAULT_PARAMS;NO_DES3;WOLFSSL_SYS_CA_CERTS;HAVE_SNI;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\project\CSONLINE\CSNZ_Server\src\net\..;D:\project\CSONLINE\CSNZ_Server\src\net\..\public;D:\project\CSONLINE\CSNZ_Server\src\net\..\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\src\net\..\thirdparty\json\include;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\project\CSONLINE\CSNZ_Server\src\net\..;D:\project\CSONLINE\CSNZ_Server\src\net\..\public;D:\project\CSONLINE\CSNZ_Server\src\net\..\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\src\net\..\thirdparty\json\include;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\project\CSONLINE\CSNZ_Server\src\net\..;D:\project\CSONLINE\CSNZ_Server\src\net\..\public;D:\project\CSONLINE\CSNZ_Server\src\net\..\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\src\net\..\thirdparty\json\include;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_THREAD_LS;TFM_TIMING_RESISTANT;ECC_TIMING_RESISTANT;WC_RSA_BLINDING;OPENSSL_EXTRA;GCM_TABLE_4BIT;HAVE_AESGCM;WOLFSSL_USE_ALIGN;WOLFSSL_SHA512;WOLFSSL_SHA384;HAVE_HKDF;NO_DSA;HAVE_ECC;TFM_ECC256;ECC_SHAMIR;WC_RSA_PSS;WOLFSSL_PSS_LONG_SALT;WOLFSSL_BASE64_ENCODE;WOLFSSL_SHA224;WOLFSSL_SHA3;WOLFSSL_NO_SHAKE256;WOLFSSL_NO_SHAKE128;HAVE_POLY1305;HAVE_ONE_TIME_AUTH;HAVE_CHACHA;HAVE_HASHDRBG;HAVE_TLS_EXTENSIONS;HAVE_SUPPORTED_CURVES;HAVE_FFDHE_2048;WOLFSSL_TLS13;HAVE_EXTENDED_MASTER;HAVE_ENCRYPT_THEN_MAC;NO_PSK;NO_MD4;WOLFSSL_ENCRYPTED_KEYS;WOLFSSL_X86_64_BUILD;WC_NO_ASYNC_THREADING;HAVE_DH_DEFAULT_PARAMS;NO_DES3;WOLFSSL_SYS_CA_CERTS;HAVE_SNI;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_THREAD_LS;TFM_TIMING_RESISTANT;ECC_TIMING_RESISTANT;WC_RSA_BLINDING;OPENSSL_EXTRA;GCM_TABLE_4BIT;HAVE_AESGCM;WOLFSSL_USE_ALIGN;WOLFSSL_SHA512;WOLFSSL_SHA384;HAVE_HKDF;NO_DSA;HAVE_ECC;TFM_ECC256;ECC_SHAMIR;WC_RSA_PSS;WOLFSSL_PSS_LONG_SALT;WOLFSSL_BASE64_ENCODE;WOLFSSL_SHA224;WOLFSSL_SHA3;WOLFSSL_NO_SHAKE256;WOLFSSL_NO_SHAKE128;HAVE_POLY1305;HAVE_ONE_TIME_AUTH;HAVE_CHACHA;HAVE_HASHDRBG;HAVE_TLS_EXTENSIONS;HAVE_SUPPORTED_CURVES;HAVE_FFDHE_2048;WOLFSSL_TLS13;HAVE_EXTENDED_MASTER;HAVE_ENCRYPT_THEN_MAC;NO_PSK;NO_MD4;WOLFSSL_ENCRYPTED_KEYS;WOLFSSL_X86_64_BUILD;WC_NO_ASYNC_THREADING;HAVE_DH_DEFAULT_PARAMS;NO_DES3;WOLFSSL_SYS_CA_CERTS;HAVE_SNI;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\project\CSONLINE\CSNZ_Server\src\net\..;D:\project\CSONLINE\CSNZ_Server\src\net\..\public;D:\project\CSONLINE\CSNZ_Server\src\net\..\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\src\net\..\thirdparty\json\include;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\project\CSONLINE\CSNZ_Server\src\net\..;D:\project\CSONLINE\CSNZ_Server\src\net\..\public;D:\project\CSONLINE\CSNZ_Server\src\net\..\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\src\net\..\thirdparty\json\include;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\project\CSONLINE\CSNZ_Server\src\net\..;D:\project\CSONLINE\CSNZ_Server\src\net\..\public;D:\project\CSONLINE\CSNZ_Server\src\net\..\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\src\net\..\thirdparty\json\include;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_THREAD_LS;TFM_TIMING_RESISTANT;ECC_TIMING_RESISTANT;WC_RSA_BLINDING;OPENSSL_EXTRA;GCM_TABLE_4BIT;HAVE_AESGCM;WOLFSSL_USE_ALIGN;WOLFSSL_SHA512;WOLFSSL_SHA384;HAVE_HKDF;NO_DSA;HAVE_ECC;TFM_ECC256;ECC_SHAMIR;WC_RSA_PSS;WOLFSSL_PSS_LONG_SALT;WOLFSSL_BASE64_ENCODE;WOLFSSL_SHA224;WOLFSSL_SHA3;WOLFSSL_NO_SHAKE256;WOLFSSL_NO_SHAKE128;HAVE_POLY1305;HAVE_ONE_TIME_AUTH;HAVE_CHACHA;HAVE_HASHDRBG;HAVE_TLS_EXTENSIONS;HAVE_SUPPORTED_CURVES;HAVE_FFDHE_2048;WOLFSSL_TLS13;HAVE_EXTENDED_MASTER;HAVE_ENCRYPT_THEN_MAC;NO_PSK;NO_MD4;WOLFSSL_ENCRYPTED_KEYS;WOLFSSL_X86_64_BUILD;WC_NO_ASYNC_THREADING;HAVE_DH_DEFAULT_PARAMS;NO_DES3;WOLFSSL_SYS_CA_CERTS;HAVE_SNI;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;HAVE_THREAD_LS;TFM_TIMING_RESISTANT;ECC_TIMING_RESISTANT;WC_RSA_BLINDING;OPENSSL_EXTRA;GCM_TABLE_4BIT;HAVE_AESGCM;WOLFSSL_USE_ALIGN;WOLFSSL_SHA512;WOLFSSL_SHA384;HAVE_HKDF;NO_DSA;HAVE_ECC;TFM_ECC256;ECC_SHAMIR;WC_RSA_PSS;WOLFSSL_PSS_LONG_SALT;WOLFSSL_BASE64_ENCODE;WOLFSSL_SHA224;WOLFSSL_SHA3;WOLFSSL_NO_SHAKE256;WOLFSSL_NO_SHAKE128;HAVE_POLY1305;HAVE_ONE_TIME_AUTH;HAVE_CHACHA;HAVE_HASHDRBG;HAVE_TLS_EXTENSIONS;HAVE_SUPPORTED_CURVES;HAVE_FFDHE_2048;WOLFSSL_TLS13;HAVE_EXTENDED_MASTER;HAVE_ENCRYPT_THEN_MAC;NO_PSK;NO_MD4;WOLFSSL_ENCRYPTED_KEYS;WOLFSSL_X86_64_BUILD;WC_NO_ASYNC_THREADING;HAVE_DH_DEFAULT_PARAMS;NO_DES3;WOLFSSL_SYS_CA_CERTS;HAVE_SNI;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\project\CSONLINE\CSNZ_Server\src\net\..;D:\project\CSONLINE\CSNZ_Server\src\net\..\public;D:\project\CSONLINE\CSNZ_Server\src\net\..\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\src\net\..\thirdparty\json\include;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\project\CSONLINE\CSNZ_Server\src\net\..;D:\project\CSONLINE\CSNZ_Server\src\net\..\public;D:\project\CSONLINE\CSNZ_Server\src\net\..\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\src\net\..\thirdparty\json\include;D:\project\CSONLINE\CSNZ_Server\src\thirdparty\wolfssl;D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\project\CSONLINE\CSNZ_Server\src\net\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule D:/project/CSONLINE/CSNZ_Server/src/net/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/project/CSONLINE/CSNZ_Server/src -BD:/project/CSONLINE/CSNZ_Server/build --check-stamp-file D:/project/CSONLINE/CSNZ_Server/build/net/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\project\CSONLINE\CSNZ_Server\build\net\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule D:/project/CSONLINE/CSNZ_Server/src/net/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/project/CSONLINE/CSNZ_Server/src -BD:/project/CSONLINE/CSNZ_Server/build --check-stamp-file D:/project/CSONLINE/CSNZ_Server/build/net/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\project\CSONLINE\CSNZ_Server\build\net\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule D:/project/CSONLINE/CSNZ_Server/src/net/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/project/CSONLINE/CSNZ_Server/src -BD:/project/CSONLINE/CSNZ_Server/build --check-stamp-file D:/project/CSONLINE/CSNZ_Server/build/net/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\project\CSONLINE\CSNZ_Server\build\net\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\project\CSONLINE\CSNZ_Server\src\net\extendedsocket.cpp" />
+    <ClCompile Include="D:\project\CSONLINE\CSNZ_Server\src\net\receivepacket.cpp" />
+    <ClCompile Include="D:\project\CSONLINE\CSNZ_Server\src\net\sendpacket.cpp" />
+    <ClCompile Include="D:\project\CSONLINE\CSNZ_Server\src\net\socketshared.cpp" />
+    <ClCompile Include="D:\project\CSONLINE\CSNZ_Server\src\net\tcpclient.cpp" />
+    <ClCompile Include="D:\project\CSONLINE\CSNZ_Server\src\net\tcpserver.cpp" />
+    <ClCompile Include="D:\project\CSONLINE\CSNZ_Server\src\net\udpserver.cpp" />
+    <ClCompile Include="D:\project\CSONLINE\CSNZ_Server\src\common\utils.cpp" />
+    <ClCompile Include="D:\project\CSONLINE\CSNZ_Server\src\common\thread.cpp" />
+    <ClCompile Include="D:\project\CSONLINE\CSNZ_Server\src\common\buffer.cpp" />
+    <ClCompile Include="D:\project\CSONLINE\CSNZ_Server\src\common\logger.cpp" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="D:\project\CSONLINE\CSNZ_Server\build\ZERO_CHECK.vcxproj">
+      <Project>{FB189190-3BBF-35FD-A725-BEB895BC2338}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\project\CSONLINE\CSNZ_Server\build\thirdparty\wolfssl\wolfssl.vcxproj">
+      <Project>{15800151-2783-333C-90BD-03AEB6AA02E2}</Project>
+      <Name>wolfssl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

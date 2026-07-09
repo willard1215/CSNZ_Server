@@ -1,0 +1,17 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/project/CSONLINE/CSNZ_Server/build/cmake_install.cmake",
+		"D:/project/CSONLINE/CSNZ_Server/build/thirdparty/cmake_install.cmake",
+		"D:/project/CSONLINE/CSNZ_Server/build/thirdparty/KeyValues/cmake_install.cmake",
+		"D:/project/CSONLINE/CSNZ_Server/build/thirdparty/json/cmake_install.cmake",
+		"D:/project/CSONLINE/CSNZ_Server/build/thirdparty/wolfssl/cmake_install.cmake",
+		"D:/project/CSONLINE/CSNZ_Server/build/thirdparty/SQLiteCpp/cmake_install.cmake",
+		"D:/project/CSONLINE/CSNZ_Server/build/thirdparty/SQLiteCpp/sqlite3/cmake_install.cmake",
+		"D:/project/CSONLINE/CSNZ_Server/build/thirdparty/zip/cmake_install.cmake",
+		"D:/project/CSONLINE/CSNZ_Server/build/net/cmake_install.cmake",
+		"D:/project/CSONLINE/CSNZ_Server/build/test/cmake_install.cmake",
+		"D:/project/CSONLINE/CSNZ_Server/build/test/net/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
