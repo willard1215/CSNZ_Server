@@ -33,7 +33,7 @@
 		"ReinforceMaxEXP": true,
 		"ReinforceItemsExp": true,
 		"Unk31": true,
-		"HonorMoneyShop": false,
+		"HonorMoneyShop": true,
 		"ItemExpireTime": true,
 		"ScenarioTX_Common": true,
 		"ScenarioTX_Dedi": true,

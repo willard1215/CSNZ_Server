@@ -256,3 +256,24 @@ Get-ChildItem -Path 'D:\project\CSONLINE\CSNZ_Server\bin\Logs' -Filter *.log |
   content can make those handlers succeed.
 - The requested artifact tree now has all 39 exact paths, with no placeholder
   comment or `_placeholder` JSON content.
+
+### 2026-07-11: MetadataArtifacts runtime validation
+
+- Added `tools/validate_metadata_artifacts.py` to validate all 39 latest
+  `hw.dll` metadata paths, including parser-specific CSV schemas, JSON/JSONC
+  syntax, zero-byte rejecting handlers, header-only parser-minimal files, and
+  the one-shot ZIP size limit.
+- Runtime metadata loading now prefers `bin/MetadataArtifacts/<latest path>`
+  and falls back to legacy `bin/Data/<legacy name>` only when the artifact is
+  absent.
+- Re-enabled validated `ClientTable`/`resource/itemBox.csv`,
+  `weaponparts.csv`, and `HonorShop.csv` transmission and disabled automatic
+  `ModeList.csv` transmission because the current handler is still a rejecting
+  stub.
+- Validation result for the current artifact tree is `validated=39 errors=0
+  chunked=1`. The chunked payload is `resource/item.csv`, which zips to about
+  70 KB with the server ZIP library.
+- Added chunked ZIP metadata sending so oversized payloads are sent instead of
+  skipped.
+- Built `bin/Release/CSNZ_Server.exe` successfully and confirmed startup logs
+  show `MetadataArtifacts` sources being used.

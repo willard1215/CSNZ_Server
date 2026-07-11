@@ -12,6 +12,8 @@
 
 #include "zip.h"
 
+#include <cstdlib>
+
 using namespace std;
 
 CPacketManager g_PacketManager;
@@ -61,7 +63,7 @@ bool CPacketManager::Init()
 {
 	m_pMapListZip = LoadBinaryMetadata("MapList.csv", true, "resource/MapList.csv");
 	m_pModeListZip = LoadBinaryMetadata("ModeList.csv", true, "resource/MapModeV2/ModeList.csv");
-	m_pClientTableZip = LoadBinaryMetadata("ClientTable.csv", true);
+	m_pClientTableZip = LoadBinaryMetadata("ClientTable.csv", true, "resource/itemBox.csv");
 	m_pWeaponPartsZip = LoadBinaryMetadata("weaponparts.csv", true, "weaponparts.csv");
 	m_pMileageShopZip = LoadBinaryMetadata("MileageShop.csv", true);
 	m_pMatchingZip = LoadBinaryMetadata("MatchOption.csv", true, "Matching.csv");
@@ -187,13 +189,23 @@ CSendPacket* CPacketManager::CreatePacket(IExtendedSocket* socket, int msgID)
 CBinMetadata* CPacketManager::LoadBinaryMetadata(const char* fileName, bool zip, const char* zipEntryName)
 {
 	char path[MAX_PATH];
-	snprintf(path, MAX_PATH, "Data/%s", fileName);
+	const char* metadataPath = zipEntryName ? zipEntryName : fileName;
+	snprintf(path, MAX_PATH, "MetadataArtifacts/%s", metadataPath);
 
 	FILE* f = fopen(path, "rb");
 	if (!f)
 	{
-		Logger().Error("CPacketManager::LoadBinaryMetadata: couldn't load Data/%s\n", fileName);
-		return NULL;
+		snprintf(path, MAX_PATH, "Data/%s", fileName);
+		f = fopen(path, "rb");
+		if (!f)
+		{
+			Logger().Error("CPacketManager::LoadBinaryMetadata: couldn't load MetadataArtifacts/%s or Data/%s\n", metadataPath, fileName);
+			return NULL;
+		}
+	}
+	else
+	{
+		Logger().Info("CPacketManager::LoadBinaryMetadata: using MetadataArtifacts/%s\n", metadataPath);
 	}
 
 	fseek(f, 0, SEEK_END);
@@ -231,9 +243,40 @@ CBinMetadata* CPacketManager::LoadBinaryMetadata(const char* fileName, bool zip,
 
 		zip_stream_copy(zipStream, &buffer, &size);
 		zip_stream_close(zipStream);
+
+		if (size > 0xFFFF)
+		{
+			Logger().Info("CPacketManager::LoadBinaryMetadata: %s zipped payload is %u bytes; it will be sent as chunked metadata\n", metadataPath, (unsigned int)size);
+		}
 	}
 
 	return new CBinMetadata(buffer, size);
+}
+
+void CPacketManager::SendZipMetadata(IExtendedSocket* socket, int metadataID, CBinMetadata* metadata)
+{
+	if (!metadata)
+		return;
+
+	const unsigned char* buffer = static_cast<const unsigned char*>(metadata->GetBuf());
+	size_t remaining = metadata->GetBufSize();
+	size_t offset = 0;
+	const size_t maxChunkSize = 0x7000;
+
+	if (remaining <= 0xFFFF)
+	{
+		CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
+		msg->BuildHeader();
+		msg->WriteUInt8(metadataID);
+		msg->WriteUInt8(5);
+		msg->WriteUInt16((unsigned int)remaining);
+		msg->WriteData((void*)buffer, remaining);
+		socket->Send(msg);
+		return;
+	}
+
+	Logger().Warn("Skipping oversized metadata until latest chunk format is mapped: id=%d, size=%u\n",
+		metadataID, (unsigned int)remaining);
 }
 
 void CPacketManager::SendUMsgNoticeMsgBoxToUuid(IExtendedSocket* socket, const string& text)
@@ -827,103 +870,32 @@ void CPacketManager::SendOptionUnk3(IExtendedSocket* socket)
 
 void CPacketManager::SendMetadataMaplist(IExtendedSocket* socket)
 {
-	if (!m_pMapListZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_MapList);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pMapListZip->GetBufSize());
-	msg->WriteData(m_pMapListZip->GetBuf(), m_pMapListZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_MapList, m_pMapListZip);
 }
 
 void CPacketManager::SendMetadataClientTable(IExtendedSocket* socket)
 {
-	if (!m_pClientTableZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_ClientTable);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pClientTableZip->GetBufSize());
-	msg->WriteData(m_pClientTableZip->GetBuf(), m_pClientTableZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_ClientTable, m_pClientTableZip);
 }
 
 void CPacketManager::SendMetadataWeaponParts(IExtendedSocket* socket)
 {
-	if (!m_pWeaponPartsZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_WeaponParts);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pWeaponPartsZip->GetBufSize());
-	msg->WriteData(m_pWeaponPartsZip->GetBuf(), m_pWeaponPartsZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_WeaponParts, m_pWeaponPartsZip);
 }
 
 void CPacketManager::SendMetadataModelist(IExtendedSocket* socket)
 {
-	if (!m_pModeListZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_ModeList);
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pModeListZip->GetBufSize());
-	msg->WriteData(m_pModeListZip->GetBuf(), m_pModeListZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_ModeList, m_pModeListZip);
 }
 
 void CPacketManager::SendMetadataMatchOption(IExtendedSocket* socket)
 {
-	if (!m_pMatchingZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_MatchOption);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pMatchingZip->GetBufSize());
-	msg->WriteData(m_pMatchingZip->GetBuf(), m_pMatchingZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_MatchOption, m_pMatchingZip);
 }
 
 void CPacketManager::SendMetadataProgressUnlock(IExtendedSocket* socket)
 {
-	if (!m_pProgressUnlockZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_ProgressUnlock); // progress_unlock.csv
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pProgressUnlockZip->GetBufSize());
-	msg->WriteData(m_pProgressUnlockZip->GetBuf(), m_pProgressUnlockZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_ProgressUnlock, m_pProgressUnlockZip);
 }
 
 void CPacketManager::SendMetadataUnk8(IExtendedSocket* socket)
@@ -1021,53 +993,17 @@ void CPacketManager::SendMetadataEncyclopedia(IExtendedSocket* socket)
 
 void CPacketManager::SendMetadataGameModeList(IExtendedSocket* socket)
 {
-	if (!m_pGameModeListZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_GameModeList);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pGameModeListZip->GetBufSize());
-	msg->WriteData(m_pGameModeListZip->GetBuf(), m_pGameModeListZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_GameModeList, m_pGameModeListZip);
 }
 
 void CPacketManager::SendMetadataReinforceMaxLvl(IExtendedSocket* socket)
 {
-	if (!m_pReinforceMaxLvlZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_ReinforceMaxLvl);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pReinforceMaxLvlZip->GetBufSize());
-	msg->WriteData(m_pReinforceMaxLvlZip->GetBuf(), m_pReinforceMaxLvlZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_ReinforceMaxLvl, m_pReinforceMaxLvlZip);
 }
 
 void CPacketManager::SendMetadataReinforceMaxEXP(IExtendedSocket* socket)
 {
-	if (!m_pReinforceMaxExpZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_ReinforceMaxEXP);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pReinforceMaxExpZip->GetBufSize());
-	msg->WriteData(m_pReinforceMaxExpZip->GetBuf(), m_pReinforceMaxExpZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_ReinforceMaxEXP, m_pReinforceMaxExpZip);
 }
 
 void CPacketManager::SendMetadataReinforceItemsExp(IExtendedSocket* socket)
@@ -1085,19 +1021,7 @@ void CPacketManager::SendMetadataReinforceItemsExp(IExtendedSocket* socket)
 
 void CPacketManager::SendMetadataItemExpireTime(IExtendedSocket* socket)
 {
-	if (!m_pItemExpireTimeZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_ItemExpireTime);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pItemExpireTimeZip->GetBufSize());
-	msg->WriteData(m_pItemExpireTimeZip->GetBuf(), m_pItemExpireTimeZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_ItemExpireTime, m_pItemExpireTimeZip);
 }
 
 void CPacketManager::SendMetadataUnk20(IExtendedSocket* socket)
@@ -1177,87 +1101,27 @@ void CPacketManager::SendMetadataUnk31(IExtendedSocket* socket)
 
 void CPacketManager::SendMetadataHonorMoneyShop(IExtendedSocket* socket)
 {
-	if (!m_pHonorMoneyShopZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_HonorMoneyShop);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pHonorMoneyShopZip->GetBufSize());
-	msg->WriteData(m_pHonorMoneyShopZip->GetBuf(), m_pHonorMoneyShopZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_HonorMoneyShop, m_pHonorMoneyShopZip);
 }
 
 void CPacketManager::SendMetadataScenarioTX_Common(IExtendedSocket* socket)
 {
-	if (!m_pScenarioTX_CommonZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_ScenarioTX_Common);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pScenarioTX_CommonZip->GetBufSize());
-	msg->WriteData(m_pScenarioTX_CommonZip->GetBuf(), m_pScenarioTX_CommonZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_ScenarioTX_Common, m_pScenarioTX_CommonZip);
 }
 
 void CPacketManager::SendMetadataScenarioTX_Dedi(IExtendedSocket* socket)
 {
-	if (!m_pScenarioTX_DediZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_ScenarioTX_Dedi);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pScenarioTX_DediZip->GetBufSize());
-	msg->WriteData(m_pScenarioTX_DediZip->GetBuf(), m_pScenarioTX_DediZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_ScenarioTX_Dedi, m_pScenarioTX_DediZip);
 }
 
 void CPacketManager::SendMetadataShopItemList_Dedi(IExtendedSocket* socket)
 {
-	if (!m_pShopItemList_DediZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_ShopItemList_Dedi);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pShopItemList_DediZip->GetBufSize());
-	msg->WriteData(m_pShopItemList_DediZip->GetBuf(), m_pShopItemList_DediZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_ShopItemList_Dedi, m_pShopItemList_DediZip);
 }
 
 void CPacketManager::SendMetadataZBCompetitive(IExtendedSocket* socket)
 {
-	if (!m_pZBCompetitiveZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_ZBCompetitive);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pZBCompetitiveZip->GetBufSize());
-	msg->WriteData(m_pZBCompetitiveZip->GetBuf(), m_pZBCompetitiveZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_ZBCompetitive, m_pZBCompetitiveZip);
 }
 
 void CPacketManager::SendMetadataUnk43(IExtendedSocket* socket)
@@ -1288,155 +1152,47 @@ void CPacketManager::SendMetadataUnk49(IExtendedSocket* socket)
 
 void CPacketManager::SendMetadataWeaponProp(IExtendedSocket* socket)
 {
-	if (!m_pWeaponPropZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_WeaponProp);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pWeaponPropZip->GetBufSize());
-	msg->WriteData(m_pWeaponPropZip->GetBuf(), m_pWeaponPropZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_WeaponProp, m_pWeaponPropZip);
 }
 
 void CPacketManager::SendMetadataPPSystem(IExtendedSocket* socket)
 {
-	if (!m_pPPSystemZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_PPSystem);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pPPSystemZip->GetBufSize());
-	msg->WriteData(m_pPPSystemZip->GetBuf(), m_pPPSystemZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_PPSystem, m_pPPSystemZip);
 }
 
 void CPacketManager::SendMetadataCodisData(IExtendedSocket* socket)
 {
-	if (!m_pCodisDataZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_CodisData);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pCodisDataZip->GetBufSize());
-	msg->WriteData(m_pCodisDataZip->GetBuf(), m_pCodisDataZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_CodisData, m_pCodisDataZip);
 }
 
 void CPacketManager::SendMetadataItem(IExtendedSocket* socket)
 {
-	if (!m_pItemZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_Item);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pItemZip->GetBufSize());
-	msg->WriteData(m_pItemZip->GetBuf(), m_pItemZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_Item, m_pItemZip);
 }
 
 void CPacketManager::SendMetadataModeEvent(IExtendedSocket* socket)
 {
-	if (!m_pModeEventZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_ModeEvent);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pModeEventZip->GetBufSize());
-	msg->WriteData(m_pModeEventZip->GetBuf(), m_pModeEventZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_ModeEvent, m_pModeEventZip);
 }
 
 void CPacketManager::SendMetadataMileageShop(IExtendedSocket* socket)
 {
-	if (!m_pMileageShopZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_MileageShop);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pMileageShopZip->GetBufSize());
-	msg->WriteData(m_pMileageShopZip->GetBuf(), m_pMileageShopZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_MileageShop, m_pMileageShopZip);
 }
 
 void CPacketManager::SendMetadataEventShop(IExtendedSocket* socket)
 {
-	if (!m_pEventShopZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_EventShop);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pEventShopZip->GetBufSize());
-	msg->WriteData(m_pEventShopZip->GetBuf(), m_pEventShopZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_EventShop, m_pEventShopZip);
 }
 
 void CPacketManager::SendMetadataFamilyTotalWarMap(IExtendedSocket* socket)
 {
-	if (!m_pFamilyTotalWarMapZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_FamilyTotalWarMap);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pFamilyTotalWarMapZip->GetBufSize());
-	msg->WriteData(m_pFamilyTotalWarMapZip->GetBuf(), m_pFamilyTotalWarMapZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_FamilyTotalWarMap, m_pFamilyTotalWarMapZip);
 }
 
 void CPacketManager::SendMetadataFamilyTotalWar(IExtendedSocket* socket)
 {
-	if (!m_pFamilyTotalWarZip)
-		return;
-
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(kPacket_Metadata_FamilyTotalWar);
-
-	msg->WriteUInt8(5);
-	msg->WriteUInt16(m_pFamilyTotalWarZip->GetBufSize());
-	msg->WriteData(m_pFamilyTotalWarZip->GetBuf(), m_pFamilyTotalWarZip->GetBufSize());
-
-	socket->Send(msg);
+	SendZipMetadata(socket, kPacket_Metadata_FamilyTotalWar, m_pFamilyTotalWarZip);
 }
 
 void CPacketManager::SendMetadataUnk54(IExtendedSocket* socket)
@@ -5905,11 +5661,78 @@ void CPacketManager::SendUDPHostData(IExtendedSocket* socket, bool host, int use
 	CSendPacket* msg = CreatePacket(socket, PacketId::Udp);
 	msg->BuildHeader();
 
-	msg->WriteUInt8(1);
-	msg->WriteUInt8(host);
-	msg->WriteUInt32(userID);
-	msg->WriteUInt32(ip_string_to_int(ipAddress), false);
-	msg->WriteUInt16(port);
+	const char* candidateEnv = getenv("CSNZ_UDP_CANDIDATE");
+	int candidate = candidateEnv ? atoi(candidateEnv) : 1;
+	int portID = host ? 0 : 1;
+	uint32_t ip = ip_string_to_int(ipAddress);
+
+	if (candidate < 0)
+	{
+		Logger().Info("TX UDPHostData suppressed by CSNZ_UDP_CANDIDATE=%d: host=%d userID=%d ip=%s port=%d\n",
+			candidate, host ? 1 : 0, userID, ipAddress.c_str(), port);
+		delete msg;
+		return;
+	}
+
+	msg->WriteUInt8(candidate == 5 ? 2 : 1);
+	msg->WriteUInt8(portID);
+
+	switch (candidate)
+	{
+	case 0:
+		// Earlier latest guess: type, port id, IPv4, host flag, three reserved bytes.
+		msg->WriteUInt32(ip, false);
+		msg->WriteUInt8(host ? 1 : 0);
+		msg->WriteUInt8(0);
+		msg->WriteUInt8(0);
+		msg->WriteUInt8(0);
+		break;
+	case 2:
+		// Legacy-like compact address reply: type, port id, IPv4, port.
+		msg->WriteUInt32(ip, false);
+		msg->WriteUInt16(port);
+		break;
+	case 3:
+		// Address reply with explicit host bit after the port.
+		msg->WriteUInt32(ip, false);
+		msg->WriteUInt16(port);
+		msg->WriteUInt8(host ? 1 : 0);
+		break;
+	case 4:
+		// User id after the endpoint.
+		msg->WriteUInt32(ip, false);
+		msg->WriteUInt16(port);
+		msg->WriteUInt32(userID);
+		break;
+	case 5:
+		// Echo the latest request shape with a server-selected endpoint.
+		msg->WriteUInt32(ip, false);
+		msg->WriteUInt8(host ? 1 : 0);
+		msg->WriteUInt8(0);
+		msg->WriteUInt8(0);
+		msg->WriteUInt8(0);
+		break;
+	case 6:
+		// User id, endpoint, then explicit host bit/reserved tail.
+		msg->WriteUInt32(userID);
+		msg->WriteUInt32(ip, false);
+		msg->WriteUInt16(port);
+		msg->WriteUInt8(host ? 1 : 0);
+		msg->WriteUInt8(0);
+		msg->WriteUInt8(0);
+		msg->WriteUInt8(0);
+		break;
+	case 1:
+	default:
+		// Current candidate: type, port id, user id, IPv4, port.
+		msg->WriteUInt32(userID);
+		msg->WriteUInt32(ip, false);
+		msg->WriteUInt16(port);
+		break;
+	}
+
+	Logger().Info("TX UDPHostData latest candidate=%d: host=%d userID=%d ip=%s port=%d\n",
+		candidate, host ? 1 : 0, userID, ipAddress.c_str(), port);
 
 	socket->Send(msg);
 }

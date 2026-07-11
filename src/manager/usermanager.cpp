@@ -17,6 +17,7 @@
 #include "main.h"
 #include "common/utils.h"
 
+#include <cstdlib>
 #include <thread>
 
 using namespace std;
@@ -271,12 +272,14 @@ bool CUserManager::OnUdpPacket(CReceivePacket* msg, IExtendedSocket* socket)
 			Logger().Info(OBFUSCATE("CUserManager::OnUdpPacket: received latest type 2: portID: %d, localAddr: %s, host: %d, unk: %d\n"),
 				portID, ip_to_string(localAddr).c_str(), host, unk);
 
-			g_PacketManager.SendUDPHostData(socket, true, user->GetID(), network.m_szExternalIpAddress, network.m_nExternalServerPort);
-			g_PacketManager.SendUDPHostData(socket, false, user->GetID(), network.m_szExternalIpAddress, network.m_nExternalClientPort);
+			if (portID == 0)
+				g_PacketManager.SendUDPHostData(socket, true, user->GetID(), network.m_szExternalIpAddress, network.m_nExternalServerPort);
+			else
+				g_PacketManager.SendUDPHostData(socket, false, user->GetID(), network.m_szExternalIpAddress, network.m_nExternalClientPort);
 
 			if (user->GetCurrentChannel() == NULL)
 			{
-				Logger().Info(OBFUSCATE("CUserManager::OnUdpPacket: latest UDP ready, sending lobby bootstrap\n"));
+				SleepMS(300);
 				Logger().Info(OBFUSCATE("CUserManager::OnUdpPacket: skipping legacy GameMatch bootstrap for latest client\n"));
 				g_ChannelManager.JoinChannel(user, g_ChannelManager.channelServers[0]->GetID(), g_ChannelManager.channelServers[0]->GetChannels()[0]->GetID(), false);
 			}
@@ -856,20 +859,27 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 {
 	uint64_t flag = g_pServerConfig->metadataToSend;
 
-	// Latest hw.dll uses a different metadata table. Disable entries that are
-	// absent from that table or whose local payload format is known mismatched.
-	flag &= ~kMetadataFlag_ClientTable;
-	flag &= ~kMetadataFlag_ItemBox;
+	// Keep only entries whose latest hw.dll handlers can accept payloads from
+	// MetadataArtifacts. ModeList is registered in the latest table, but its
+	// current handler is an unconditional rejecting stub.
+	flag &= ~kMetadataFlag_ModeList;
+	flag &= ~kMetadataFlag_MatchOption;
+	flag &= ~kMetadataFlag_WeaponParts;
+	flag &= ~kMetadataFlag_MileageShop;
+	flag &= ~kMetadataFlag_GameModeList;
+	flag &= ~kMetadataFlag_ProgressUnlock;
+	flag &= ~kMetadataFlag_ReinforceMaxLvl;
+	flag &= ~kMetadataFlag_ReinforceItemsExp;
+	flag &= ~kMetadataFlag_HonorMoneyShop;
+
+	// These legacy flags do not currently have a mapped latest send path here.
 	flag &= ~kMetadataFlag_WeaponPaints;
 	flag &= ~kMetadataFlag_Unk3;
 	flag &= ~kMetadataFlag_Unk8;
 	flag &= ~kMetadataFlag_ZombieWarWeaponList;
-	flag &= ~kMetadataFlag_WeaponParts;
 	flag &= ~kMetadataFlag_Unk20;
 	flag &= ~kMetadataFlag_Encyclopedia;
-	flag &= ~kMetadataFlag_ReinforceItemsExp;
 	flag &= ~kMetadataFlag_Unk31;
-	flag &= ~kMetadataFlag_HonorMoneyShop;
 	flag &= ~kMetadataFlag_CodisData;
 	flag &= ~kMetadataFlag_WeaponProp;
 	flag &= ~kMetadataFlag_Unk43;
@@ -877,6 +887,43 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 	flag &= ~kMetadataFlag_RandomWeaponList;
 	flag &= ~kMetadataFlag_Unk54;
 	flag &= ~kMetadataFlag_Unk55;
+
+	const char* metadataFilterEnv = getenv("CSNZ_METADATA_FILTER");
+	if (metadataFilterEnv && metadataFilterEnv[0])
+	{
+		string filter = ",";
+		filter += metadataFilterEnv;
+		filter += ",";
+		auto hasMetadataID = [&filter](int id)
+		{
+			return filter.find("," + to_string(id) + ",") != string::npos;
+		};
+
+		uint64_t filteredFlag = 0;
+		if (hasMetadataID(kPacket_Metadata_MapList)) filteredFlag |= kMetadataFlag_MapList;
+		if (hasMetadataID(kPacket_Metadata_ModeList)) filteredFlag |= kMetadataFlag_ModeList;
+		if (hasMetadataID(kPacket_Metadata_MatchOption)) filteredFlag |= kMetadataFlag_MatchOption;
+		if (hasMetadataID(kPacket_Metadata_WeaponParts)) filteredFlag |= kMetadataFlag_WeaponParts;
+		if (hasMetadataID(kPacket_Metadata_MileageShop)) filteredFlag |= kMetadataFlag_MileageShop;
+		if (hasMetadataID(kPacket_Metadata_GameModeList)) filteredFlag |= kMetadataFlag_GameModeList;
+		if (hasMetadataID(kPacket_Metadata_ProgressUnlock)) filteredFlag |= kMetadataFlag_ProgressUnlock;
+		if (hasMetadataID(kPacket_Metadata_ReinforceMaxLvl)) filteredFlag |= kMetadataFlag_ReinforceMaxLvl;
+		if (hasMetadataID(kPacket_Metadata_ReinforceMaxEXP)) filteredFlag |= kMetadataFlag_ReinforceMaxEXP;
+		if (hasMetadataID(kPacket_Metadata_Item)) filteredFlag |= kMetadataFlag_Item;
+		if (hasMetadataID(kPacket_Metadata_HonorMoneyShop)) filteredFlag |= kMetadataFlag_HonorMoneyShop;
+		if (hasMetadataID(kPacket_Metadata_ItemExpireTime)) filteredFlag |= kMetadataFlag_ItemExpireTime;
+		if (hasMetadataID(kPacket_Metadata_ScenarioTX_Common)) filteredFlag |= kMetadataFlag_ScenarioTX_Common;
+		if (hasMetadataID(kPacket_Metadata_ScenarioTX_Dedi)) filteredFlag |= kMetadataFlag_ScenarioTX_Dedi;
+		if (hasMetadataID(kPacket_Metadata_ShopItemList_Dedi)) filteredFlag |= kMetadataFlag_ShopItemList_Dedi;
+		if (hasMetadataID(kPacket_Metadata_PPSystem)) filteredFlag |= kMetadataFlag_PPSystem;
+		if (hasMetadataID(kPacket_Metadata_ZBCompetitive)) filteredFlag |= kMetadataFlag_ZBCompetitive;
+		if (hasMetadataID(kPacket_Metadata_ModeEvent)) filteredFlag |= kMetadataFlag_ModeEvent;
+		if (hasMetadataID(kPacket_Metadata_EventShop)) filteredFlag |= kMetadataFlag_EventShop;
+		if (hasMetadataID(kPacket_Metadata_FamilyTotalWarMap)) filteredFlag |= kMetadataFlag_FamilyTotalWarMap;
+		if (hasMetadataID(kPacket_Metadata_FamilyTotalWar)) filteredFlag |= kMetadataFlag_FamilyTotalWar;
+		flag = filteredFlag;
+		Logger().Info("CSNZ_METADATA_FILTER active: %s\n", metadataFilterEnv);
+	}
 
 	auto logMetadata = [](int id, const char* name)
 	{
@@ -898,6 +945,11 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 	{
 		logMetadata(kPacket_Metadata_MatchOption, "Matching.csv");
 		g_PacketManager.SendMetadataMatchOption(socket);
+	}
+	if (flag & kMetadataFlag_WeaponParts)
+	{
+		logMetadata(kPacket_Metadata_WeaponParts, "weaponparts.csv");
+		g_PacketManager.SendMetadataWeaponParts(socket);
 	}
 	if (flag & kMetadataFlag_MileageShop)
 	{

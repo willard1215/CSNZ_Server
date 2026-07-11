@@ -202,9 +202,7 @@ void CChannelManager::JoinChannel(IUser* user, int channelServerID, int channelI
 		//g_UserManager.SendNoticeMsgBoxToUuid(socket, error);
 	}
 
-	Logger().Info("User '%s' requested room list successfully, sending...\n", user->GetLogName());
-
-	g_PacketManager.SendRoomListFull(user->GetExtendedSocket(), channel->GetRooms());
+	Logger().Info("User '%s' joined channel and room list was sent by channel join\n", user->GetLogName());
 }
 
 void CChannelManager::EndAllGames()

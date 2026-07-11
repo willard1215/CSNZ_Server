@@ -288,6 +288,7 @@ public:
 
 private:
 	CBinMetadata* LoadBinaryMetadata(const char* fileName, bool zip = false, const char* zipEntryName = NULL);
+	void SendZipMetadata(IExtendedSocket* socket, int metadataID, CBinMetadata* metadata);
 
 	CBinMetadata* m_pMapListZip;
 	CBinMetadata* m_pModeListZip;

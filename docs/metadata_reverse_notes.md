@@ -216,14 +216,14 @@ access/type schema.
 ## Current Practical Plan
 
 1. Keep sending metadata in latest table order.
-2. Keep `HonorShop.csv` disabled until semantic requirements are mapped.
-3. Use `tools/validate_metadata_csv.py` to detect row width and numeric/date
-   hazards before enabling a file.
-4. For each disabled metadata:
-   - map the concrete parser function;
-   - record column indexes and types here;
-   - normalize the local CSV to that schema;
-   - enable the file and test `Packet_Metadata_Parse leave ... result=1`.
+2. Load ZIP payload sources from `bin/MetadataArtifacts` by the latest
+   internal metadata path, falling back to legacy `bin/Data` only when an
+   artifact is absent.
+3. Keep `resource/MapModeV2/ModeList.csv` disabled for automatic transmission
+   while its current handler remains `xor al, al; ret`.
+4. Send oversized ZIP payloads with chunked metadata packets. The current
+   artifact `resource/item.csv` compresses to about 70 KB with the server ZIP
+   library, so it is sent as multiple chunks instead of being skipped.
 
 ## Full Local Rebuild
 
@@ -273,3 +273,8 @@ manifest instead of containing fabricated metadata.
 The assembled tree contains all 39 requested paths plus `manifest.json` under
 `bin/MetadataArtifacts`. Current result: 22 server sources, 4 extracted current
 client originals, 7 parser-derived minimal files, and 6 disabled-handler files.
+
+`tools/validate_metadata_artifacts.py` validates this assembled tree directly
+against the latest registered path table. Current result: `validated=39`,
+`errors=0`, `chunked=1`. The chunked payload is `resource/item.csv`: raw size
+588,142 bytes and deterministic ZIP size about 71 KB.

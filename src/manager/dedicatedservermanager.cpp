@@ -144,7 +144,7 @@ bool CDedicatedServerManager::OnPacket(CReceivePacket* msg, IExtendedSocket* soc
 
 					std::thread([socket]()
 					{
-						SleepMS(5000);
+						SleepMS(500);
 						g_Events.AddEventFunction([socket]()
 						{
 							if (!g_pServerInstance->IsServerActive())

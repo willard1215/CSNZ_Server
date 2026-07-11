@@ -64,8 +64,8 @@ bool CChannel::UserJoin(IUser* user, bool unhide)
 		g_PacketManager.SendLobbyUserJoin(u->GetExtendedSocket(), user);
 	}
 
-	g_PacketManager.SendLobbyJoin(user->GetExtendedSocket(), this);
 	g_PacketManager.SendRoomListFull(user->GetExtendedSocket(), m_Rooms);
+	g_PacketManager.SendLobbyJoin(user->GetExtendedSocket(), this);
 
 	if (!m_LoginMsg.empty())
 	{
