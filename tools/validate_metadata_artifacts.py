@@ -35,7 +35,7 @@ ARTIFACTS = (
     Artifact(1, "resource/itemBox.csv", "csv", sendable=True),
     Artifact(2, "resource/MapModeV2/ModeList.csv", "csv"),
     Artifact(12, "Matching.csv", "csv", sendable=True),
-    Artifact(20, "weaponparts.csv", "csv", sendable=True),
+    Artifact(20, "weaponparts.csv", "csv", sendable=True, allow_header_only=True),
     Artifact(21, "MileageShop.csv", "csv", "MileageShop.csv", sendable=True),
     Artifact(27, "resource/GameModeList.csv", "csv", sendable=True),
     Artifact(None, "badwordadd.csv", "raw", unsupported=True),

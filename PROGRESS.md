@@ -277,3 +277,57 @@ Get-ChildItem -Path 'D:\project\CSONLINE\CSNZ_Server\bin\Logs' -Filter *.log |
   skipped.
 - Built `bin/Release/CSNZ_Server.exe` successfully and confirmed startup logs
   show `MetadataArtifacts` sources being used.
+
+### 2026-07-11: follow-up audit after concurrent changes
+
+- Re-read commit `6cc9f56` before continuing because another worker changed
+  the metadata runtime path and validation logic.
+- Found that the progress entry claimed chunked transmission was active while
+  `SendZipMetadata()` still logged and skipped payloads above 65,535 bytes.
+- Implemented the latest four-state chunk stream: first `0x01`, continuation
+  `0x02`, final `0x04`, with `0x05` retained for a single begin/final chunk.
+  Chunks are capped at `0x7000` bytes and each offset/size is logged.
+- Kept the concurrently added metadata safety filters unchanged pending live
+  client parser logs; parser-shape validation alone is not sufficient evidence
+  to re-enable entries that were disabled during runtime experimentation.
+- Fixed the concurrent validator definition for the intentionally header-only
+  `weaponparts.csv`; it was labelled sendable but rejected by the validator,
+  making the documented `validated=39 errors=0` result unreproducible.
+- Live-launched `cstrike-online.exe` with `-id localuser -password localpass1`
+  and the required `-steam -appid 273110` engine options. The process created
+  its OpenGL window, but did not open a TCP connection to the local server.
+  A second launch added `-hostip 127.0.0.1 -lobbyport 30002` with the same
+  result. `CSOLauncher.exe` failed at process initialization with `0xc0000142`.
+  Thus live metadata parser confirmation still requires the exact launcher
+  invocation/passport path used by the previously working local client setup;
+  this is separate from the rebuilt server accepting connections on port 30002.
+- After the user opened the `CSNX` folder, checked the live Explorer/Cursor
+  state for a saved invocation; no task/launch configuration was present.
+  The client DLL exposes `serveraddress` and `lobbyport`, so a third launch used
+  GoldSrc-style `+serveraddress 127.0.0.1 +lobbyport 30002` together with the
+  required id/password. It also created a window and exited without opening a
+  socket. This rules out both dash-style and cvar-style address overrides for
+  this launcher build and points to its encrypted passport/NGM launch context.
+
+### 2026-07-11: latest client launcher integration
+
+- Built the supplied `Launcher_CSNZ-main` project as Win32 Release and copied
+  only its executable into the actual latest client at
+  `Counter-Strike Online - copy 2026.07.08/Bin/CSOLauncher.exe`.
+- Updated the launcher's diagnostic-only metadata table to the latest ids and
+  latest chunk layout (`id`, `flag`, `uint16 size`, payload), added parser
+  call/leave/result logs, safe per-chunk dumps, and a requested `-id` alias for
+  `-login`. Launcher sources/build outputs remain outside CSNZ_Server Git.
+- Converted the launcher's documented non-critical 2026 signature misses
+  (NGClient quit, Hack send, ZSHT item-box and 100-FPS patches) from blocking
+  message boxes to debug warnings. The launcher now reaches the latest
+  client's `CSO Login` window and records diagnostics in
+  `Bin/launcher_debug.log`.
+- Verified the process is loading the 2026-07-08 client files from its `Bin`
+  directory, not treating the launcher repository as a client installation.
+- Current live blocker occurs before `gameui.dll` is loaded: the debug trace
+  stops after `CSONMWrapper - LOCALE_ID: 1, GAME_CODE: 1f008`, while the hook
+  thread waits for GameUI. Tried `cstrike-online` and `lstrike` game roots,
+  `kr_` locale, and a dummy passport; none opened the local TCP connection.
+  Therefore metadata id 35 is ready server-side but has not yet reached the
+  client parser; the remaining work is the latest CSONM/passport bootstrap.

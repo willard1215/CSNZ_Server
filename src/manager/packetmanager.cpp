@@ -275,8 +275,30 @@ void CPacketManager::SendZipMetadata(IExtendedSocket* socket, int metadataID, CB
 		return;
 	}
 
-	Logger().Warn("Skipping oversized metadata until latest chunk format is mapped: id=%d, size=%u\n",
-		metadataID, (unsigned int)remaining);
+	Logger().Info("TX chunked metadata: id=%d, total=%u, chunk=%u\n",
+		metadataID, (unsigned int)remaining, (unsigned int)maxChunkSize);
+
+	bool first = true;
+	while (remaining > 0)
+	{
+		size_t chunkSize = remaining > maxChunkSize ? maxChunkSize : remaining;
+		bool final = chunkSize == remaining;
+		unsigned int chunkFlag = first ? (final ? 5 : 1) : (final ? 4 : 2);
+
+		CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
+		msg->BuildHeader();
+		msg->WriteUInt8(metadataID);
+		msg->WriteUInt8(chunkFlag);
+		msg->WriteUInt16((unsigned int)chunkSize);
+		msg->WriteData((void*)(buffer + offset), chunkSize);
+		socket->Send(msg);
+
+		Logger().Info("TX metadata chunk: id=%d, flag=0x%02X, offset=%u, size=%u\n",
+			metadataID, chunkFlag, (unsigned int)offset, (unsigned int)chunkSize);
+		offset += chunkSize;
+		remaining -= chunkSize;
+		first = false;
+	}
 }
 
 void CPacketManager::SendUMsgNoticeMsgBoxToUuid(IExtendedSocket* socket, const string& text)
