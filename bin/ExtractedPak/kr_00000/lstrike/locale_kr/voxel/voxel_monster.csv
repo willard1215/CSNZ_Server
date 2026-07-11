@@ -1,0 +1,44 @@
+name,vxl_ID,ai,mdl,bodypart,submodel,skin,health,armor,speed,attack_dmg,attack_range,attack_speed,view_distance,type,animtype
+노멀 LV.1,200,NormalZombie2,models/vxl_monster/zombi_vxl_man.mdl,0,0,0,250,0,40,6,75,1.8,1000,0,1
+노멀 LV.2,201,NormalZombie,models/vxl_monster/zombi_vxl_man.mdl,0,0,1,350,0,50,10,75,1.6,1000,0,0
+노멀 LV.3,202,NormalZombie,models/vxl_monster/zombi_vxl_man.mdl,0,1,0,500,0,60,14,75,1.4,1000,0,0
+노멀 LV.4,203,NormalZombie,models/vxl_monster/zombi_vxl_man.mdl,0,1,1,700,100,70,20,75,1.36,1200,0,0
+노멀 LV.5,204,NormalZombie,models/vxl_monster/zombi_vxl_man.mdl,0,2,0,1000,100,80,24,75,1.25,1200,0,0
+노멀 LV.6,205,NormalZombie,models/vxl_monster/zombi_vxl_man.mdl,0,2,1,1200,150,80,32,75,1.12,1600,0,0
+러너 LV.1,206,RunnerZombie,models/vxl_monster/zombi_vxl_man.mdl,0,4,0,150,0,260,10,75,1.45,1600,0,2
+러너 LV.2,207,RunnerZombie,models/vxl_monster/zombi_vxl_man.mdl,0,4,1,200,0,270,14,75,1.3,1600,0,2
+러너 LV.3,208,RunnerZombie,models/vxl_monster/zombi_vxl_man.mdl,0,5,0,300,0,280,18,75,1.3,1600,0,2
+러너 LV.4,209,RunnerZombie,models/vxl_monster/zombi_vxl_man.mdl,0,5,1,400,50,290,22,75,1.3,1600,0,2
+러너 LV.5,210,RunnerZombie,models/vxl_monster/zombi_vxl_man.mdl,0,6,0,550,100,280,18,75,1.3,1600,0,2
+러너 LV.6,211,RunnerZombie,models/vxl_monster/zombi_vxl_man.mdl,0,6,1,700,100,290,22,75,1.3,1600,0,2
+헤비A,244,NormalZombie,models/vxl_monster/zombi_vxl_police.mdl,1,0,0,2000,200,80,20,75,1.2,1400,0,0
+헤비B,245,NormalZombie,models/vxl_monster/zombi_vxl_police.mdl,1,1,0,2500,500,65,36,75,1.25,1400,0,0
+노멀 LV.0,246,NormalZombie,models/vxl_monster/zombi_vxl_man.mdl,0,3,0,30,0,40,6,75,1.8,1000,0,0
+러너 LV.0,247,RunnerZombie,models/vxl_monster/zombi_vxl_man.mdl,0,3,1,25,0,250,5,75,1.5,1600,0,2
+버섯1,248,Mushroom,models/vxl_monster/vxl_monster_mushroom01.mdl,0,0,0,30,0,40,6,75,1.8,1600,1,
+버섯2,249,Mushroom,models/vxl_monster/vxl_monster_mushroom02.mdl,0,0,0,200,0,100,10,75,1.6,1600,1,
+버섯3,250,Mushroom,models/vxl_monster/vxl_monster_mushroom03.mdl,0,0,0,750,100,100,22,75,1.4,1600,1,
+슬라임1,251,Mushroom,models/vxl_monster/vxl_monster_slime01.mdl,0,0,0,1000,0,150,18,75,1.36,1600,1,
+슬라임2,687,Mushroom,models/vxl_monster/vxl_monster_slime02.mdl,0,0,0,50,0,50,10,75,1.36,1600,1,
+중국병사1,688,ChinaMonster,models/vxl_monster/vxl_chinasoldier01.mdl,0,0,0,200,100,250,12,75,1.8,1400,2,
+중국병사2,689,ChinaMonster,models/vxl_monster/vxl_chinasoldier02.mdl,0,0,0,1500,500,250,24,75,1.25,1400,2,
+눈사람,763,Snowman,models/vxl_monster/vxl_monster_snow.mdl,0,0,0,250,100,200,16,400,1.2,1000,3,
+미니언(빨강),940,Minion,models/vxl_monster/vxl_monster_minion.mdl,0,0,0,1000,500,250,15,75,0.8,1600,4,
+미니언(파랑),941,Minion,models/vxl_monster/vxl_monster_minion.mdl,0,0,1,400,200,220,8,65,0.8,1600,4,
+훌리건(근접),1097,HooliganMelee,models/vxl_monster/vxl_monster_hooligan01.mdl,0,0,1,700,400,220,12,65,1.3,1000,5,
+훌리건(원거리),1098,HooliganThrow,models/vxl_monster/vxl_monster_hooligan02.mdl,0,0,1,300,200,200,17,400,0.8,1000,6,
+유령,1284,HooliganMelee,models/vxl_monster/vxl_monster_ghost.mdl,0,0,0,500,0,300,18,75,1.3,1600,8,
+호박,1285,HooliganMelee,models/vxl_monster/vxl_monster_pumpkin.mdl,0,0,0,800,100,250,24,75,1.3,1600,5,
+호박머리,1286,Mushroom,models/vxl_monster/vxl_monster_pumpkinhead.mdl,0,0,0,1000,0,150,36,75,1.3,1600,1,
+프로토타입 포보스,1289,Boss_ProtoPhobos,models/monster/zbs_bossL_big00.mdl,0,0,0,10000,5000,250,0,0,0,0,7,
+원거리 총,1477,A101AR,models/vxl_monster/vxl_monster_a101ar.mdl,0,0,0,300,200,200,5,400,0.2,1000,9,
+원거리 로켓,1478,A104RL,models/vxl_monster/vxl_monster_a104rl.mdl,0,0,0,300,200,200,20,400,2.5,1000,10,
+쉘터일반좀비,1520,Shelter_Normal,models/vxl_monster/zombi_vxl_man.mdl,0,0,0,250,0,40,6,75,1.8,1000,12,0
+가스터렛,1509,GasTurret,models/zsh_deadcity/zb_gastower.mdl,0,0,0,250,0,0,10,800,0.1,500,13,
+쉘터자폭좀비,1521,RunnerZombie,models/vxl_monster/zombi_vxl_man.mdl,0,5,1,250,0,210,6,75,1.8,1000,14,2
+킹덤 왕좀비,1650,NormalZombie,models/vxl_monster/vxl_monster_kingzombie.mdl,0,0,0,2000,200,80,20,75,1.2,1400,0,0
+킹덤 평민좀비 남1,1651,RunnerZombie,models/vxl_monster/vxl_monster_kingdomzombie02.mdl,0,0,0,150,0,260,10,75,1.45,1600,0,2
+킹덤 평민좀비 남2,1652,RunnerZombie,models/vxl_monster/vxl_monster_kingdomzombie02.mdl,0,1,0,200,0,270,14,75,1.3,1600,0,2
+킹덤 평민좀비 여1,1653,RunnerZombie,models/vxl_monster/vxl_monster_kingdomzombie03.mdl,0,0,0,150,0,260,10,75,1.45,1600,0,2
+매드 메카닉,1950,Boss_AmpSuit,models/monster/zbs_bossL_big09.mdl,0,0,0,10000,5000,250,0,0,0,0,15,
+폴른 타이탄,1951,Boss_InfectedTitan,models/monster/zbs_bossL_big07.mdl,0,0,0,10000,5000,250,0,0,0,0,16,

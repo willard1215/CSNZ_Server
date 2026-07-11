@@ -1,0 +1,282 @@
+{
+  "total": 39,
+  "source": 22,
+  "extracted": 4,
+  "parser_minimal": 7,
+  "unsupported_by_hw": 6,
+  "files": [
+    {
+      "path": "resource/MapList.csv",
+      "status": "extracted",
+      "source": "MapList.csv",
+      "parser": null,
+      "size": 54933
+    },
+    {
+      "path": "resource/itemBox.csv",
+      "status": "source",
+      "source": "ClientTable.csv",
+      "parser": null,
+      "size": 379
+    },
+    {
+      "path": "resource/MapModeV2/ModeList.csv",
+      "status": "source",
+      "source": "ModeList.csv",
+      "parser": null,
+      "size": 2881
+    },
+    {
+      "path": "Matching.csv",
+      "status": "source",
+      "source": "MatchOption.csv",
+      "parser": null,
+      "size": 6224
+    },
+    {
+      "path": "weaponparts.csv",
+      "status": "source",
+      "source": "weaponparts.csv",
+      "parser": null,
+      "size": 9580
+    },
+    {
+      "path": "MileageShop.csv",
+      "status": "source",
+      "source": "MileageShop.csv",
+      "parser": null,
+      "size": 2296
+    },
+    {
+      "path": "resource/GameModeList.csv",
+      "status": "source",
+      "source": "GameModeList.csv",
+      "parser": null,
+      "size": 6119
+    },
+    {
+      "path": "badwordadd.csv",
+      "status": "unsupported_by_hw",
+      "source": null,
+      "parser": "0x02671150",
+      "size": 0
+    },
+    {
+      "path": "badworddel.csv",
+      "status": "unsupported_by_hw",
+      "source": null,
+      "parser": "0x02671160",
+      "size": 0
+    },
+    {
+      "path": "resource/zombiez/progress_unlock.csv",
+      "status": "source",
+      "source": "progress_unlock.csv",
+      "parser": null,
+      "size": 9085
+    },
+    {
+      "path": "ReinforceMaxLv.csv",
+      "status": "source",
+      "source": "ReinforceMaxLv.csv",
+      "parser": null,
+      "size": 2946
+    },
+    {
+      "path": "ReinforceMaxEXP.csv",
+      "status": "source",
+      "source": "ReinforceMaxEXP.csv",
+      "parser": null,
+      "size": 377
+    },
+    {
+      "path": "resource/item.csv",
+      "status": "extracted",
+      "source": "Item.csv",
+      "parser": null,
+      "size": 588142
+    },
+    {
+      "path": "voxel/voxel_list.csv",
+      "status": "extracted",
+      "source": "voxel_list.csv",
+      "parser": null,
+      "size": 284065
+    },
+    {
+      "path": "voxel/voxel_item.csv",
+      "status": "source",
+      "source": "voxel_item.csv",
+      "parser": null,
+      "size": 16104
+    },
+    {
+      "path": "resource/codis/codisdata.cso",
+      "status": "extracted",
+      "source": "CodisData.csv",
+      "parser": null,
+      "size": 17824
+    },
+    {
+      "path": "HonorShop.csv",
+      "status": "source",
+      "source": "HonorMoneyShop.csv",
+      "parser": null,
+      "size": 6821
+    },
+    {
+      "path": "resource/ItemExpireTime.csv",
+      "status": "source",
+      "source": "ItemExpireTime.csv",
+      "parser": null,
+      "size": 4869
+    },
+    {
+      "path": "resource/scenariotx/scenariotx_common.json",
+      "status": "source",
+      "source": "scenariotx_common.json",
+      "parser": null,
+      "size": 56291
+    },
+    {
+      "path": "resource/scenariotx/scenariotx_dedi.json",
+      "status": "source",
+      "source": "scenariotx_dedi.json",
+      "parser": null,
+      "size": 12000
+    },
+    {
+      "path": "resource/scenariotx/shopitemlist_dedi.json",
+      "status": "source",
+      "source": "shopitemlist_dedi.json",
+      "parser": null,
+      "size": 46271
+    },
+    {
+      "path": "EpicPieceShop.csv",
+      "status": "source",
+      "source": "EpicPieceShop.csv",
+      "parser": null,
+      "size": 4563
+    },
+    {
+      "path": "models/SkinWeaponInfo_server.json",
+      "status": "parser_minimal",
+      "source": null,
+      "parser": "0x0203e630",
+      "size": 3
+    },
+    {
+      "path": "SeasonBadgeShop.csv",
+      "status": "parser_minimal",
+      "source": null,
+      "parser": "0x026718d0",
+      "size": 9
+    },
+    {
+      "path": "ppsystem/config.json",
+      "status": "source",
+      "source": "ppsystem.json",
+      "parser": null,
+      "size": 7035
+    },
+    {
+      "path": "resource/buff/classmastery.json",
+      "status": "parser_minimal",
+      "source": null,
+      "parser": "0x0203f880",
+      "size": 3
+    },
+    {
+      "path": "resource/zombiecompetitive/ZBCompetitive.json",
+      "status": "source",
+      "source": "ZBCompetitive.json",
+      "parser": null,
+      "size": 777
+    },
+    {
+      "path": "resource/ModeEvent/ModeEvent.csv",
+      "status": "source",
+      "source": "ModeEvent.csv",
+      "parser": null,
+      "size": 7769
+    },
+    {
+      "path": "resource/CPShop/EventShop.csv",
+      "status": "source",
+      "source": "EventShop.csv",
+      "parser": null,
+      "size": 4531
+    },
+    {
+      "path": "resource/ClanWar/FamilyTotalWarMap.csv",
+      "status": "source",
+      "source": "FamilyTotalWarMap.csv",
+      "parser": null,
+      "size": 960
+    },
+    {
+      "path": "resource/ClanWar/FamilyTotalWar.json",
+      "status": "source",
+      "source": "FamilyTotalWar.json",
+      "parser": null,
+      "size": 2344
+    },
+    {
+      "path": "resource/WeaponAscend.csv",
+      "status": "parser_minimal",
+      "source": null,
+      "parser": "0x01ff1080",
+      "size": 3
+    },
+    {
+      "path": "resource/zombi/PerkParam.csv",
+      "status": "parser_minimal",
+      "source": null,
+      "parser": "0x025d0a80",
+      "size": 57
+    },
+    {
+      "path": "AnniversaryShop.csv",
+      "status": "parser_minimal",
+      "source": null,
+      "parser": "0x025d0090",
+      "size": 65
+    },
+    {
+      "path": "resource/Anniversary/GlobalAnniversary.json",
+      "status": "unsupported_by_hw",
+      "source": null,
+      "parser": "0x02671cb0",
+      "size": 0
+    },
+    {
+      "path": "resource/Anniversary/AnniversaryLottery.json",
+      "status": "unsupported_by_hw",
+      "source": null,
+      "parser": "0x02671cc0",
+      "size": 0
+    },
+    {
+      "path": "resource/Anniversary/AnniversaryTicket.json",
+      "status": "unsupported_by_hw",
+      "source": null,
+      "parser": "0x02671cd0",
+      "size": 0
+    },
+    {
+      "path": "resource/Synthesis/SynthesisItem.csv",
+      "status": "unsupported_by_hw",
+      "source": null,
+      "parser": "0x02671ce0",
+      "size": 0
+    },
+    {
+      "path": "ZCoinShop.csv",
+      "status": "parser_minimal",
+      "source": null,
+      "parser": "0x025d0280",
+      "size": 33
+    }
+  ]
+}

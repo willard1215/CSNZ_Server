@@ -1,0 +1,51 @@
+{
+	"MaxCost":
+	{
+		"Normal": 25,
+		"Hero":25
+	},
+	"WeaponCost":[0, 1, 3, 5, 9, 15],
+	"WeaponCostMax":[0, 2, 4, 8, 14, 20],
+	
+	"WeaponCooltime": [
+    {
+		"Grade": 4, // 유니크
+		"List": [
+		{ // (포함해서 이하)
+			"MaxZLevel": 24,
+			"Value": 0
+        },
+        { // 위 조건 초과부터 현재 조건 이하
+			"MaxZLevel": 99999,
+			"Value": 1
+        }
+      ]
+    },
+    {
+		"Grade": 5, // 초월
+		"List": [
+        {
+			"MaxZLevel": 19,
+			"Value": 1
+        },
+        {
+			"MaxZLevel": 32,
+			"Value": 2
+        },
+        {
+			"MaxZLevel": 99999,
+			"Value": 3
+        }
+      ]
+    },
+    {
+		"Grade": 6, // 에픽
+		"List": [
+        {
+			"MaxZLevel": 99999,
+			"Value": 4
+        }
+      ]
+    }
+  ]
+}

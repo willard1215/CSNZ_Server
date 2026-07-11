@@ -23,8 +23,5 @@ bin/*.log
 bin/*.db3
 bin/Logs
 bin/platforms
-bin/RebuiltMetadata/
-bin/MetadataArtifacts/
-bin/ExtractedPak/
 
 Releases

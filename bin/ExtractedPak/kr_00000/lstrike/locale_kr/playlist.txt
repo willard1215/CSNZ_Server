@@ -1,0 +1,9 @@
+"Playlist"
+{
+	"Splash"	"CSOnline.mp3"
+	"RoundWin"	"CSO_Result.mp3"
+	"RoundLose"	"turncrank_flash.mp3"
+	"MatchWin"	"thinice_success.mp3"
+	"MatchLose"	"train_failure.mp3"
+	"Credits"	"train_work1.mp3"
+}

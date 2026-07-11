@@ -1,0 +1,73 @@
+{
+    "StrategicStrongHold_ContributionLevel" : {
+        "BonusPercentage_1" : 120,
+        "BonusPercentage_2" : 110,
+        "BonusPercentage_3" : 105
+    },
+
+    "AddMaterial": 100,
+    "MaterialWaitingTimeSecPer_AddMaterial": 60,
+
+    "MaterialLimit": 1000,
+
+    "WithDrawCheckPeriod": 5,
+    "WithDrawMaterialThreshold": 60,
+
+    "StrongHoldCompetitionInfoRequestDelayTime": 10,
+
+    "OldSeasonList": [1,2],
+    "CurSeason": 2,
+
+    "ClanAgitEvalGradeAtLeast": 4,
+
+    "RewardDetailURL": "https://forum.nexon.com/csnexon/board_view?board=5702&thread=2684549",
+
+    "PrepareStartTime"  : "2024-11-27 04:00:00",
+    "PrepareEndTime"    : "2024-12-04 03:00:00",
+    "TotalWarStartTime" : "2024-12-04 04:00:00",
+    "TotalWarEndTime"   : "2024-12-24 00:05:00",
+    "RewardStartTime"   : "2024-12-24 04:00:00",
+    "RewardEndTime"     : "2025-02-19 04:00:00",
+    
+    "LastSeasonRewardStartTime" : "2024-12-24 04:00:00",
+    "LastSeasonRewardEndTime"   : "2025-01-22 04:00:00",
+
+    "MapInfo": [
+		{
+            "20240808150": {
+                "Supplies" : {
+                    "Zone_1" : 500,
+                    "Zone_2" : 600,
+                    "Zone_3" : 700,
+                    "Hub"    : 800,
+                    "Refuge" : 1000
+                },
+
+                "EvaluationScore" : {
+                    "Zone_1"                    : 100,
+                    "Zone_2"                    : 200,
+                    "Zone_3"                    : 300,
+                    "Hub"                       : 300,
+                    "Refuge"                    : 300,
+                    "Strategic_FirstOccupation" : 5000,
+                    "Strategic_Maintain"        : 1000
+                },
+
+                "EvaluationGrade" : {
+                    "RequiredPoint_0" : 0,
+                    "RequiredPoint_1" : 1000,
+                    "RequiredPoint_2" : 5000,
+                    "RequiredPoint_3" : 15000,
+                    "RequiredPoint_4" : 25000,
+                    "RequiredPoint_5" : 35000
+                },
+
+                "ContributionGrade": {
+                    "RequiredPercentage_1" : 10,
+                    "RequiredPercentage_2" : 25,
+                    "RequiredPercentage_3" : 50
+                }
+            }
+        }
+	]
+}

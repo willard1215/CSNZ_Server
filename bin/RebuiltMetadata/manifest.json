@@ -1,0 +1,278 @@
+[
+  {
+    "id": 0,
+    "source": "MapList.csv",
+    "entry": "resource/MapList.csv",
+    "kind": "csv",
+    "source_size": 80430,
+    "zip_size": 12932,
+    "rows": 322,
+    "widths": [
+      108
+    ],
+    "output": "00_MapList.csv.zip"
+  },
+  {
+    "id": 1,
+    "source": "ClientTable.csv",
+    "entry": "resource/itemBox.csv",
+    "kind": "csv",
+    "source_size": 379,
+    "zip_size": 295,
+    "rows": 8,
+    "widths": [
+      10
+    ],
+    "output": "01_itemBox.csv.zip"
+  },
+  {
+    "id": 2,
+    "source": "ModeList.csv",
+    "entry": "resource/MapModeV2/ModeList.csv",
+    "kind": "csv",
+    "source_size": 2881,
+    "zip_size": 802,
+    "rows": 31,
+    "widths": [
+      7
+    ],
+    "output": "02_ModeList.csv.zip"
+  },
+  {
+    "id": 12,
+    "source": "MatchOption.csv",
+    "entry": "Matching.csv",
+    "kind": "csv",
+    "source_size": 6224,
+    "zip_size": 1139,
+    "rows": 49,
+    "widths": [
+      67
+    ],
+    "output": "12_Matching.csv.zip"
+  },
+  {
+    "id": 20,
+    "source": "weaponparts.csv",
+    "entry": "weaponparts.csv",
+    "kind": "csv",
+    "source_size": 9580,
+    "zip_size": 1396,
+    "rows": 143,
+    "widths": [
+      9
+    ],
+    "output": "20_weaponparts.csv.zip"
+  },
+  {
+    "id": 21,
+    "source": "MileageShop.csv",
+    "entry": "MileageShop.csv",
+    "kind": "csv",
+    "source_size": 2296,
+    "zip_size": 609,
+    "rows": 29,
+    "widths": [
+      27
+    ],
+    "output": "21_MileageShop.csv.zip"
+  },
+  {
+    "id": 27,
+    "source": "GameModeList.csv",
+    "entry": "resource/GameModeList.csv",
+    "kind": "csv",
+    "source_size": 6119,
+    "zip_size": 1607,
+    "rows": 51,
+    "widths": [
+      25
+    ],
+    "output": "27_GameModeList.csv.zip"
+  },
+  {
+    "id": 30,
+    "source": "progress_unlock.csv",
+    "entry": "resource/zombiez/progress_unlock.csv",
+    "kind": "csv",
+    "source_size": 9085,
+    "zip_size": 2566,
+    "rows": 696,
+    "widths": [
+      4
+    ],
+    "output": "30_progress_unlock.csv.zip"
+  },
+  {
+    "id": 31,
+    "source": "ReinforceMaxLv.csv",
+    "entry": "ReinforceMaxLv.csv",
+    "kind": "csv",
+    "source_size": 2946,
+    "zip_size": 955,
+    "rows": 141,
+    "widths": [
+      9
+    ],
+    "output": "31_ReinforceMaxLv.csv.zip"
+  },
+  {
+    "id": 32,
+    "source": "ReinforceMaxEXP.csv",
+    "entry": "ReinforceMaxEXP.csv",
+    "kind": "csv",
+    "source_size": 377,
+    "zip_size": 362,
+    "rows": 9,
+    "widths": [
+      10
+    ],
+    "output": "32_ReinforceMaxEXP.csv.zip"
+  },
+  {
+    "id": 35,
+    "source": "Item.csv",
+    "entry": "resource/item.csv",
+    "kind": "csv",
+    "source_size": 455440,
+    "zip_size": 56769,
+    "rows": 3020,
+    "widths": [
+      57
+    ],
+    "output": "35_item.csv.zip"
+  },
+  {
+    "id": 39,
+    "source": "HonorMoneyShop.csv",
+    "entry": "HonorShop.csv",
+    "kind": "csv",
+    "source_size": 6821,
+    "zip_size": 1126,
+    "rows": 91,
+    "widths": [
+      28
+    ],
+    "output": "39_HonorShop.csv.zip"
+  },
+  {
+    "id": 40,
+    "source": "ItemExpireTime.csv",
+    "entry": "resource/ItemExpireTime.csv",
+    "kind": "csv-no-header",
+    "source_size": 4869,
+    "zip_size": 1041,
+    "rows": 215,
+    "widths": [
+      2,
+      3,
+      4
+    ],
+    "output": "40_ItemExpireTime.csv.zip"
+  },
+  {
+    "id": 41,
+    "source": "scenariotx_common.json",
+    "entry": "resource/scenariotx/scenariotx_common.json",
+    "kind": "jsonc",
+    "source_size": 56291,
+    "zip_size": 9911,
+    "rows": null,
+    "widths": null,
+    "output": "41_scenariotx_common.json.zip"
+  },
+  {
+    "id": 42,
+    "source": "scenariotx_dedi.json",
+    "entry": "resource/scenariotx/scenariotx_dedi.json",
+    "kind": "jsonc",
+    "source_size": 12000,
+    "zip_size": 2844,
+    "rows": null,
+    "widths": null,
+    "output": "42_scenariotx_dedi.json.zip"
+  },
+  {
+    "id": 43,
+    "source": "shopitemlist_dedi.json",
+    "entry": "resource/scenariotx/shopitemlist_dedi.json",
+    "kind": "jsonc",
+    "source_size": 46271,
+    "zip_size": 4173,
+    "rows": null,
+    "widths": null,
+    "output": "43_shopitemlist_dedi.json.zip"
+  },
+  {
+    "id": 48,
+    "source": "ppsystem.json",
+    "entry": "ppsystem/config.json",
+    "kind": "jsonc",
+    "source_size": 7035,
+    "zip_size": 995,
+    "rows": null,
+    "widths": null,
+    "output": "48_config.json.zip"
+  },
+  {
+    "id": 51,
+    "source": "ZBCompetitive.json",
+    "entry": "resource/zombiecompetitive/ZBCompetitive.json",
+    "kind": "jsonc",
+    "source_size": 777,
+    "zip_size": 503,
+    "rows": null,
+    "widths": null,
+    "output": "51_ZBCompetitive.json.zip"
+  },
+  {
+    "id": 53,
+    "source": "ModeEvent.csv",
+    "entry": "resource/ModeEvent/ModeEvent.csv",
+    "kind": "csv",
+    "source_size": 7769,
+    "zip_size": 1253,
+    "rows": 153,
+    "widths": [
+      4
+    ],
+    "output": "53_ModeEvent.csv.zip"
+  },
+  {
+    "id": 54,
+    "source": "EventShop.csv",
+    "entry": "resource/CPShop/EventShop.csv",
+    "kind": "csv",
+    "source_size": 4531,
+    "zip_size": 1041,
+    "rows": 44,
+    "widths": [
+      25
+    ],
+    "output": "54_EventShop.csv.zip"
+  },
+  {
+    "id": 55,
+    "source": "FamilyTotalWarMap.csv",
+    "entry": "resource/ClanWar/FamilyTotalWarMap.csv",
+    "kind": "csv",
+    "source_size": 960,
+    "zip_size": 587,
+    "rows": 22,
+    "widths": [
+      17
+    ],
+    "output": "55_FamilyTotalWarMap.csv.zip"
+  },
+  {
+    "id": 56,
+    "source": "FamilyTotalWar.json",
+    "entry": "resource/ClanWar/FamilyTotalWar.json",
+    "kind": "jsonc",
+    "source_size": 2344,
+    "zip_size": 844,
+    "rows": null,
+    "widths": null,
+    "output": "56_FamilyTotalWar.json.zip"
+  }
+]

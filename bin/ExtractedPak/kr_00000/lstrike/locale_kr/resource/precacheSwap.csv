@@ -1,0 +1,8 @@
+ORIGINAL,SWAP
+sprites/event_bombexp.spr,sprites/heart_bombexp.spr
+sprites/event_bombexp2.spr,sprites/heartbomb.spr
+models/w_eventbomb.mdl,models/w_heartbomb.mdl
+models/v_eventbomb.mdl,models/v_heartbomb.mdl
+models/p_eventbomb.mdl,models/p_heartbomb.mdl
+sound/weapons/eventbomb_exp.wav,sound/weapons/heartbomb_explosion.wav
+sprites/wpn_eventbomb.spr,sprites/wpn_heartbomb.spr
