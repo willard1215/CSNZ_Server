@@ -1254,6 +1254,7 @@ bool CChannelManager::OnNewRoomRequest(CReceivePacket* msg, IUser* user)
 
 	// hide user from channel users list
 	channel->UserLeft(user, true);
+	channel->SendFullUpdateRoomList();
 
 	Logger().Info("User '%s' created a new room (RID: %d, name: '%s')\n", user->GetLogName(), newRoom->GetID(), roomSettings->roomName.c_str());
 

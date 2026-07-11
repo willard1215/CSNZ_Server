@@ -42,6 +42,7 @@ public:
 	int LoginUser(IExtendedSocket* socket, const std::string& userName, const std::string& password, bool sendLoginReply, bool sendCharacterPrompt);
 	int RegisterUser(IExtendedSocket* socket, const std::string& userName, const std::string& password);
 	bool BootstrapLocalUser(IExtendedSocket* socket, bool sendLoginReply);
+	bool BootstrapLocalUserAfterMetadata(IExtendedSocket* socket);
 	void DisconnectUser(IUser* user);
 	void DisconnectAllFromServer();
 	IUser* AddUser(IExtendedSocket* socket, int userID, const std::string& userName);
@@ -67,7 +68,7 @@ public:
 
 private:
 	void SendGuestUserPacket(IExtendedSocket* socket);
-	void SendLoginPacket(IUser* user, const CUserCharacter& character);
+	void SendLoginPacket(IUser* user, const CUserCharacter& character, bool includeMetadata = true);
 	void SendUserInventory(IUser* user);
 	void SendUserLoadout(IUser* user);
 	void SendUserNotices(IUser* user);

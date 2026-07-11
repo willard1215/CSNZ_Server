@@ -120,7 +120,7 @@ void CChannel::SendUpdateRoomList(IRoom* room)
 		if (u->GetCurrentRoom())
 			continue;
 
-		g_PacketManager.SendRoomListUpdate(u->GetExtendedSocket(), room);
+		g_PacketManager.SendRoomListFull(u->GetExtendedSocket(), m_Rooms);
 	}
 }
 
@@ -131,7 +131,7 @@ void CChannel::SendAddRoomToRoomList(IRoom* room)
 		if (u->GetCurrentRoom())
 			continue;
 
-		g_PacketManager.SendRoomListAdd(u->GetExtendedSocket(), room);
+		g_PacketManager.SendRoomListFull(u->GetExtendedSocket(), m_Rooms);
 	}
 }
 
@@ -142,7 +142,7 @@ void CChannel::SendRemoveFromRoomList(int roomId)
 		if (u->GetCurrentRoom())
 			continue;
 
-		g_PacketManager.SendRoomListRemove(u->GetExtendedSocket(), roomId);
+		g_PacketManager.SendRoomListFull(u->GetExtendedSocket(), m_Rooms);
 	}
 }
 
@@ -196,6 +196,7 @@ void CChannel::RemoveRoom(IRoom* room)
 {
 	m_Rooms.erase(remove(begin(m_Rooms), end(m_Rooms), room), end(m_Rooms));
 	delete room;
+	SendFullUpdateRoomList();
 }
 
 bool CChannel::RemoveUser(IUser* user)

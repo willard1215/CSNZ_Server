@@ -118,6 +118,20 @@ bool CTCPServer::Start(const string& port, int tcpSendBufferSize, bool ssl)
 		return false;
 	}
 
+	sockaddr_in boundAddr;
+	int boundAddrLen = sizeof(boundAddr);
+	memset(&boundAddr, 0, sizeof(boundAddr));
+	if (getsockname(m_Socket, reinterpret_cast<sockaddr*>(&boundAddr), &boundAddrLen) == 0)
+	{
+		Logger().Info("TCP listen active: socket=%llu, configuredPort=%s, boundPort=%u, ssl=%d\n",
+			static_cast<unsigned long long>(m_Socket), port.c_str(), ntohs(boundAddr.sin_port), ssl ? 1 : 0);
+	}
+	else
+	{
+		Logger().Warn("TCP listen active but getsockname failed: socket=%llu, configuredPort=%s, error=%d\n",
+			static_cast<unsigned long long>(m_Socket), port.c_str(), GetNetworkError());
+	}
+
 	m_nResult = setsockopt(m_Socket, SOL_SOCKET, SO_SNDBUF, (char*)&tcpSendBufferSize, sizeof(tcpSendBufferSize));
 	if (m_nResult == SOCKET_ERROR)
 	{

@@ -23,7 +23,7 @@ using namespace std;
 
 #define SUPPORTED_CLIENT_BUILD "06.07.26"
 #define ENABLE_LOCAL_BOOTSTRAP 0
-#define LATEST_LOGIN_BOOTSTRAP_PHASE 1
+#define LATEST_LOGIN_BOOTSTRAP_PHASE 2
 
 #define ZOMBIE_WAR_WEAPON_LIST_VERSION 1
 #define RANDOM_WEAPON_LIST_VERSION 1
@@ -257,6 +257,32 @@ bool CUserManager::OnUdpPacket(CReceivePacket* msg, IExtendedSocket* socket)
 	}
 	case 2:
 	{
+		if (msg->GetLength() == 11 && msg->CanReadBytes(9))
+		{
+			int portID = msg->ReadUInt8();
+			uint32_t localAddr = msg->ReadUInt32(true);
+			int host = msg->ReadUInt8();
+			int unk = 0;
+			unk |= msg->ReadUInt8();
+			unk |= msg->ReadUInt8() << 8;
+			unk |= msg->ReadUInt8() << 16;
+			UserNetworkConfig_s network = user->GetNetworkConfig();
+
+			Logger().Info(OBFUSCATE("CUserManager::OnUdpPacket: received latest type 2: portID: %d, localAddr: %s, host: %d, unk: %d\n"),
+				portID, ip_to_string(localAddr).c_str(), host, unk);
+
+			g_PacketManager.SendUDPHostData(socket, true, user->GetID(), network.m_szExternalIpAddress, network.m_nExternalServerPort);
+			g_PacketManager.SendUDPHostData(socket, false, user->GetID(), network.m_szExternalIpAddress, network.m_nExternalClientPort);
+
+			if (user->GetCurrentChannel() == NULL)
+			{
+				Logger().Info(OBFUSCATE("CUserManager::OnUdpPacket: latest UDP ready, sending lobby bootstrap\n"));
+				Logger().Info(OBFUSCATE("CUserManager::OnUdpPacket: skipping legacy GameMatch bootstrap for latest client\n"));
+				g_ChannelManager.JoinChannel(user, g_ChannelManager.channelServers[0]->GetID(), g_ChannelManager.channelServers[0]->GetChannels()[0]->GetID(), false);
+			}
+			break;
+		}
+
 		int subType = msg->ReadUInt32();
 		switch (subType)
 		{
@@ -694,7 +720,67 @@ bool CUserManager::BootstrapLocalUser(IExtendedSocket* socket, bool sendLoginRep
 	return true;
 }
 
-void CUserManager::SendLoginPacket(IUser* user, const CUserCharacter& character)
+bool CUserManager::BootstrapLocalUserAfterMetadata(IExtendedSocket* socket)
+{
+	if (GetUserBySocket(socket))
+		return true;
+
+	const string localUserName = "localuser";
+	const string localPassword = "localpass1";
+	const string localCharacterName = "LocalPlayer";
+
+	UserBan ban = {};
+	int userID = g_UserDatabase.Login(localUserName, localPassword, socket, ban, NULL);
+	if (userID == LOGIN_NO_SUCH_USER)
+	{
+		int registerResult = RegisterUser(socket, localUserName, localPassword);
+		Logger().Info("Local host bootstrap auto-register result: %d\n", registerResult);
+		userID = g_UserDatabase.Login(localUserName, localPassword, socket, ban, NULL);
+	}
+
+	if (userID <= 0)
+	{
+		Logger().Warn("Local host bootstrap login failed (code: %d)\n", userID);
+		return false;
+	}
+
+	if (GetUserById(userID))
+	{
+		Logger().Warn("Local host bootstrap user is already logged in (uid: %d)\n", userID);
+		return false;
+	}
+
+	IUser* user = AddUser(socket, userID, localUserName);
+	if (user == NULL)
+	{
+		Logger().Warn("Local host bootstrap failed: server is full\n");
+		return false;
+	}
+
+	Logger().Info("User logged in on host socket (IP: %s, UID: %d, Username: %s)\n",
+		user->GetNetworkConfig().m_szExternalIpAddress.c_str(), userID, localUserName.c_str());
+
+	if (!user->IsCharacterExists())
+	{
+		int replyCode = ChangeUserNickname(user, localCharacterName, true);
+		if (replyCode != 1)
+		{
+			Logger().Warn("Local host bootstrap character create failed (code: %d)\n", replyCode);
+			return false;
+		}
+	}
+
+	CUserCharacter character = user->GetCharacter(UFLAG_LOW_ALL, UFLAG_HIGH_ALL);
+
+	g_ItemManager.OnUserLogin(user);
+	g_ClanManager.OnUserLogin(user);
+	g_QuestManager.OnUserLogin(user);
+
+	SendLoginPacket(user, character, false);
+	return true;
+}
+
+void CUserManager::SendLoginPacket(IUser* user, const CUserCharacter& character, bool includeMetadata)
 {
 	IExtendedSocket* socket = user->GetExtendedSocket();
 	(void)character;
@@ -728,7 +814,14 @@ void CUserManager::SendLoginPacket(IUser* user, const CUserCharacter& character)
 		return;
 	}
 
-	SendMetadata(socket);
+	if (includeMetadata)
+		SendMetadata(socket);
+
+	if (!includeMetadata)
+	{
+		Logger().Info("Latest host bootstrap phase: user start/update only\n");
+		return;
+	}
 
 	g_PacketManager.SendGameMatchInfo(socket);
 	g_PacketManager.SendGameMatchUnk(socket);
@@ -771,10 +864,12 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 	flag &= ~kMetadataFlag_Unk3;
 	flag &= ~kMetadataFlag_Unk8;
 	flag &= ~kMetadataFlag_ZombieWarWeaponList;
+	flag &= ~kMetadataFlag_WeaponParts;
 	flag &= ~kMetadataFlag_Unk20;
 	flag &= ~kMetadataFlag_Encyclopedia;
 	flag &= ~kMetadataFlag_ReinforceItemsExp;
 	flag &= ~kMetadataFlag_Unk31;
+	flag &= ~kMetadataFlag_HonorMoneyShop;
 	flag &= ~kMetadataFlag_CodisData;
 	flag &= ~kMetadataFlag_WeaponProp;
 	flag &= ~kMetadataFlag_Unk43;
@@ -782,80 +877,115 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 	flag &= ~kMetadataFlag_RandomWeaponList;
 	flag &= ~kMetadataFlag_Unk54;
 	flag &= ~kMetadataFlag_Unk55;
+
+	auto logMetadata = [](int id, const char* name)
+	{
+		Logger().Info("TX latest metadata: id=%d, name=%s\n", id, name);
+	};
+
+	// Keep the host-server metadata stream in the latest hw.dll table order.
 	if (flag & kMetadataFlag_MapList)
+	{
+		logMetadata(kPacket_Metadata_MapList, "resource/MapList.csv");
 		g_PacketManager.SendMetadataMaplist(socket);
-	if (flag & kMetadataFlag_ClientTable)
-		g_PacketManager.SendMetadataClientTable(socket);
+	}
 	if (flag & kMetadataFlag_ModeList)
+	{
+		logMetadata(kPacket_Metadata_ModeList, "resource/MapModeV2/ModeList.csv");
 		g_PacketManager.SendMetadataModelist(socket);
-	if (flag & kMetadataFlag_Unk3)
-		g_PacketManager.SendMetadataUnk3(socket);
-	if (flag & kMetadataFlag_ItemBox)
-		g_PacketManager.SendMetadataItemBox(socket, g_LuckyItemManager.GetItems());
-	if (flag & kMetadataFlag_WeaponPaints)
-		g_PacketManager.SendMetadataWeaponPaints(socket, g_ItemManager.GetWeaponPaints());
-	if (flag & kMetadataFlag_Unk8)
-		g_PacketManager.SendMetadataUnk8(socket);
+	}
 	if (flag & kMetadataFlag_MatchOption)
+	{
+		logMetadata(kPacket_Metadata_MatchOption, "Matching.csv");
 		g_PacketManager.SendMetadataMatchOption(socket);
-	if (flag & kMetadataFlag_ZombieWarWeaponList)
-		g_PacketManager.SendMetadataZombieWarWeaponList(socket, m_ZombieWarWeaponList);
-	if (flag & kMetadataFlag_WeaponParts)
-		g_PacketManager.SendMetadataWeaponParts(socket);
+	}
 	if (flag & kMetadataFlag_MileageShop)
+	{
+		logMetadata(kPacket_Metadata_MileageShop, "MileageShop.csv");
 		g_PacketManager.SendMetadataMileageShop(socket);
-	if (flag & kMetadataFlag_Unk20)
-		g_PacketManager.SendMetadataUnk20(socket);
-	if (flag & kMetadataFlag_Encyclopedia)
-		g_PacketManager.SendMetadataEncyclopedia(socket);
+	}
 	if (flag & kMetadataFlag_GameModeList)
+	{
+		logMetadata(kPacket_Metadata_GameModeList, "resource/GameModeList.csv");
 		g_PacketManager.SendMetadataGameModeList(socket);
+	}
 	if (flag & kMetadataFlag_ProgressUnlock)
-		g_PacketManager.SendMetadataProgressUnlock(socket);
+	{
+		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
+			kPacket_Metadata_ProgressUnlock, "resource/zombiez/progress_unlock.csv");
+	}
 	if (flag & kMetadataFlag_ReinforceMaxLvl)
-		g_PacketManager.SendMetadataReinforceMaxLvl(socket);
+	{
+		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
+			kPacket_Metadata_ReinforceMaxLvl, "ReinforceMaxLv.csv");
+	}
 	if (flag & kMetadataFlag_ReinforceMaxEXP)
-		g_PacketManager.SendMetadataReinforceMaxEXP(socket);
+	{
+		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
+			kPacket_Metadata_ReinforceMaxEXP, "ReinforceMaxEXP.csv");
+	}
 	if (flag & kMetadataFlag_ReinforceItemsExp)
 		g_PacketManager.SendMetadataReinforceItemsExp(socket);
-	if (flag & kMetadataFlag_Unk31)
-		g_PacketManager.SendMetadataUnk31(socket); // client crash without this
-	if (flag & kMetadataFlag_HonorMoneyShop)
-		g_PacketManager.SendMetadataHonorMoneyShop(socket);
-	if (flag & kMetadataFlag_ItemExpireTime)
-		g_PacketManager.SendMetadataItemExpireTime(socket);
-	if (flag & kMetadataFlag_ScenarioTX_Common)
-		g_PacketManager.SendMetadataScenarioTX_Common(socket);
-	if (flag & kMetadataFlag_ScenarioTX_Dedi)
-		g_PacketManager.SendMetadataScenarioTX_Dedi(socket);
-	if (flag & kMetadataFlag_ShopItemList_Dedi)
-		g_PacketManager.SendMetadataShopItemList_Dedi(socket);
-	if (flag & kMetadataFlag_ZBCompetitive)
-		g_PacketManager.SendMetadataZBCompetitive(socket);
-	if (flag & kMetadataFlag_Unk43)
-		g_PacketManager.SendMetadataUnk43(socket);
-	if (flag & kMetadataFlag_Unk49)
-		g_PacketManager.SendMetadataUnk49(socket);
-	if (flag & kMetadataFlag_PPSystem)
-		g_PacketManager.SendMetadataPPSystem(socket);
 	if (flag & kMetadataFlag_Item)
-		g_PacketManager.SendMetadataItem(socket);
-	if (flag & kMetadataFlag_CodisData)
-		g_PacketManager.SendMetadataCodisData(socket);
-	if (flag & kMetadataFlag_WeaponProp)
-		g_PacketManager.SendMetadataWeaponProp(socket);
-	if (flag & kMetadataFlag_Hash)
-		g_PacketManager.SendMetadataHash(socket);
-	if (flag & kMetadataFlag_RandomWeaponList)
-		g_PacketManager.SendMetadataRandomWeaponList(socket, m_RandomWeaponList);
+	{
+		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
+			kPacket_Metadata_Item, "resource/item.csv");
+	}
+	if (flag & kMetadataFlag_HonorMoneyShop)
+	{
+		logMetadata(kPacket_Metadata_HonorMoneyShop, "HonorShop.csv");
+		g_PacketManager.SendMetadataHonorMoneyShop(socket);
+	}
+	if (flag & kMetadataFlag_ItemExpireTime)
+	{
+		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
+			kPacket_Metadata_ItemExpireTime, "resource/ItemExpireTime.csv");
+	}
+	if (flag & kMetadataFlag_ScenarioTX_Common)
+	{
+		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
+			kPacket_Metadata_ScenarioTX_Common, "resource/scenariotx/scenariotx_common.json");
+	}
+	if (flag & kMetadataFlag_ScenarioTX_Dedi)
+	{
+		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
+			kPacket_Metadata_ScenarioTX_Dedi, "resource/scenariotx/scenariotx_dedi.json");
+	}
+	if (flag & kMetadataFlag_ShopItemList_Dedi)
+	{
+		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
+			kPacket_Metadata_ShopItemList_Dedi, "resource/scenariotx/shopitemlist_dedi.json");
+	}
+	if (flag & kMetadataFlag_PPSystem)
+	{
+		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
+			kPacket_Metadata_PPSystem, "ppsystem/config.json");
+	}
+	if (flag & kMetadataFlag_ZBCompetitive)
+	{
+		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
+			kPacket_Metadata_ZBCompetitive, "resource/zombiecompetitive/ZBCompetitive.json");
+	}
 	if (flag & kMetadataFlag_ModeEvent)
-		g_PacketManager.SendMetadataModeEvent(socket);
+	{
+		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
+			kPacket_Metadata_ModeEvent, "resource/ModeEvent/ModeEvent.csv");
+	}
 	if (flag & kMetadataFlag_EventShop)
-		g_PacketManager.SendMetadataEventShop(socket);
+	{
+		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
+			kPacket_Metadata_EventShop, "resource/CPShop/EventShop.csv");
+	}
 	if (flag & kMetadataFlag_FamilyTotalWarMap)
-		g_PacketManager.SendMetadataFamilyTotalWarMap(socket);
+	{
+		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
+			kPacket_Metadata_FamilyTotalWarMap, "resource/ClanWar/FamilyTotalWarMap.csv");
+	}
 	if (flag & kMetadataFlag_FamilyTotalWar)
-		g_PacketManager.SendMetadataFamilyTotalWar(socket);
+	{
+		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
+			kPacket_Metadata_FamilyTotalWar, "resource/ClanWar/FamilyTotalWar.json");
+	}
 	if (flag & kMetadataFlag_Unk54)
 		g_PacketManager.SendMetadataUnk54(socket);
 	if (flag & kMetadataFlag_Unk55)
@@ -885,9 +1015,6 @@ void CUserManager::SendCrypt(IExtendedSocket* socket)
 
 static bool SendLatestLoginCrypt(IExtendedSocket* socket)
 {
-	Logger().Info("Latest login crypt bootstrap deferred; waiting for client follow-up\n");
-	return true;
-
 	if (!socket->SetupCrypt())
 	{
 		Logger().Info("Client (%s) latest login crypt setup failed\n", socket->GetIP().c_str());
@@ -898,10 +1025,10 @@ static bool SendLatestLoginCrypt(IExtendedSocket* socket)
 	unsigned char* iv = socket->GetCryptIV();
 
 	g_PacketManager.SendCrypt(socket, 0, key, iv);
+	Sleep(100);
 	socket->SetCryptOutput(true);
-	socket->SetCryptInput(true);
 	g_PacketManager.SendCrypt(socket, 1, key, iv);
-	Logger().Info("Latest login crypt bootstrap sent with RC4 stream cipher\n");
+	Logger().Info("Latest login crypt bootstrap sent; waiting for plaintext client acknowledgement\n");
 	return true;
 }
 
@@ -1526,12 +1653,24 @@ bool CUserManager::OnLeaguePacket(CReceivePacket* msg, IExtendedSocket* socket)
 bool CUserManager::OnCryptPacket(CReceivePacket* msg, IExtendedSocket* socket)
 {
 	Logger().Info("Client (%s) crypt acknowledgement received\n", socket->GetIP().c_str());
+	socket->SetCryptInput(true);
 
 	IUser* user = GetUserBySocket(socket);
 	if (user != NULL && user->IsCharacterExists())
 	{
-		CUserCharacter character = user->GetCharacter(UFLAG_LOW_ALL, UFLAG_HIGH_ALL);
-		SendLoginPacket(user, character);
+		int transferPort = 30002;
+		try
+		{
+			transferPort = stoi(g_pServerConfig->tcpPort);
+		}
+		catch (...)
+		{
+			Logger().Warn("Invalid configured TCP port '%s', falling back to %d for HostServer transfer\n",
+				g_pServerConfig->tcpPort.c_str(), transferPort);
+		}
+
+		Logger().Info("Sending latest login HostServer transfer to 127.0.0.1:%d\n", transferPort);
+		g_PacketManager.SendHostServerTransfer(socket, "127.0.0.1", transferPort);
 	}
 
 	return true;

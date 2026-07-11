@@ -2,7 +2,10 @@
 #include "usermanager.h"
 #include "packetmanager.h"
 #include "serverconfig.h"
+#include "main.h"
 #include "common/utils.h"
+
+#include <thread>
 
 CDedicatedServer::CDedicatedServer(IExtendedSocket* socket, int ip, int port)
 {
@@ -13,8 +16,6 @@ CDedicatedServer::CDedicatedServer(IExtendedSocket* socket, int ip, int port)
 	m_iLastMemory = 0;
 
 	g_UserManager.SendCrypt(socket);
-	g_UserManager.SendMetadata(socket);
-	g_PacketManager.SendVoxelURLs(socket, g_pServerConfig->voxelVxlURL, g_pServerConfig->voxelVmgURL);
 }
 
 void CDedicatedServer::SetRoom(IRoom* room)
@@ -123,6 +124,42 @@ bool CDedicatedServerManager::OnPacket(CReceivePacket* msg, IExtendedSocket* soc
 		// I think it's a string
 		std::string unk = msg->ReadString();
 		Logger().Warn("CDedicatedServerManager::OnPacket(3): %s\n", unk.c_str());
+		CDedicatedServer* server = GetServerBySocket(socket);
+		if (server)
+		{
+			Logger().Info("Dedicated host server ready, scheduling metadata\n");
+			std::thread([socket]()
+			{
+				SleepMS(2000);
+				g_Events.AddEventFunction([socket]()
+				{
+					if (!g_pServerInstance->IsServerActive())
+						return;
+
+					if (g_DedicatedServerManager.GetServerBySocket(socket) == NULL)
+						return;
+
+					Logger().Info("Sending delayed dedicated host metadata\n");
+					g_UserManager.SendMetadata(socket);
+
+					std::thread([socket]()
+					{
+						SleepMS(5000);
+						g_Events.AddEventFunction([socket]()
+						{
+							if (!g_pServerInstance->IsServerActive())
+								return;
+
+							if (g_DedicatedServerManager.GetServerBySocket(socket) == NULL)
+								return;
+
+							Logger().Info("Sending dedicated host user bootstrap after metadata grace period\n");
+							g_UserManager.BootstrapLocalUserAfterMetadata(socket);
+						});
+					}).detach();
+				});
+			}).detach();
+		}
 
 		break;
 	}

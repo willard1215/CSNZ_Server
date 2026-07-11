@@ -114,6 +114,8 @@ bool CExtendedSocket::SetupCrypt()
 
 	EVP_CipherInit(m_pEncEVPCTX, EVP_rc4(), NULL, NULL, 1);
 	EVP_CipherInit(m_pDecEVPCTX, EVP_rc4(), NULL, NULL, 0);
+	EVP_CIPHER_CTX_set_key_length(m_pEncEVPCTX, 16);
+	EVP_CIPHER_CTX_set_key_length(m_pDecEVPCTX, 16);
 
 	// useless?
 	//EVP_CIPHER_CTX_set_padding(m_pEncEVPCTX, 0);
@@ -191,7 +193,7 @@ int CExtendedSocket::Read(char* buf, int len)
 {
 	int recvResult = 0;
 
-	if (m_pSSL)
+	if (m_pSSL && !m_bCryptInput)
 		recvResult = wolfSSL_recv(m_pSSL, buf, len, 0);
 	else
 		recvResult = recv(m_Socket, buf, len, 0);
@@ -380,6 +382,10 @@ int CExtendedSocket::Send(vector<unsigned char>& buffer, bool serverHelloMsg)
 			Logger().Info("CExtendedSocket::Send(%s): encLen != buffer.size()\n", GetIP().c_str());
 			return 0;
 		}
+
+		Logger().Info("TX encrypted packet to %s: plainSeq=%d, plainSize=%d, plainId=%d, encryptedHex=%s\n",
+			GetIP().c_str(), rawBuffer[1], rawBuffer.size(), rawBuffer[4],
+			HexPreview(buffer).c_str());
 	}
 
 	m_nPacketSentSize = 0;
@@ -388,7 +394,7 @@ int CExtendedSocket::Send(vector<unsigned char>& buffer, bool serverHelloMsg)
 
 	do
 	{
-		if (m_pSSL)
+		if (m_pSSL && !m_bCryptOutput)
 		{
 			int err;
 			do

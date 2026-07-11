@@ -769,6 +769,8 @@ void CPacketManager::SendUserStart(IExtendedSocket* socket, int userID, const st
 	msg->WriteUInt8(0); // country code
 	msg->WriteUInt8(0); // region code
 	msg->WriteUInt32(0); // UserSN
+	for (int i = 0; i < 32; i++)
+		msg->WriteUInt8(0);
 	socket->Send(msg);
 }
 
@@ -829,6 +831,7 @@ void CPacketManager::SendMetadataMaplist(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_MapList);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pMapListZip->GetBufSize());
 	msg->WriteData(m_pMapListZip->GetBuf(), m_pMapListZip->GetBufSize());
 
@@ -845,6 +848,7 @@ void CPacketManager::SendMetadataClientTable(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_ClientTable);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pClientTableZip->GetBufSize());
 	msg->WriteData(m_pClientTableZip->GetBuf(), m_pClientTableZip->GetBufSize());
 
@@ -861,6 +865,7 @@ void CPacketManager::SendMetadataWeaponParts(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_WeaponParts);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pWeaponPartsZip->GetBufSize());
 	msg->WriteData(m_pWeaponPartsZip->GetBuf(), m_pWeaponPartsZip->GetBufSize());
 
@@ -874,6 +879,7 @@ void CPacketManager::SendMetadataModelist(IExtendedSocket* socket)
 	msg->BuildHeader();
 
 	msg->WriteUInt8(kPacket_Metadata_ModeList);
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(sizeof(metaData2)); // size
 
 	msg->WriteData(metaData2, sizeof(metaData2));
@@ -891,6 +897,7 @@ void CPacketManager::SendMetadataMatchOption(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_MatchOption);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pMatchingZip->GetBufSize());
 	msg->WriteData(m_pMatchingZip->GetBuf(), m_pMatchingZip->GetBufSize());
 
@@ -907,6 +914,7 @@ void CPacketManager::SendMetadataProgressUnlock(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_ProgressUnlock); // progress_unlock.csv
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pProgressUnlockZip->GetBufSize());
 	msg->WriteData(m_pProgressUnlockZip->GetBuf(), m_pProgressUnlockZip->GetBufSize());
 
@@ -1016,6 +1024,7 @@ void CPacketManager::SendMetadataGameModeList(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_GameModeList);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pGameModeListZip->GetBufSize());
 	msg->WriteData(m_pGameModeListZip->GetBuf(), m_pGameModeListZip->GetBufSize());
 
@@ -1032,6 +1041,7 @@ void CPacketManager::SendMetadataReinforceMaxLvl(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_ReinforceMaxLvl);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pReinforceMaxLvlZip->GetBufSize());
 	msg->WriteData(m_pReinforceMaxLvlZip->GetBuf(), m_pReinforceMaxLvlZip->GetBufSize());
 
@@ -1048,6 +1058,7 @@ void CPacketManager::SendMetadataReinforceMaxEXP(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_ReinforceMaxEXP);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pReinforceMaxExpZip->GetBufSize());
 	msg->WriteData(m_pReinforceMaxExpZip->GetBuf(), m_pReinforceMaxExpZip->GetBufSize());
 
@@ -1077,6 +1088,7 @@ void CPacketManager::SendMetadataItemExpireTime(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_ItemExpireTime);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pItemExpireTimeZip->GetBufSize());
 	msg->WriteData(m_pItemExpireTimeZip->GetBuf(), m_pItemExpireTimeZip->GetBufSize());
 
@@ -1168,6 +1180,7 @@ void CPacketManager::SendMetadataHonorMoneyShop(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_HonorMoneyShop);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pHonorMoneyShopZip->GetBufSize());
 	msg->WriteData(m_pHonorMoneyShopZip->GetBuf(), m_pHonorMoneyShopZip->GetBufSize());
 
@@ -1184,6 +1197,7 @@ void CPacketManager::SendMetadataScenarioTX_Common(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_ScenarioTX_Common);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pScenarioTX_CommonZip->GetBufSize());
 	msg->WriteData(m_pScenarioTX_CommonZip->GetBuf(), m_pScenarioTX_CommonZip->GetBufSize());
 
@@ -1200,6 +1214,7 @@ void CPacketManager::SendMetadataScenarioTX_Dedi(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_ScenarioTX_Dedi);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pScenarioTX_DediZip->GetBufSize());
 	msg->WriteData(m_pScenarioTX_DediZip->GetBuf(), m_pScenarioTX_DediZip->GetBufSize());
 
@@ -1216,6 +1231,7 @@ void CPacketManager::SendMetadataShopItemList_Dedi(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_ShopItemList_Dedi);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pShopItemList_DediZip->GetBufSize());
 	msg->WriteData(m_pShopItemList_DediZip->GetBuf(), m_pShopItemList_DediZip->GetBufSize());
 
@@ -1232,6 +1248,7 @@ void CPacketManager::SendMetadataZBCompetitive(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_ZBCompetitive);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pZBCompetitiveZip->GetBufSize());
 	msg->WriteData(m_pZBCompetitiveZip->GetBuf(), m_pZBCompetitiveZip->GetBufSize());
 
@@ -1274,6 +1291,7 @@ void CPacketManager::SendMetadataWeaponProp(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_WeaponProp);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pWeaponPropZip->GetBufSize());
 	msg->WriteData(m_pWeaponPropZip->GetBuf(), m_pWeaponPropZip->GetBufSize());
 
@@ -1290,6 +1308,7 @@ void CPacketManager::SendMetadataPPSystem(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_PPSystem);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pPPSystemZip->GetBufSize());
 	msg->WriteData(m_pPPSystemZip->GetBuf(), m_pPPSystemZip->GetBufSize());
 
@@ -1306,6 +1325,7 @@ void CPacketManager::SendMetadataCodisData(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_CodisData);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pCodisDataZip->GetBufSize());
 	msg->WriteData(m_pCodisDataZip->GetBuf(), m_pCodisDataZip->GetBufSize());
 
@@ -1322,6 +1342,7 @@ void CPacketManager::SendMetadataItem(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_Item);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pItemZip->GetBufSize());
 	msg->WriteData(m_pItemZip->GetBuf(), m_pItemZip->GetBufSize());
 
@@ -1338,6 +1359,7 @@ void CPacketManager::SendMetadataModeEvent(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_ModeEvent);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pModeEventZip->GetBufSize());
 	msg->WriteData(m_pModeEventZip->GetBuf(), m_pModeEventZip->GetBufSize());
 
@@ -1354,6 +1376,7 @@ void CPacketManager::SendMetadataMileageShop(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_MileageShop);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pMileageShopZip->GetBufSize());
 	msg->WriteData(m_pMileageShopZip->GetBuf(), m_pMileageShopZip->GetBufSize());
 
@@ -1370,6 +1393,7 @@ void CPacketManager::SendMetadataEventShop(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_EventShop);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pEventShopZip->GetBufSize());
 	msg->WriteData(m_pEventShopZip->GetBuf(), m_pEventShopZip->GetBufSize());
 
@@ -1386,6 +1410,7 @@ void CPacketManager::SendMetadataFamilyTotalWarMap(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_FamilyTotalWarMap);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pFamilyTotalWarMapZip->GetBufSize());
 	msg->WriteData(m_pFamilyTotalWarMapZip->GetBuf(), m_pFamilyTotalWarMapZip->GetBufSize());
 
@@ -1402,6 +1427,7 @@ void CPacketManager::SendMetadataFamilyTotalWar(IExtendedSocket* socket)
 
 	msg->WriteUInt8(kPacket_Metadata_FamilyTotalWar);
 
+	msg->WriteUInt8(5);
 	msg->WriteUInt16(m_pFamilyTotalWarZip->GetBufSize());
 	msg->WriteData(m_pFamilyTotalWarZip->GetBuf(), m_pFamilyTotalWarZip->GetBufSize());
 
@@ -1763,18 +1789,65 @@ void CPacketManager::SendItemGachapon(IExtendedSocket* socket, int gachaponItem)
 
 void CPacketManager::SendLobbyJoin(IExtendedSocket* socket, CChannel* channel)
 {
-	// Latest hw.dll rejects the legacy Lobby(153) join layout even when the
-	// user list is empty. Skip it until the latest lobby/user-info payload is
-	// mapped.
-	return;
+	// Latest hw.dll Packet_Lobby subtype 0 accepts:
+	// uint8 subtype, uint16 userCount, then userId/string/full-user-info entries.
+	// Keep the entry minimal so the latest full-user-info parser only touches
+	// confirmed low flags.
+	CSendPacket* msg = CreatePacket(socket, PacketId::Lobby);
+	msg->BuildHeader();
+
+	IUser* self = NULL;
+	if (channel)
+	{
+		for (auto user : channel->GetUsers())
+		{
+			if (user->GetExtendedSocket() == socket)
+			{
+				self = user;
+				break;
+			}
+		}
+	}
+
+	msg->WriteUInt8(LobbyPacketType::Join);
+	msg->WriteUInt16(self ? 1 : 0);
+
+	if (self)
+	{
+		CUserCharacter character = self->GetCharacter(UFLAG_LOW_GAMENAME | UFLAG_LOW_UNK27, 0);
+
+		msg->WriteUInt32(self->GetID());
+		msg->WriteString(self->GetUsername());
+
+		CPacketHelper_FullUserInfo fullUserInfo;
+		fullUserInfo.Build(msg->m_OutStream, self->GetID(), character);
+	}
+
+	Logger().Info("TX Lobby(153) join: users=%d\n", self ? 1 : 0);
+	socket->Send(msg);
 }
 
 void CPacketManager::SendLobbyUserJoin(IExtendedSocket* socket, IUser* joinedUser)
 {
-	// See SendLobbyJoin: the latest client does not accept this legacy layout.
+	// The latest client accepts the same minimal full-user-info shape used by
+	// SendLobbyJoin. Keep this narrow until the full current schema is mapped.
+	Logger().Info("TX Lobby(153) user-join minimal: user=%d\n", joinedUser->GetID());
+	CSendPacket* msg = CreatePacket(socket, PacketId::Lobby);
+	msg->BuildHeader();
+
+	msg->WriteUInt8(LobbyPacketType::UserJoin);
+	msg->WriteUInt32(joinedUser->GetID());
+	msg->WriteString(joinedUser->GetUsername());
+
+	CUserCharacter character = joinedUser->GetCharacter(UFLAG_LOW_GAMENAME | UFLAG_LOW_UNK27, 0);
+
+	CPacketHelper_FullUserInfo fullUserInfo;
+	fullUserInfo.Build(msg->m_OutStream, joinedUser->GetID(), character);
+
+	socket->Send(msg);
 	return;
 
-	CSendPacket* msg = CreatePacket(socket, PacketId::Lobby);
+	/*CSendPacket* msg = CreatePacket(socket, PacketId::Lobby);
 	msg->BuildHeader();
 
 	msg->WriteUInt8(LobbyPacketType::UserJoin);
@@ -1787,6 +1860,7 @@ void CPacketManager::SendLobbyUserJoin(IExtendedSocket* socket, IUser* joinedUse
 	fullUserInfo.Build(msg->m_OutStream, joinedUser->GetID(), character);
 
 	socket->Send(msg);
+	*/
 }
 
 void CPacketManager::SendLobbyUserLeft(IExtendedSocket* socket, IUser* user)
@@ -1973,8 +2047,8 @@ void BuildRoomInfo(CSendPacket* msg, IRoom* room, int lFlag, int hFlag)
 		msg->WriteUInt8(roomSettings->zbRebalance);
 	}
 
-	// studio related
-	if (roomSettings->mapId == 254)
+	// Studio fields are only present after the map id field.
+	if ((lFlag & RLFLAG_MAPID) && roomSettings->mapId == 254)
 	{
 		msg->WriteUInt32(roomSettings->voxelFlag);
 
@@ -1989,11 +2063,6 @@ void BuildRoomInfo(CSendPacket* msg, IRoom* room, int lFlag, int hFlag)
 
 void CPacketManager::SendRoomListFull(IExtendedSocket* socket, const vector<IRoom*>& rooms)
 {
-	// Latest hw.dll does not accept the legacy GameMatchRoomList(151) layout.
-	// Keep channel membership server-side, but do not push the old room list
-	// until the current client payload is mapped.
-	return;
-
 	CSendPacket* msg = CreatePacket(socket, PacketId::GameMatchRoomList);
 	msg->BuildHeader();
 
@@ -2010,48 +2079,27 @@ void CPacketManager::SendRoomListFull(IExtendedSocket* socket, const vector<IRoo
 
 	for (auto room : rooms)
 	{
-		BuildRoomInfo(msg, room, RLFLAG_ALL, RLHFLAG_ALL);
+		BuildRoomInfo(msg, room, 0, 0);
 	}
+
+	Logger().Info("TX GameMatchRoomList(151) minimal full list: rooms=%zu\n", rooms.size());
 
 	socket->Send(msg);
 }
 
 void CPacketManager::SendRoomListAdd(IExtendedSocket* socket, IRoom* room)
 {
-	/*CSendPacket* msg = CreatePacket(socket, PacketId::GameMatchRoomList);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(RoomListPacketType::AddRoom);
-
-	BuildRoomInfo(msg, room);
-
-	socket->Send(msg);
-*/
+	Logger().Info("TX GameMatchRoomList(151) add skipped for latest layout: room=%d\n", room ? room->GetID() : 0);
 }
 
 void CPacketManager::SendRoomListUpdate(IExtendedSocket* socket, IRoom* room)
 {
-	/*CSendPacket* msg = CreatePacket(socket, PacketId::GameMatchRoomList);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(RoomListPacketType::UpdateRoom);
-
-	BuildRoomInfo(msg, room);
-
-	socket->Send(msg);
-*/
+	Logger().Info("TX GameMatchRoomList(151) update skipped for latest layout: room=%d\n", room ? room->GetID() : 0);
 }
 
 void CPacketManager::SendRoomListRemove(IExtendedSocket* socket, int roomID)
 {
-	/*CSendPacket* msg = CreatePacket(socket, PacketId::GameMatchRoomList);
-	msg->BuildHeader();
-
-	msg->WriteUInt8(RoomListPacketType::RemoveRoom);
-	msg->WriteUInt16(roomID);
-
-	socket->Send(msg);
-*/
+	Logger().Info("TX GameMatchRoomList(151) remove skipped for latest layout: room=%d\n", roomID);
 }
 
 void CPacketManager::SendShopUpdate(IExtendedSocket* socket, const vector<Product>& products)
