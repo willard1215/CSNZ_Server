@@ -19,6 +19,7 @@ CPacketManager g_PacketManager;
 CPacketManager::CPacketManager() : CBaseManager("PacketManager")
 {
 	m_pMapListZip = NULL;
+	m_pModeListZip = NULL;
 	m_pClientTableZip = NULL;
 	m_pWeaponPartsZip = NULL;
 	m_pMileageShopZip = NULL;
@@ -59,6 +60,7 @@ CPacketManager::~CPacketManager()
 bool CPacketManager::Init()
 {
 	m_pMapListZip = LoadBinaryMetadata("MapList.csv", true, "resource/MapList.csv");
+	m_pModeListZip = LoadBinaryMetadata("ModeList.csv", true, "resource/MapModeV2/ModeList.csv");
 	m_pClientTableZip = LoadBinaryMetadata("ClientTable.csv", true);
 	m_pWeaponPartsZip = LoadBinaryMetadata("weaponparts.csv", true, "weaponparts.csv");
 	m_pMileageShopZip = LoadBinaryMetadata("MileageShop.csv", true);
@@ -91,7 +93,7 @@ bool CPacketManager::Init()
 	m_pUnk54 = LoadBinaryMetadata("Metadata_Unk54.bin");
 	m_pUnk55 = LoadBinaryMetadata("Metadata_Unk55.bin");
 
-	if (!m_pMapListZip || !m_pClientTableZip || !m_pWeaponPartsZip || !m_pMileageShopZip || !m_pMatchingZip || !m_pProgressUnlockZip || !m_pGameModeListZip ||
+	if (!m_pMapListZip || !m_pModeListZip || !m_pClientTableZip || !m_pWeaponPartsZip || !m_pMileageShopZip || !m_pMatchingZip || !m_pProgressUnlockZip || !m_pGameModeListZip ||
 		!m_pReinforceMaxLvlZip || !m_pReinforceMaxExpZip || !m_pItemExpireTimeZip || !m_pHonorMoneyShopZip || !m_pScenarioTX_CommonZip || !m_pScenarioTX_DediZip ||
 		!m_pShopItemList_DediZip || !m_pZBCompetitiveZip || !m_pPPSystemZip || !m_pItemZip || !m_pCodisDataZip || !m_pWeaponPropZip || !m_pReinforceItemsExp ||
 		!m_pUnk3 || !m_pUnk8 || !m_pUnk20 || !m_pUnk31 || !m_pUnk43 || !m_pUnk49 || !m_pModeEventZip || !m_pEventShopZip || !m_pFamilyTotalWarMapZip ||
@@ -110,6 +112,8 @@ void CPacketManager::Shutdown()
 
 	if (m_pMapListZip)
 		delete m_pMapListZip;
+	if (m_pModeListZip)
+		delete m_pModeListZip;
 	if (m_pClientTableZip)
 		delete m_pClientTableZip;
 	if (m_pWeaponPartsZip)
@@ -872,17 +876,18 @@ void CPacketManager::SendMetadataWeaponParts(IExtendedSocket* socket)
 	socket->Send(msg);
 }
 
-// unused
 void CPacketManager::SendMetadataModelist(IExtendedSocket* socket)
 {
+	if (!m_pModeListZip)
+		return;
+
 	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
 	msg->BuildHeader();
 
 	msg->WriteUInt8(kPacket_Metadata_ModeList);
 	msg->WriteUInt8(5);
-	msg->WriteUInt16(sizeof(metaData2)); // size
-
-	msg->WriteData(metaData2, sizeof(metaData2));
+	msg->WriteUInt16(m_pModeListZip->GetBufSize());
+	msg->WriteData(m_pModeListZip->GetBuf(), m_pModeListZip->GetBufSize());
 
 	socket->Send(msg);
 }

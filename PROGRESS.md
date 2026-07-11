@@ -91,6 +91,14 @@ The latest `hw.dll` method `2` cipher descriptor uses a 16-byte effective key le
 - Metadata entries `30 progress_unlock.csv`, `31 ReinforceMaxLv.csv`, and
   `32 ReinforceMaxEXP.csv` were remapped against the latest `hw.dll` parser and
   re-enabled in the active server config.
+- Added a full latest-handler metadata rebuild pipeline covering all 22
+  confirmed ids. It validates exact ZIP entry paths, CSV/JSONC structure,
+  known parser schemas, and the one-shot `uint16` payload limit.
+- Replaced the legacy embedded id `2` ZIP with a rebuilt ModeList payload whose
+  internal path is `resource/MapModeV2/ModeList.csv`. The latest id `2`
+  handler returns false immediately, so this payload remains disabled.
+- Removed non-data date-divider rows from `ItemExpireTime.csv`; the full local
+  rebuild now completes with `rebuilt=22 errors=0`.
 - `39 HonorShop.csv` still remains disabled. Its parser-access shape is now
   known, but any remaining failure is likely semantic/dependency state rather
   than a simple missing-column crash.
@@ -211,7 +219,18 @@ attempting the old incremental payloads.
 ## How To Build
 
 ```powershell
-& 'C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe' D:\project\CSONLINE\CSNZ_Server\build\PROJECTNAME.sln /p:Configuration=Release /m /t:PROJECTNAME
+$cmake = '.\.tools\cmake-3.31.6-windows-x86_64\bin\cmake.exe'
+
+# Codex desktop currently exposes both Path and PATH. Normalize them before
+# invoking MSBuild through CMake because MSBuild treats them as duplicate keys.
+$vars = [Environment]::GetEnvironmentVariables()
+$pathValue = $vars['Path']
+[Environment]::SetEnvironmentVariable('PATH', $null, 'Process')
+[Environment]::SetEnvironmentVariable('Path', $null, 'Process')
+[Environment]::SetEnvironmentVariable('Path', $pathValue, 'Process')
+
+& $cmake -S src -B build-local -G 'Visual Studio 17 2022' -A Win32 '-DCMAKE_SYSTEM_VERSION=10.0.22000.0'
+& $cmake --build build-local --config Release --target PROJECTNAME --parallel
 ```
 
 ## How To Run And Inspect Logs
@@ -226,3 +245,14 @@ Get-ChildItem -Path 'D:\project\CSONLINE\CSNZ_Server\bin\Logs' -Filter *.log |
   Select-Object -First 1 |
   ForEach-Object { $_.FullName; Get-Content -LiteralPath $_.FullName -Tail 260 }
 ```
+### 2026-07-11: latest hw.dll-based metadata artifact rebuild
+
+- Replaced all 13 fabricated metadata placeholders with results derived from
+  the concrete `hw_2026.dll` handlers/parsers.
+- Generated seven minimal parser-compatible server-only payloads and recorded
+  their parser virtual addresses in `bin/MetadataArtifacts/manifest.json`.
+- Marked six paths whose current handlers are unconditional rejecting stubs as
+  `unsupported_by_hw`; their files are deliberately zero-byte because no file
+  content can make those handlers succeed.
+- The requested artifact tree now has all 39 exact paths, with no placeholder
+  comment or `_placeholder` JSON content.

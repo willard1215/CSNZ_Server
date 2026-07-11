@@ -9,6 +9,17 @@ from pathlib import Path
 
 
 SCHEMAS = {
+    "MileageShop.csv": {
+        "min_columns": 27,
+        "numeric": list(range(0, 3)) + list(range(5, 9)) + list(range(11, 27)),
+        "date": [3, 4, 9, 10],
+    },
+    "EventShop.csv": {
+        "header_rows": 2,
+        "min_columns": 25,
+        "numeric": list(range(0, 7)) + list(range(10, 25)),
+        "date": [7, 8, 9],
+    },
     "HonorMoneyShop.csv": {
         "min_columns": 25,
         "numeric": list(range(0, 3)) + list(range(5, 25)),
@@ -82,7 +93,8 @@ def validate(path: Path, schema: dict) -> int:
     text = decode_file(path)
     rows = list(csv.reader(text.splitlines()))
     errors = 0
-    for row_index, row in enumerate(rows[1:], start=2):
+    header_rows = schema.get("header_rows", 1)
+    for row_index, row in enumerate(rows[header_rows:], start=header_rows + 1):
         if not row or all(not cell.strip() for cell in row):
             continue
         if len(row) < schema["min_columns"]:
@@ -130,7 +142,7 @@ def validate(path: Path, schema: dict) -> int:
             if column < len(row) and not is_zero_or_date(row[column]):
                 print(f"{path.name}:{row_index}: invalid date column {column}: {row[column]!r}")
                 errors += 1
-    print(f"{path.name}: rows={max(len(rows) - 1, 0)} errors={errors}")
+    print(f"{path.name}: rows={max(len(rows) - header_rows, 0)} errors={errors}")
     return errors
 
 

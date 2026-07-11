@@ -8,6 +8,11 @@ src/.vs
 # cmake
 src/out
 src/CMakeSettings.json
+.tools/
+build-local/
+cmake-*-windows-*.zip
+__pycache__/
+*.py[cod]
 
 # srv bin files
 bin/*.exe
@@ -18,5 +23,8 @@ bin/*.log
 bin/*.db3
 bin/Logs
 bin/platforms
+bin/RebuiltMetadata/
+bin/MetadataArtifacts/
+bin/ExtractedPak/
 
 Releases

@@ -1,7 +1,6 @@
 #include "net/tcpserver.h"
 #include "net/extendedsocket.h"
 #include "interface/net/iserverlistener.h"
-#include "serverconfig.h"
 
 #include "common/net/netdefs.h"
 #include "common/utils.h"
@@ -19,6 +18,7 @@ CTCPServer::CTCPServer() : m_ListenThread(ListenThread, this)
 {
 	m_Socket = INVALID_SOCKET;
 	m_bIsRunning = false;
+	m_bSSL = false;
 	m_pListener = NULL;
 	m_pCriticalSection = NULL;
  	m_nNextClientIndex = 0;
@@ -54,6 +54,8 @@ bool CTCPServer::Start(const string& port, int tcpSendBufferSize, bool ssl)
 {
 	if (IsRunning())
 		return false;
+
+	m_bSSL = ssl;
 	
 	// Initialize wolfSSL
 	wolfSSL_Init();
@@ -360,7 +362,7 @@ void CTCPServer::InitSSLContext()
 	if (m_pCTX == NULL)
 	{
 		Logger().Error("wolfSSL_CTX_new() failed to create WOLFSSL_CTX. Continuing without SSL...\n", m_nResult, WSAGetLastErrorString());
-		g_pServerConfig->ssl = false;
+		m_bSSL = false;
 		return;
 	}
 
@@ -369,7 +371,7 @@ void CTCPServer::InitSSLContext()
 	{
 		Logger().Error("wolfSSL_CTX_use_certificate_file() failed to load %s, please check the file. Continuing without SSL...\n", CERT_FILE);
 		m_pCTX = NULL;
-		g_pServerConfig->ssl = false;
+		m_bSSL = false;
 		return;
 	}
 
@@ -378,7 +380,7 @@ void CTCPServer::InitSSLContext()
 	{
 		Logger().Error("wolfSSL_CTX_use_PrivateKey_file() failed to load %s, please check the file. Continuing without SSL...\n", KEY_FILE);
 		m_pCTX = NULL;
-		g_pServerConfig->ssl = false;
+		m_bSSL = false;
 		return;
 	}
 }
@@ -418,7 +420,7 @@ IExtendedSocket* CTCPServer::Accept(unsigned int id)
 	static vector<unsigned char> msg(connectedMsg.begin(), connectedMsg.end());
 	newSocket->Send(msg, true);
 
-	if (g_pServerConfig->ssl)
+	if (m_bSSL)
 	{
 		// Create a WOLFSSL object
 		WOLFSSL* newSSL = wolfSSL_new(m_pCTX);

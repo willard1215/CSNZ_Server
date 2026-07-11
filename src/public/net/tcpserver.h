@@ -39,6 +39,7 @@ public:
 private:
 	SOCKET m_Socket;
 	bool m_bIsRunning;
+	bool m_bSSL;
 	int m_nResult;
 	CThread m_ListenThread;
 	unsigned int m_nNextClientIndex;

@@ -911,25 +911,25 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 	}
 	if (flag & kMetadataFlag_ProgressUnlock)
 	{
-		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
-			kPacket_Metadata_ProgressUnlock, "resource/zombiez/progress_unlock.csv");
+		logMetadata(kPacket_Metadata_ProgressUnlock, "resource/zombiez/progress_unlock.csv");
+		g_PacketManager.SendMetadataProgressUnlock(socket);
 	}
 	if (flag & kMetadataFlag_ReinforceMaxLvl)
 	{
-		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
-			kPacket_Metadata_ReinforceMaxLvl, "ReinforceMaxLv.csv");
+		logMetadata(kPacket_Metadata_ReinforceMaxLvl, "ReinforceMaxLv.csv");
+		g_PacketManager.SendMetadataReinforceMaxLvl(socket);
 	}
 	if (flag & kMetadataFlag_ReinforceMaxEXP)
 	{
-		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
-			kPacket_Metadata_ReinforceMaxEXP, "ReinforceMaxEXP.csv");
+		logMetadata(kPacket_Metadata_ReinforceMaxEXP, "ReinforceMaxEXP.csv");
+		g_PacketManager.SendMetadataReinforceMaxEXP(socket);
 	}
 	if (flag & kMetadataFlag_ReinforceItemsExp)
 		g_PacketManager.SendMetadataReinforceItemsExp(socket);
 	if (flag & kMetadataFlag_Item)
 	{
-		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
-			kPacket_Metadata_Item, "resource/item.csv");
+		logMetadata(kPacket_Metadata_Item, "resource/item.csv");
+		g_PacketManager.SendMetadataItem(socket);
 	}
 	if (flag & kMetadataFlag_HonorMoneyShop)
 	{
@@ -938,53 +938,53 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 	}
 	if (flag & kMetadataFlag_ItemExpireTime)
 	{
-		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
-			kPacket_Metadata_ItemExpireTime, "resource/ItemExpireTime.csv");
+		logMetadata(kPacket_Metadata_ItemExpireTime, "resource/ItemExpireTime.csv");
+		g_PacketManager.SendMetadataItemExpireTime(socket);
 	}
 	if (flag & kMetadataFlag_ScenarioTX_Common)
 	{
-		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
-			kPacket_Metadata_ScenarioTX_Common, "resource/scenariotx/scenariotx_common.json");
+		logMetadata(kPacket_Metadata_ScenarioTX_Common, "resource/scenariotx/scenariotx_common.json");
+		g_PacketManager.SendMetadataScenarioTX_Common(socket);
 	}
 	if (flag & kMetadataFlag_ScenarioTX_Dedi)
 	{
-		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
-			kPacket_Metadata_ScenarioTX_Dedi, "resource/scenariotx/scenariotx_dedi.json");
+		logMetadata(kPacket_Metadata_ScenarioTX_Dedi, "resource/scenariotx/scenariotx_dedi.json");
+		g_PacketManager.SendMetadataScenarioTX_Dedi(socket);
 	}
 	if (flag & kMetadataFlag_ShopItemList_Dedi)
 	{
-		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
-			kPacket_Metadata_ShopItemList_Dedi, "resource/scenariotx/shopitemlist_dedi.json");
+		logMetadata(kPacket_Metadata_ShopItemList_Dedi, "resource/scenariotx/shopitemlist_dedi.json");
+		g_PacketManager.SendMetadataShopItemList_Dedi(socket);
 	}
 	if (flag & kMetadataFlag_PPSystem)
 	{
-		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
-			kPacket_Metadata_PPSystem, "ppsystem/config.json");
+		logMetadata(kPacket_Metadata_PPSystem, "ppsystem/config.json");
+		g_PacketManager.SendMetadataPPSystem(socket);
 	}
 	if (flag & kMetadataFlag_ZBCompetitive)
 	{
-		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
-			kPacket_Metadata_ZBCompetitive, "resource/zombiecompetitive/ZBCompetitive.json");
+		logMetadata(kPacket_Metadata_ZBCompetitive, "resource/zombiecompetitive/ZBCompetitive.json");
+		g_PacketManager.SendMetadataZBCompetitive(socket);
 	}
 	if (flag & kMetadataFlag_ModeEvent)
 	{
-		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
-			kPacket_Metadata_ModeEvent, "resource/ModeEvent/ModeEvent.csv");
+		logMetadata(kPacket_Metadata_ModeEvent, "resource/ModeEvent/ModeEvent.csv");
+		g_PacketManager.SendMetadataModeEvent(socket);
 	}
 	if (flag & kMetadataFlag_EventShop)
 	{
-		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
-			kPacket_Metadata_EventShop, "resource/CPShop/EventShop.csv");
+		logMetadata(kPacket_Metadata_EventShop, "resource/CPShop/EventShop.csv");
+		g_PacketManager.SendMetadataEventShop(socket);
 	}
 	if (flag & kMetadataFlag_FamilyTotalWarMap)
 	{
-		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
-			kPacket_Metadata_FamilyTotalWarMap, "resource/ClanWar/FamilyTotalWarMap.csv");
+		logMetadata(kPacket_Metadata_FamilyTotalWarMap, "resource/ClanWar/FamilyTotalWarMap.csv");
+		g_PacketManager.SendMetadataFamilyTotalWarMap(socket);
 	}
 	if (flag & kMetadataFlag_FamilyTotalWar)
 	{
-		Logger().Warn("Skipping latest metadata id=%d, name=%s until parser crash is mapped\n",
-			kPacket_Metadata_FamilyTotalWar, "resource/ClanWar/FamilyTotalWar.json");
+		logMetadata(kPacket_Metadata_FamilyTotalWar, "resource/ClanWar/FamilyTotalWar.json");
+		g_PacketManager.SendMetadataFamilyTotalWar(socket);
 	}
 	if (flag & kMetadataFlag_Unk54)
 		g_PacketManager.SendMetadataUnk54(socket);

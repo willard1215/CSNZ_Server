@@ -290,6 +290,7 @@ private:
 	CBinMetadata* LoadBinaryMetadata(const char* fileName, bool zip = false, const char* zipEntryName = NULL);
 
 	CBinMetadata* m_pMapListZip;
+	CBinMetadata* m_pModeListZip;
 	CBinMetadata* m_pClientTableZip;
 	CBinMetadata* m_pWeaponPartsZip;
 	CBinMetadata* m_pMatchingZip;

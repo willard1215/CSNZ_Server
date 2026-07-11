@@ -40,7 +40,7 @@ TEST_CASE("Events - test events")
 	thread t(eventThreadFunc);
 
 	// wait for a thread to end
-	this_thread::sleep_for(200ms);
+	this_thread::sleep_for(chrono::milliseconds(200));
 
 	// check if thread is done
 	CHECK(done == true);

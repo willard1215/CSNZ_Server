@@ -193,6 +193,26 @@ server-side again. `HonorShop.csv` remains disabled because its parser-access
 shape is valid, so any remaining crash is likely semantic or dependency-state
 related rather than a simple missing-column fault.
 
+### ID 2 resource/MapModeV2/ModeList.csv
+
+The current handler at `0x02670ea0` is exactly `xor al, al; ret`. The local
+payload has been rebuilt with the correct latest ZIP entry path, but it must
+not be sent while this handler remains a rejecting stub.
+
+### ID 21 MileageShop.csv
+
+`FUN_02671000` dispatches to `FUN_0203ef60`. The parser starts after one header
+row, reads 27 columns, treats columns `3,4,9,10` as optional date strings, and
+uses numeric values in columns `0..2`, `5..8`, and `11..26`. The local file
+passes this concrete access/type schema.
+
+### ID 54 resource/CPShop/EventShop.csv
+
+`FUN_02671970` dispatches to `FUN_0203ddc0`. The parser skips two header rows.
+It reads 25 columns, accepts date strings in columns `7,8,9`, and numeric
+values in columns `0..6` and `10..24`. The local file passes this concrete
+access/type schema.
+
 ## Current Practical Plan
 
 1. Keep sending metadata in latest table order.
@@ -204,3 +224,52 @@ related rather than a simple missing-column fault.
    - record column indexes and types here;
    - normalize the local CSV to that schema;
    - enable the file and test `Packet_Metadata_Parse leave ... result=1`.
+
+## Full Local Rebuild
+
+`tools/rebuild_latest_metadata.py` now rebuilds all 22 confirmed latest
+handler payloads as deterministic ZIP files under `bin/RebuiltMetadata`.
+It enforces the latest ZIP entry names, validates CSV row shape and JSONC
+syntax, applies the known concrete parser schemas, and rejects payloads that
+exceed the one-shot `uint16` chunk limit.
+
+The legacy embedded metadata id `2` ZIP was replaced with `bin/Data/ModeList.csv`.
+The server now creates its ZIP with the latest internal path
+`resource/MapModeV2/ModeList.csv`. The current latest handler body is only
+`xor al, al; ret`, so id `2` remains rebuildable but is not enabled for
+automatic transmission.
+
+`ItemExpireTime.csv` contained date-divider rows such as `;231101`. These were
+not item records and could reach the latest generic table parser as one-column
+rows, so they were removed. Every remaining non-empty row has at least the
+item id and expiry value expected by the table path.
+
+Latest full rebuild result: `rebuilt=22 errors=0`. The largest one-shot ZIP is
+id `35 resource/item.csv` at about 56.8 KB, below the 65,535-byte chunk limit.
+
+## Latest `hw_2026.dll` artifact reconstruction
+
+`tools/assemble_metadata_artifacts.py` no longer emits placeholder comments or
+`_placeholder` JSON objects. The remaining server-only paths were classified by
+their concrete handlers in `hw_2026.dll`:
+
+| Path | Concrete parser/handler | Minimal representation |
+| --- | --- | --- |
+| `models/SkinWeaponInfo_server.json` | `0x0203e630` | empty JSON table `{}`; data loop starts at row 1 |
+| `SeasonBadgeShop.csv` | `0x026718d0` | header-only table; dispatched through badge manager |
+| `resource/buff/classmastery.json` | `0x0203f880` | empty JSON table `{}`; data loop starts at row 1 |
+| `resource/WeaponAscend.csv` | `0x01ff1080` | empty JSON object; this nominal CSV path uses the JSON parser |
+| `resource/zombi/PerkParam.csv` | `0x025d0a80` | 7-column header; parser reads columns 0..6 from row 1 onward |
+| `AnniversaryShop.csv` | `0x025d0090` | 8-column header; parser reads columns 0..7 from row 1 onward |
+| `ZCoinShop.csv` | `0x025d0280` | 4-column header; optional synthesis triples begin at column 4 |
+
+The handlers at `0x02671150`, `0x02671160`, and `0x02671cb0` through
+`0x02671ce0` are exactly `xor al, al; ret`. Therefore `badwordadd.csv`,
+`badworddel.csv`, the three Anniversary JSON paths, and `SynthesisItem.csv`
+have no payload that can be accepted by this client build. Their artifact files
+are intentionally zero bytes and are labelled `unsupported_by_hw` in the
+manifest instead of containing fabricated metadata.
+
+The assembled tree contains all 39 requested paths plus `manifest.json` under
+`bin/MetadataArtifacts`. Current result: 22 server sources, 4 extracted current
+client originals, 7 parser-derived minimal files, and 6 disabled-handler files.
