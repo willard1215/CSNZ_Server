@@ -13,6 +13,7 @@
 #include "zip.h"
 
 #include <cstdlib>
+#include <vector>
 
 using namespace std;
 
@@ -35,6 +36,7 @@ CPacketManager::CPacketManager() : CBaseManager("PacketManager")
 	m_pScenarioTX_CommonZip = NULL;
 	m_pScenarioTX_DediZip = NULL;
 	m_pShopItemList_DediZip = NULL;
+	m_pEpicPieceShopZip = NULL;
 	m_pZBCompetitiveZip = NULL;
 	m_pPPSystemZip = NULL;
 	m_pItemZip = NULL;
@@ -44,6 +46,10 @@ CPacketManager::CPacketManager() : CBaseManager("PacketManager")
 	m_pEventShopZip = NULL;
 	m_pFamilyTotalWarMapZip = NULL;
 	m_pFamilyTotalWarZip = NULL;
+	m_pWeaponAscendZip = NULL;
+	m_pPerkParamZip = NULL;
+	m_pSynthesisZip = NULL;
+	m_pZCoinShopZip = NULL;
 	m_pReinforceItemsExp = NULL;
 	m_pUnk3 = NULL;
 	m_pUnk8 = NULL;
@@ -76,6 +82,7 @@ bool CPacketManager::Init()
 	m_pScenarioTX_CommonZip = LoadBinaryMetadata("scenariotx_common.json", true, "resource/scenariotx/scenariotx_common.json");
 	m_pScenarioTX_DediZip = LoadBinaryMetadata("scenariotx_dedi.json", true, "resource/scenariotx/scenariotx_dedi.json");
 	m_pShopItemList_DediZip = LoadBinaryMetadata("shopitemlist_dedi.json", true, "resource/scenariotx/shopitemlist_dedi.json");
+	m_pEpicPieceShopZip = LoadBinaryMetadata("EpicPieceShop.csv", true);
 	m_pZBCompetitiveZip = LoadBinaryMetadata("ZBCompetitive.json", true, "resource/zombiecompetitive/ZBCompetitive.json");
 	m_pPPSystemZip = LoadBinaryMetadata("ppsystem.json", true, "ppsystem/config.json");
 	m_pItemZip = LoadBinaryMetadata("Item.csv", true, "resource/item.csv");
@@ -85,10 +92,14 @@ bool CPacketManager::Init()
 	m_pEventShopZip = LoadBinaryMetadata("EventShop.csv", true, "resource/CPShop/EventShop.csv");
 	m_pFamilyTotalWarMapZip = LoadBinaryMetadata("FamilyTotalWarMap.csv", true, "resource/ClanWar/FamilyTotalWarMap.csv");
 	m_pFamilyTotalWarZip = LoadBinaryMetadata("FamilyTotalWar.json", true, "resource/ClanWar/FamilyTotalWar.json");
+	m_pWeaponAscendZip = LoadBinaryMetadata("WeaponAscend.csv", true, "resource/WeaponAscend.csv");
+	m_pPerkParamZip = LoadBinaryMetadata("PerkParam.csv", true, "resource/zombi/PerkParam.csv");
+	m_pSynthesisZip = LoadBinaryMetadata("Synthesis.csv", true, "resource/Synthesis/SynthesisItem.csv");
+	m_pZCoinShopZip = LoadBinaryMetadata("ZCoinShop.csv", true);
 	m_pReinforceItemsExp = LoadBinaryMetadata("Metadata_ReinforceItemsExp.bin");
 	m_pUnk3 = LoadBinaryMetadata("Metadata_Unk3.bin");
 	m_pUnk8 = LoadBinaryMetadata("Metadata_Unk8.bin");
-	m_pUnk20 = LoadBinaryMetadata("Metadata_Unk20.bin");
+	m_pUnk20 = LoadBinaryMetadata("Metadata_Unk20.bin"); //시즌패스
 	m_pUnk31 = LoadBinaryMetadata("Metadata_Unk31.bin");
 	m_pUnk43 = LoadBinaryMetadata("Metadata_Unk43.bin");
 	m_pUnk49 = LoadBinaryMetadata("Metadata_Unk49.bin");
@@ -106,6 +117,48 @@ bool CPacketManager::Init()
 	}
 
 	return true;
+}
+
+bool CPacketManager::UsesLegacyMetadataIDs()
+{
+	const char* idset = getenv("CSNZ_METADATA_IDSET");
+	return idset && (_stricmp(idset, "legacy") == 0 || _stricmp(idset, "old") == 0 || _stricmp(idset, "asset") == 0);
+}
+
+int CPacketManager::GetMetadataWireID(int latestMetadataID)
+{
+	if (!UsesLegacyMetadataIDs())
+		return latestMetadataID;
+
+	switch (latestMetadataID)
+	{
+	case kPacket_Metadata_MapList: return 0;
+	case kPacket_Metadata_ClientTable: return 1;
+	case kPacket_Metadata_ModeList: return 2;
+	case kPacket_Metadata_MatchOption: return 9;
+	case kPacket_Metadata_WeaponParts: return 17;
+	case kPacket_Metadata_MileageShop: return 18;
+	case kPacket_Metadata_GameModeList: return 24;
+	case kPacket_Metadata_ProgressUnlock: return 27;
+	case kPacket_Metadata_ReinforceMaxLvl: return 28;
+	case kPacket_Metadata_ReinforceMaxEXP: return 29;
+	case kPacket_Metadata_Item: return 32;
+	case kPacket_Metadata_CodisData: return 35;
+	case kPacket_Metadata_HonorMoneyShop: return 36;
+	case kPacket_Metadata_ItemExpireTime: return 37;
+	case kPacket_Metadata_ScenarioTX_Common: return 38;
+	case kPacket_Metadata_ScenarioTX_Dedi: return 39;
+	case kPacket_Metadata_ShopItemList_Dedi: return 40;
+	case kPacket_Metadata_EpicPieceShop: return 41;
+	case kPacket_Metadata_WeaponProp: return 42;
+	case kPacket_Metadata_PPSystem: return 45;
+	case kPacket_Metadata_ZBCompetitive: return 48;
+	case kPacket_Metadata_ModeEvent: return 50;
+	case kPacket_Metadata_EventShop: return 51;
+	case kPacket_Metadata_FamilyTotalWarMap: return 52;
+	case kPacket_Metadata_FamilyTotalWar: return 53;
+	default: return latestMetadataID;
+	}
 }
 
 void CPacketManager::Shutdown()
@@ -142,6 +195,8 @@ void CPacketManager::Shutdown()
 		delete m_pScenarioTX_DediZip;
 	if (m_pShopItemList_DediZip)
 		delete m_pShopItemList_DediZip;
+	if (m_pEpicPieceShopZip)
+		delete m_pEpicPieceShopZip;
 	if (m_pZBCompetitiveZip)
 		delete m_pZBCompetitiveZip;
 	if (m_pPPSystemZip)
@@ -160,6 +215,14 @@ void CPacketManager::Shutdown()
 		delete m_pFamilyTotalWarMapZip;
 	if (m_pFamilyTotalWarZip)
 		delete m_pFamilyTotalWarZip;
+	if (m_pWeaponAscendZip)
+		delete m_pWeaponAscendZip;
+	if (m_pPerkParamZip)
+		delete m_pPerkParamZip;
+	if (m_pSynthesisZip)
+		delete m_pSynthesisZip;
+	if (m_pZCoinShopZip)
+		delete m_pZCoinShopZip;
 
 	if (m_pReinforceItemsExp)
 		delete m_pReinforceItemsExp;
@@ -190,6 +253,67 @@ CBinMetadata* CPacketManager::LoadBinaryMetadata(const char* fileName, bool zip,
 {
 	char path[MAX_PATH];
 	const char* metadataPath = zipEntryName ? zipEntryName : fileName;
+
+	if (zip)
+	{
+		vector<string> liveCandidates;
+		liveCandidates.push_back(string("LiveMetadata/") + fileName + ".zip");
+
+		if (zipEntryName)
+		{
+			string entryName = zipEntryName;
+			size_t slash = entryName.find_last_of("/\\");
+			if (slash != string::npos)
+				entryName = entryName.substr(slash + 1);
+			liveCandidates.push_back(string("LiveMetadata/") + entryName + ".zip");
+		}
+
+		string fileNameStr = fileName;
+		size_t dot = fileNameStr.find_last_of('.');
+		if (dot != string::npos)
+			liveCandidates.push_back(string("LiveMetadata/") + fileNameStr.substr(0, dot) + ".zip.zip");
+
+		for (const string& livePath : liveCandidates)
+		{
+			FILE* liveFile = fopen(livePath.c_str(), "rb");
+			if (!liveFile)
+				continue;
+
+			fseek(liveFile, 0, SEEK_END);
+			size_t liveSize = ftell(liveFile);
+			rewind(liveFile);
+
+			void* liveBuffer = malloc(sizeof(char) * liveSize);
+			if (liveBuffer == NULL)
+			{
+				Logger().Error("CPacketManager::LoadBinaryMetadata: failed to allocate memory for %s\n", livePath.c_str());
+				fclose(liveFile);
+				return NULL;
+			}
+
+			size_t liveResult = fread(liveBuffer, sizeof(char), liveSize, liveFile);
+			fclose(liveFile);
+			if (liveResult != liveSize)
+			{
+				Logger().Error("CPacketManager::LoadBinaryMetadata: failed to read file %s\n", livePath.c_str());
+				free(liveBuffer);
+				return NULL;
+			}
+
+			if (liveSize > 0xFFFF)
+			{
+				Logger().Info("CPacketManager::LoadBinaryMetadata: using %s raw ZIP payload (%u bytes, chunked)\n",
+					livePath.c_str(), (unsigned int)liveSize);
+			}
+			else
+			{
+				Logger().Info("CPacketManager::LoadBinaryMetadata: using %s raw ZIP payload (%u bytes)\n",
+					livePath.c_str(), (unsigned int)liveSize);
+			}
+			return new CBinMetadata(liveBuffer, liveSize);
+		}
+	}
+
 	snprintf(path, MAX_PATH, "MetadataArtifacts/%s", metadataPath);
 
 	FILE* f = fopen(path, "rb");
@@ -258,16 +382,24 @@ void CPacketManager::SendZipMetadata(IExtendedSocket* socket, int metadataID, CB
 	if (!metadata)
 		return;
 
+	const int wireMetadataID = GetMetadataWireID(metadataID);
 	const unsigned char* buffer = static_cast<const unsigned char*>(metadata->GetBuf());
 	size_t remaining = metadata->GetBufSize();
 	size_t offset = 0;
-	const size_t maxChunkSize = 0x7000;
+	size_t maxChunkSize = 0x7000;
+	const char* chunkSizeEnv = getenv("CSNZ_METADATA_CHUNK_SIZE");
+	if (chunkSizeEnv && chunkSizeEnv[0])
+	{
+		unsigned long configuredChunkSize = strtoul(chunkSizeEnv, NULL, 10);
+		if (configuredChunkSize > 0 && configuredChunkSize <= 0xFFF0)
+			maxChunkSize = configuredChunkSize;
+	}
 
 	if (remaining <= 0xFFFF)
 	{
 		CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
 		msg->BuildHeader();
-		msg->WriteUInt8(metadataID);
+		msg->WriteUInt8(wireMetadataID);
 		msg->WriteUInt8(5);
 		msg->WriteUInt16((unsigned int)remaining);
 		msg->WriteData((void*)buffer, remaining);
@@ -276,7 +408,7 @@ void CPacketManager::SendZipMetadata(IExtendedSocket* socket, int metadataID, CB
 	}
 
 	Logger().Info("TX chunked metadata: id=%d, total=%u, chunk=%u\n",
-		metadataID, (unsigned int)remaining, (unsigned int)maxChunkSize);
+		wireMetadataID, (unsigned int)remaining, (unsigned int)maxChunkSize);
 
 	bool first = true;
 	while (remaining > 0)
@@ -287,14 +419,14 @@ void CPacketManager::SendZipMetadata(IExtendedSocket* socket, int metadataID, CB
 
 		CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
 		msg->BuildHeader();
-		msg->WriteUInt8(metadataID);
+		msg->WriteUInt8(wireMetadataID);
 		msg->WriteUInt8(chunkFlag);
 		msg->WriteUInt16((unsigned int)chunkSize);
 		msg->WriteData((void*)(buffer + offset), chunkSize);
 		socket->Send(msg);
 
 		Logger().Info("TX metadata chunk: id=%d, flag=0x%02X, offset=%u, size=%u\n",
-			metadataID, chunkFlag, (unsigned int)offset, (unsigned int)chunkSize);
+			wireMetadataID, chunkFlag, (unsigned int)offset, (unsigned int)chunkSize);
 		offset += chunkSize;
 		remaining -= chunkSize;
 		first = false;
@@ -674,6 +806,25 @@ void CPacketManager::SendServerList(IExtendedSocket* socket)
 	socket->Send(msg);
 }
 
+void CPacketManager::SendTransfer(IExtendedSocket* socket, const string& ipAddress, int port, const string& ticket)
+{
+	// Latest hw.dll Packet_Transfer(2) parses:
+	//   uint32 IPv4 (network byte order on the wire)
+	//   uint16 port (host order; client converts with htons before connecting)
+	//   uint8  transfer kind
+	//   string transfer ticket / account token
+	CSendPacket* msg = CreatePacket(socket, PacketId::Transfer);
+	msg->BuildHeader();
+
+	msg->WriteUInt32(ip_string_to_int(ipAddress), false);
+	msg->WriteUInt16(port);
+	msg->WriteUInt8(0);
+	msg->WriteString(ticket);
+
+	Logger().Info("TX Transfer(2): ip=%s port=%d ticketLen=%zu\n", ipAddress.c_str(), port, ticket.size());
+	socket->Send(msg);
+}
+
 void CPacketManager::SendStatistic(IExtendedSocket* socket)
 {
 	CSendPacket* msg = CreatePacket(socket, PacketId::Statistic);
@@ -838,8 +989,8 @@ void CPacketManager::SendUserStart(IExtendedSocket* socket, int userID, const st
 	msg->WriteUInt8(0); // country code
 	msg->WriteUInt8(0); // region code
 	msg->WriteUInt32(0); // UserSN
-	for (int i = 0; i < 32; i++)
-		msg->WriteUInt8(0);
+	msg->WriteUInt8(0);
+	msg->WriteUInt8(0);
 	socket->Send(msg);
 }
 
@@ -931,6 +1082,11 @@ void CPacketManager::SendMetadataUnk8(IExtendedSocket* socket)
 	msg->WriteData(m_pUnk8->GetBuf(), m_pUnk8->GetBufSize());
 
 	socket->Send(msg);
+}
+
+void CPacketManager::SendMetadataWeaponAuction(IExtendedSocket* socket)
+{
+	SendMetadataUnk8(socket);
 }
 
 void CPacketManager::SendMetadataWeaponPaints(IExtendedSocket* socket, std::vector<WeaponPaint>& weaponPaints)
@@ -1059,6 +1215,67 @@ void CPacketManager::SendMetadataUnk20(IExtendedSocket* socket)
 	socket->Send(msg);
 }
 
+void CPacketManager::SendMetadataSeasonPass(IExtendedSocket* socket)
+{
+	SendMetadataUnk20(socket);
+}
+
+void CPacketManager::SendMetadataSeasonPass(IExtendedSocket* socket, const SeasonPassData& seasonpass)
+{
+	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
+	msg->BuildHeader();
+
+	msg->WriteUInt8(kPacket_Metadata_SeasonPass);
+
+	msg->WriteUInt16(seasonpass.header.Season);
+	msg->WriteUInt16(seasonpass.header.TotalLevel);
+
+	msg->WriteString(seasonpass.header.StartDate.c_str());
+	msg->WriteString(seasonpass.header.EndDate.c_str());
+
+	msg->WriteUInt32(seasonpass.header.PerLevelPrice);
+	msg->WriteUInt32(seasonpass.header.SeasonPassPrice);
+	msg->WriteUInt32(seasonpass.header.SeasonPassBundleSalePrice);
+	msg->WriteUInt32(seasonpass.header.SeasonPassBundlePrice);
+	msg->WriteUInt32(seasonpass.header.SeasonPassBundleDiscountPercent);
+	msg->WriteUInt32(seasonpass.header.unk06);
+	msg->WriteUInt16(seasonpass.header.unk07);
+
+	for (const auto& level : seasonpass.levels)
+	{
+		msg->WriteUInt16(level.level);
+		msg->WriteUInt16(level.needCoin);
+
+		msg->WriteUInt16(level.rewardGroup1.size());
+		for (const auto& item : level.rewardGroup1)
+		{
+			msg->WriteUInt16(item.itemID);
+			msg->WriteUInt16(item.count);
+			msg->WriteUInt16(item.duration);
+			msg->WriteUInt16(item.unk1);
+			msg->WriteUInt16(item.unk2);
+			msg->WriteUInt16(item.unk3);
+			msg->WriteUInt16(item.unk4);
+			for (int i = 0; i < item.unk4; i++)
+				msg->WriteUInt16(0);
+		}
+
+		msg->WriteUInt16(level.rewardGroup2.size());
+		for (const auto& item : level.rewardGroup2)
+		{
+			msg->WriteUInt16(item.itemID);
+			msg->WriteUInt16(item.count);
+			msg->WriteUInt16(item.duration);
+			msg->WriteUInt16(item.unk1);
+			msg->WriteUInt16(item.unk2);
+			msg->WriteUInt16(item.unk3);
+			msg->WriteUInt16(item.unk4);
+		}
+	}
+
+	socket->Send(msg);
+}
+
 void CPacketManager::SendMetadataZombieWarWeaponList(IExtendedSocket* socket, std::vector<int>& zombieWarWeapons)
 {
 	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
@@ -1100,12 +1317,22 @@ void CPacketManager::SendMetadataRandomWeaponList(IExtendedSocket* socket, std::
 
 void CPacketManager::SendMetadataHash(IExtendedSocket* socket)
 {
-	CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
-	msg->BuildHeader();
+	const unsigned char zeroHash[16] = {};
+	const int hashTargets[] = {
+		GetMetadataWireID(kPacket_Metadata_Item),
+		GetMetadataWireID(kPacket_Metadata_CodisData),
+	};
 
-	//msg->WriteData(metaData_255, sizeof(metaData_255));
-
-	socket->Send(msg);
+	for (int metadataID : hashTargets)
+	{
+		CSendPacket* msg = CreatePacket(socket, PacketId::Metadata);
+		msg->BuildHeader();
+		msg->WriteUInt8(kPacket_Metadata_Hash);
+		msg->WriteUInt8(metadataID);
+		msg->WriteData((void*)zeroHash, sizeof(zeroHash));
+		socket->Send(msg);
+		Logger().Info("TX metadata hash probe: id=%d\n", metadataID);
+	}
 }
 
 void CPacketManager::SendMetadataUnk31(IExtendedSocket* socket)
@@ -1139,6 +1366,11 @@ void CPacketManager::SendMetadataScenarioTX_Dedi(IExtendedSocket* socket)
 void CPacketManager::SendMetadataShopItemList_Dedi(IExtendedSocket* socket)
 {
 	SendZipMetadata(socket, kPacket_Metadata_ShopItemList_Dedi, m_pShopItemList_DediZip);
+}
+
+void CPacketManager::SendMetadataEpicPieceShop(IExtendedSocket* socket)
+{
+	SendZipMetadata(socket, kPacket_Metadata_EpicPieceShop, m_pEpicPieceShopZip);
 }
 
 void CPacketManager::SendMetadataZBCompetitive(IExtendedSocket* socket)
@@ -1215,6 +1447,26 @@ void CPacketManager::SendMetadataFamilyTotalWarMap(IExtendedSocket* socket)
 void CPacketManager::SendMetadataFamilyTotalWar(IExtendedSocket* socket)
 {
 	SendZipMetadata(socket, kPacket_Metadata_FamilyTotalWar, m_pFamilyTotalWarZip);
+}
+
+void CPacketManager::SendMetadataWeaponAscend(IExtendedSocket* socket)
+{
+	SendZipMetadata(socket, kPacket_Metadata_WeaponAscend, m_pWeaponAscendZip);
+}
+
+void CPacketManager::SendMetadataPerkParam(IExtendedSocket* socket)
+{
+	SendZipMetadata(socket, kPacket_Metadata_PerkParam, m_pPerkParamZip);
+}
+
+void CPacketManager::SendMetadataSynthesis(IExtendedSocket* socket)
+{
+	SendZipMetadata(socket, kPacket_Metadata_Synthesis, m_pSynthesisZip);
+}
+
+void CPacketManager::SendMetadataZCoinShop(IExtendedSocket* socket)
+{
+	SendZipMetadata(socket, kPacket_Metadata_ZCoinShop, m_pZCoinShopZip);
 }
 
 void CPacketManager::SendMetadataUnk54(IExtendedSocket* socket)
@@ -2066,6 +2318,16 @@ void CPacketManager::SendUserUpdateInfo(IExtendedSocket* socket, IUser* user, co
 
 	CPacketHelper_FullUserInfo fullUserInfo;
 	fullUserInfo.Build(msg->m_OutStream, user->GetID(), character);
+
+	socket->Send(msg);
+}
+
+void CPacketManager::SendUserUpdateInfoMinimal(IExtendedSocket* socket, IUser* user)
+{
+	CSendPacket* msg = CreatePacket(socket, PacketId::UserUpdateInfo);
+	msg->BuildHeader();
+	msg->WriteUInt32(user->GetID());
+	msg->WriteUInt64(0);
 
 	socket->Send(msg);
 }
@@ -5712,18 +5974,18 @@ void CPacketManager::SendUDPHostData(IExtendedSocket* socket, bool host, int use
 	case 2:
 		// Legacy-like compact address reply: type, port id, IPv4, port.
 		msg->WriteUInt32(ip, false);
-		msg->WriteUInt16(port);
+		msg->WriteUInt16(port, false);
 		break;
 	case 3:
 		// Address reply with explicit host bit after the port.
 		msg->WriteUInt32(ip, false);
-		msg->WriteUInt16(port);
+		msg->WriteUInt16(port, false);
 		msg->WriteUInt8(host ? 1 : 0);
 		break;
 	case 4:
 		// User id after the endpoint.
 		msg->WriteUInt32(ip, false);
-		msg->WriteUInt16(port);
+		msg->WriteUInt16(port, false);
 		msg->WriteUInt32(userID);
 		break;
 	case 5:
@@ -5738,7 +6000,7 @@ void CPacketManager::SendUDPHostData(IExtendedSocket* socket, bool host, int use
 		// User id, endpoint, then explicit host bit/reserved tail.
 		msg->WriteUInt32(userID);
 		msg->WriteUInt32(ip, false);
-		msg->WriteUInt16(port);
+		msg->WriteUInt16(port, false);
 		msg->WriteUInt8(host ? 1 : 0);
 		msg->WriteUInt8(0);
 		msg->WriteUInt8(0);
@@ -5749,7 +6011,7 @@ void CPacketManager::SendUDPHostData(IExtendedSocket* socket, bool host, int use
 		// Current candidate: type, port id, user id, IPv4, port.
 		msg->WriteUInt32(userID);
 		msg->WriteUInt32(ip, false);
-		msg->WriteUInt16(port);
+		msg->WriteUInt16(port, false);
 		break;
 	}
 

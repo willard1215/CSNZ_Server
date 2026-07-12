@@ -1,0 +1,2668 @@
+{
+	"Season": 26,
+	"TotalLevel": 101,
+	"StartDate": "2026-06-25 10:00",
+	"EndDate": "2026-10-15 10:00",
+	"PerLevelPrice": 1800,
+	"SeasonPassPrice": 9900,
+	"SeasonPassBundleSalePrice": 14800,
+	"SeasonPassBundlePrice": 36900,
+	"SeasonPassBundleDiscountPercent": 60,
+	"unk06": 20,
+	"unk07": 50	,
+	"Levels": [
+		{
+			"Level": 1,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+  			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 6161,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				},
+				{
+					"ItemID": 7220,
+					"Count": 100,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 2,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 2719,
+					"Count": 1,
+					"Duration": 3,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 9913,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 3,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 100,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 4,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 8292,
+					"Count": 3,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 9910,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 5,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 6,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 7,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7205,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 8,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 9,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 10,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 9910,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 11,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 100,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 12,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 13,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 2545,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 14,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 15,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 16,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 2595,
+					"Count": 1,
+					"Duration": 1,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 17,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 9911,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 18,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 19,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 9915,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 20,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 100,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 21,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 22,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7205,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 23,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 24,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 25,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 2545,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 9910,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 26,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 200,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 27,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 28,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 9918,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 29,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 30,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 31,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 2595,
+					"Count": 1,
+					"Duration": 1,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 32,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 100,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 33,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 34,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7205,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 9916,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 35,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 36,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 37,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 8311,
+					"Count": 3,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 38,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 39,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 40,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 9910,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 41,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 100,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 42,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 43,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 2545,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 44,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 45,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 9910,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 46,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7205,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 47,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 48,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 49,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 9912,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 50,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 100,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 51,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 52,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 2719,
+					"Count": 1,
+					"Duration": 3,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 53,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 200,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 54,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 55,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 2545,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 9917,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 56,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 57,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 58,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7205,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 59,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 60,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 61,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 9910,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 62,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 100,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 63,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 64,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 8292,
+					"Count": 3,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 9910,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 65,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 66,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 67,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7205,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 68,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 69,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 70,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 2595,
+					"Count": 1,
+					"Duration": 1,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 9919,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 71,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 100,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 72,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 73,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 9909,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 74,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 75,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 76,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 2545,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 9914,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 77,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 200,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 78,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 79,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7205,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 80,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 100,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 81,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 82,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 9910,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 83,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 84,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 85,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7205,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 86,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 87,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 88,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 2545,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 89,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 90,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 9910,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 91,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 8311,
+					"Count": 3,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 92,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 100,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 93,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 94,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7205,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 95,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 96,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 97,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 9910,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 98,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 99,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 100,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 100,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 100,
+			"NeedCoin": 50,
+			"RewardGroup1": [
+				{
+					"ItemID": 7220,
+					"Count": 200,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				},
+  				{
+					"ItemID": 6162,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				},
+				{
+					"ItemID": 2716,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 9907,
+					"Count": 1,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		},
+ 		{
+			"Level": 101,
+			"NeedCoin": 0,
+			"RewardGroup1": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			],
+			"RewardGroup2": [
+  				{
+					"ItemID": 7220,
+					"Count": 50,
+					"Duration": 0,
+					"unk1": 0,
+					"unk2": 0,
+					"unk3": 0,
+					"unk4": 0
+				}
+			]
+		}
+ 	]
+}

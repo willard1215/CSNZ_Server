@@ -1,0 +1,2388 @@
+{
+  "globalarg": [
+    0.03, // 기본 치명타 확률
+    0.5, // 최대 치명타 확률
+    0.5, // 기본 치명타 대미지
+    0.03, // 기본 헤드샷 확률
+    2.0, // 헤드샷 대미지(damage * 배수)
+    50000.0001, // 전문가 선택 가격
+    1000, // 최대 시야거리
+    1400, // 최대 시야거리(vxl_dist)
+    10.0001, // 재시작 타이머
+    7200, // 아이템 공유 가능 시간 초단위
+    15, // 몬스터스포너 설치 제한 거리
+    5.0001, // 보스스킬 최대개수
+    0.55, // 장전 비율 최소값
+    1.4, // 탄약(뒷탄창) 보유량 ( 오리지널 보유량 * 배수 )
+    5.0 // 콤보 유지시간
+  ],
+
+  "gamble": {
+    "maxRatio": 0.06,
+    "maxMoney": 50000, // 10,000 -> 50,000 상향조정
+    "defaultMoney": 5000
+  },
+
+  "attralign": [ 45, 5, 6, 9, 10, 11, 12, 13 ],
+  "attrlist_weapon": [ //"weaponTypeRatio": [ 주0, 보조0, 근접0, 투척0, 샷건0, 기단0, 소총0, 스나0, 기관0, 장비0 ],
+    { // 치명타 확률
+      "type": 5,
+      //"ratio": 1.0,
+      "range": [ 0.02, 0.25 ],
+      "weaponTypeRatio": [ 0.5, 0.5, 0, 0, 0.1, 1, 0.5, 0.1, 0.2, 0.1 ] //기단 의 치확 붙을 확률 증가
+    },
+    { // 치명타 대미지
+      "type": 6,
+      "range": [ 0.50, 2.0 ],
+	  "weaponTypeRatio": [ 0.5, 0.5, 0, 0, 0.1, 1, 0.5, 0.1, 0.2, 0.1 ] //기단 의 치뎀 붙을 확률 증가
+    },
+    { // 재장전속도 감소
+      "type": 9,
+      "range": [ 0.1, 0.5 ],
+	  "weaponTypeRatio": [ 0.5, 0.5, 0, 0, 0.1, 0.1, 0.1, 0.1, 0.1, 1 ] //장비 의 재장전속도감소 붙을 확률 증가
+    },
+    { // 경직 확률
+      "type": 10,
+      "range": [ 0.02, 0.05 ],
+      "weaponTypeRatio": [ 0.5, 0.5, 0, 0, 0.5, 0.1, 0.1, 0.5, 0.1, 0.1 ] //샷건, 저격 의 경직 붙을 확률 증가
+    },
+    { // 넉백 확률
+      "type": 11,
+      "range": [ 0.02, 0.05 ],
+      "weaponTypeRatio": [ 0.5, 0.5, 0, 0, 0.5, 0.1, 0.1, 0.5, 0.1, 0.1 ] //샷건, 저격 의 넉백 붙을 확률 증가
+    },
+    { // 헤드샷 확률
+      "type": 12,
+      "range": [ 0.05, 0.25 ],
+      "weaponTypeRatio": [ 0.5, 0.5, 0, 0, 0.1, 0.1, 0.1, 1, 0.1, 0.1 ] //저격 의 헤드샷 붙을 확률 증가
+    },
+    { // 탄약소지량
+      "type": 13,
+      "range": [ 0.50, 1.5 ],
+	  "weaponTypeRatio": [ 0.5, 0.5, 0, 0, 0.1, 1, 0.1, 0.1, 0.1, 1 ] //기단, 장비 의 탄약소지량 붙을 확률 증가
+    },
+    { // 추가 대미지
+      "type": 45,
+      "range": [ 0.05, 0.12 ],
+      "weaponTypeRatio": [ 0.5, 1, 0, 0, 0.0, 0.5, 0.5, 0.0, 0.5, 0.0 ] //보조무기 의 추가 대미지 붙을 확률 증가
+    }
+  ],
+
+  "attrlist_kit": [
+    { // 어썰트 키트
+      "kitid": 5000,
+      //"ratio": 1.0, // 기본값 == 1.0
+      "list": [
+        { // 소총 대미지
+          "type": 14,
+          "range": [
+            [ 0.01, 0.02 ],
+            [ 0.02, 0.04 ],
+            [ 0.04, 0.08 ],
+            [ 0.08, 0.15 ],
+            [ 0.08, 0.15 ],
+            [ 0.15, 0.15 ]
+          ]
+        },
+        { // 기관단총 대미지
+          "type": 15,
+          "range": [
+            [ 0.01, 0.03 ],
+            [ 0.03, 0.07 ],
+            [ 0.07, 0.12 ],
+            [ 0.12, 0.20 ],
+            [ 0.12, 0.20 ],
+            [ 0.20, 0.20 ]
+          ]
+        },
+        { // 샷건 대미지
+          "type": 16,
+          "range": [
+            [ 0.01, 0.01 ],
+            [ 0.01, 0.02 ],
+            [ 0.01, 0.03 ],
+            [ 0.01, 0.04 ],
+            [ 0.01, 0.04 ],
+            [ 0.04, 0.04 ]
+          ]
+        },
+        { // 저격 대미지
+          "type": 17,
+          "range": [
+            [ 0.01, 0.01 ],
+            [ 0.01, 0.02 ],
+            [ 0.01, 0.03 ],
+            [ 0.01, 0.04 ],
+            [ 0.01, 0.04 ],
+            [ 0.04, 0.04 ]
+          ]
+        },
+        { // 기관총 대미지
+          "type": 18,
+          "range": [
+            [ 0.01, 0.02 ],
+            [ 0.02, 0.04 ],
+            [ 0.04, 0.06 ],
+            [ 0.06, 0.12 ],
+            [ 0.06, 0.12 ],
+            [ 0.12, 0.12 ]
+          ]
+        },
+        { // 장비주무기(특수무기) 대미지
+          "type": 19,
+          "range": [
+            [ 0.01, 0.02 ],
+            [ 0.01, 0.03 ],
+            [ 0.01, 0.04 ],
+            [ 0.02, 0.05 ],
+            [ 0.02, 0.05 ],
+            [ 0.05, 0.05 ]
+          ]
+        },
+        { // 치명타 확률
+          "type": 5,
+          "range": [
+            [ 0.01, 0.03 ],
+            [ 0.03, 0.05 ],
+            [ 0.05, 0.09 ],
+            [ 0.09, 0.15 ],
+            [ 0.09, 0.15 ],
+            [ 0.15, 0.15 ]
+          ]
+        },
+        { // 치명타 대미지
+          "type": 6,
+          "range": [
+            [ 0.01, 0.25 ],
+            [ 0.25, 0.45 ],
+            [ 0.25, 1.00 ],
+            [ 0.75, 2.50 ],
+            [ 0.75, 2.50 ],
+            [ 2.50, 2.50 ]
+          ]
+        }
+      ]
+    },
+    { // 디펜스 키트
+      "kitid": 5001,
+      "list": [
+        { // 체력
+          "type": 20,
+          "range": [
+            [ 0.01, 0.09 ],
+            [ 0.10, 0.14 ],
+            [ 0.14, 0.50 ],
+            [ 0.50, 0.95 ],
+            [ 0.50, 0.95 ],
+            [ 0.95, 0.95 ]
+          ]
+        },
+        { // 방어구
+          "type": 21,
+          "range": [
+            [ 0.01, 0.25 ],
+            [ 0.25, 0.45 ],
+            [ 0.25, 1.00 ],
+            [ 1.00, 2.50 ],
+            [ 1.00, 2.50 ],
+            [ 2.50, 2.50 ]
+          ]
+        },
+        { // 회복력
+          "type": 22,
+          "range": [
+            [ 0.01, 0.10 ],
+            [ 0.10, 0.20 ],
+            [ 0.20, 0.30 ],
+            [ 0.30, 0.45 ],
+            [ 0.30, 0.45 ],
+            [ 0.45, 0.45 ]
+          ]
+        },
+        { // 체력 회복
+          "type": 23,
+          "range": [
+            [ 0.01, 0.01 ],
+            [ 0.01, 0.02 ],
+            [ 0.02, 0.03 ],
+            [ 0.03, 0.05 ],
+            [ 0.03, 0.05 ],
+            [ 0.05, 0.05 ]
+          ]
+        },
+        { // 방어구 회복
+          "type": 24,
+          "range": [
+            [ 0.01, 0.01 ],
+            [ 0.01, 0.03 ],
+            [ 0.03, 0.08 ],
+            [ 0.08, 0.15 ],
+            [ 0.08, 0.15 ],
+            [ 0.15, 0.15 ]
+          ]
+        }
+      ]
+    },
+    { // 유틸리티 키트
+      "kitid": 5002,
+      "list": [
+        { // 재장전 속도
+          "type": 9,
+          "range": [
+            [ 0.01, 0.01 ],
+            [ 0.01, 0.15 ],
+            [ 0.15, 0.20 ],
+            [ 0.20, 0.25 ],
+            [ 0.20, 0.25 ],
+            [ 0.25, 0.25 ]
+          ]
+        },
+        { // 탄약 소지량
+          "type": 13,
+          "range": [
+            [ 0.01, 0.25 ],
+            [ 0.25, 0.45 ],
+            [ 0.25, 1.00 ],
+            [ 1.00, 2.00 ],
+            [ 1.00, 2.00 ],
+            [ 2.00, 2.00 ]
+          ]
+        },
+        { // 쿨타임 감소
+          "type": 25,
+          "range": [
+            [ 0.01, 0.05 ],
+            [ 0.05, 0.08 ],
+            [ 0.08, 0.15 ],
+            [ 0.10, 0.25 ],
+            [ 0.10, 0.25 ],
+            [ 0.25, 0.25 ]
+          ]
+        },
+        { // 적 제거 시 쿨타임 감소
+          "type": 26,
+          "range": [
+            [ 0.01, 0.01 ],
+            [ 0.01, 0.01 ],
+            [ 0.01, 0.02 ],
+            [ 0.01, 0.03 ],
+            [ 0.01, 0.03 ],
+            [ 0.03, 0.03 ]
+          ]
+        }
+      ]
+    },
+    { // 전문가 키트
+      "kitid": 5003,
+      "list": [
+        { // 폭발전문가 대미지범위 증가
+          "type": 31,
+          "specialist": 1,
+          "range": [
+            [ 0.01, 0.03 ],
+            [ 0.01, 0.05 ],
+            [ 0.05, 0.10 ],
+            [ 0.10, 0.15 ],
+            [ 0.10, 0.15 ],
+            [ 0.15, 0.15 ]
+          ]
+        },
+        { // 폭발전문가 폭발대미지 증가
+          "type": 32,
+          "specialist": 1,
+          "range": [
+            [ 0.01, 0.05 ],
+            [ 0.01, 0.15 ],
+            [ 0.15, 0.20 ],
+            [ 0.20, 0.25 ],
+            [ 0.20, 0.25 ],
+            [ 0.25, 0.25 ]
+          ]
+        },
+        { // 폭발전문가 폭발탄 확률 증가
+          "type": 33,
+          "specialist": 1,
+          "range": [
+            [ 0.01, 0.01 ],
+            [ 0.01, 0.01 ],
+            [ 0.01, 0.02 ],
+            [ 0.02, 0.03 ],
+            [ 0.02, 0.03 ],
+            [ 0.03, 0.03 ]
+          ]
+        },
+        { // 타격전문가 근접전 대미지 증가
+          "type": 34,
+          "specialist": 2,
+          "range": [
+            [ 0.01, 0.01 ],
+            [ 0.01, 0.15 ],
+            [ 0.15, 0.20 ],
+            [ 0.20, 0.25 ],
+            [ 0.20, 0.25 ],
+            [ 0.25, 0.25 ]
+          ]
+        },
+        { // 타격전문가 추가 치명타 확률 증가
+          "type": 35,
+          "specialist": 2,
+          "range": [
+            [ 0.01, 0.01 ],
+            [ 0.01, 0.04 ],
+            [ 0.05, 0.08 ],
+            [ 0.09, 0.15 ],
+            [ 0.09, 0.15 ],
+            [ 0.15, 0.15 ]
+          ]
+        },
+        { // 타격전문가 근접무기 스킬 대미지 증가
+          "type": 36,
+          "specialist": 2,
+          "range": [
+            [ 0.01, 0.05 ],
+            [ 0.01, 0.15 ],
+            [ 0.15, 0.20 ],
+            [ 0.20, 0.25 ],
+            [ 0.20, 0.25 ],
+            [ 0.25, 0.25 ]
+          ]
+        },
+        { // 생존전문가 흡혈능력 증가
+          "type": 37,
+          "specialist": 3,
+          "range": [
+            [ 0.01, 0.01 ],
+            [ 0.01, 0.01 ],
+            [ 0.01, 0.02 ],
+            [ 0.02, 0.03 ],
+            [ 0.02, 0.03 ],
+            [ 0.03, 0.03 ]
+          ]
+        },
+        { // 생존전문가 긴급회피 쿨타임감소
+          "type": 38,
+          "specialist": 3,
+          "range": [
+            [ 0.01, 0.05 ],
+            [ 0.01, 0.15 ],
+            [ 0.15, 0.20 ],
+            [ 0.20, 0.50 ],
+            [ 0.20, 0.50 ],
+            [ 0.50, 0.50 ]
+          ]
+        },
+        { // 생존전문가 구르는돌 방어력 증가
+          "type": 39,
+          "specialist": 3,
+          "range": [
+            [ 0.01, 0.05 ],
+            [ 0.01, 0.15 ],
+            [ 0.15, 0.25 ],
+            [ 0.20, 0.50 ],
+            [ 0.20, 0.50 ],
+            [ 0.50, 0.50 ]
+          ]
+        },
+        { // 지원전문가 탄약보급량 증가
+          "type": 40,
+          "specialist": 4,
+          "range": [
+            [ 0.01, 0.25 ],
+            [ 0.25, 0.45 ],
+            [ 0.25, 1.00 ],
+            [ 0.50, 2.00 ],
+            [ 0.50, 2.00 ],
+            [ 2.00, 2.00 ]
+          ]
+        },
+        { // 지원전문가 장전의 달인 효율 증가
+          "type": 41,
+          "specialist": 4,
+          "range": [
+            [ 0.01, 0.05 ],
+            [ 0.01, 0.15 ],
+            [ 0.15, 0.20 ],
+            [ 0.20, 0.25 ],
+            [ 0.20, 0.25 ],
+            [ 0.25, 0.25 ]
+          ]
+        },
+        { // 지원전문가 탄약보급 쿨타임 감소
+          "type": 42,
+          "specialist": 4,
+          "range": [
+            [ 0.01, 0.05 ],
+            [ 0.01, 0.15 ],
+            [ 0.15, 0.20 ],
+            [ 0.20, 0.50 ],
+            [ 0.20, 0.50 ],
+            [ 0.50, 0.50 ]
+          ]
+        }
+      ]
+    }
+  ],
+
+  "weaponlist": [
+    { //p228
+      "id": 1
+	  
+      //"ratio": 1.0 // 기본값 1.0
+      //"minlevel": 1 // 기본값 1
+      //"weaponSkill": 0 // 기본값 0
+
+      /*	  무기별 탤런트 세부사항 적용시 참고할 리스트.
+       예제
+	{ // m4a1 에 넉백 추가 시 작성 예문
+      "id": 22,
+      "minlevel": 1,
+      "attrlist": [
+        { // 넉백 확률
+          "type": 11,
+          "ratio": 10,
+          "range": [ 0.1, 0.1 ]
+        }
+      ]
+    },
+
+      "attrlist": [
+        { // 치명타 확률
+          "type": 5,
+          //"ratio": 1.0,
+          "range": [ 0.02, 0.3 ]
+        },
+        { // 치명타 대미지
+          "type": 6,
+          "range": [ 0.05, 1.0 ]
+        },
+        { // 재장전속도 감소
+          "type": 9,
+          "range": [ 0.1, 0.5 ]
+        },
+        { // 경직 확률
+          "type": 10,
+          "range": [ 0.02, 0.05 ]
+        },
+        { // 넉백 확률
+          "type": 11,
+          "range": [ 0.02, 0.05 ]
+        },
+        { // 헤드샷 확률
+          "type": 12,
+          "range": [ 0.05, 0.25 ]
+        },
+        { // 탄약소지량
+          "type": 13,
+          "range": [ 0.05, 1.0 ]
+        }    
+		{ // 추가 대미지
+		"type": 45,
+		"range": [ 0.03, 0.1 ]
+		}
+		
+      ]
+*/
+    },
+
+    { // flashgrenade 섬광탄
+      "id": 2002,
+      "minlevel": 1,
+      "weaponSkill": 2002
+    },
+    { // hegrenade he수류탄
+      "id": 2003,
+      "minlevel": 1,
+	  "damage": 1.1,
+      "weaponSkill": 2003
+    },
+    { // smokegrenade 연막수류탄
+      "id": 2004,
+      "minlevel": 1,
+      "weaponSkill": 2004
+    },
+    { // fgrenade 파편수류탄
+      "id": 2008,
+      "minlevel": 1,
+      "weaponSkill": 2008
+    },
+    { // firebomb 화염수류탄
+      "id": 2009,
+      "minlevel": 1,
+	  "damage": 0.75,
+      "weaponSkill": 2009
+    },
+    { // eventbomb 하트수류탄
+      "id": 2010,
+      "minlevel": 1,
+      "weaponSkill": 2010
+    },
+    { // mooncake 송편수류탄
+      "id": 2011,
+      "minlevel": 1,
+      "weaponSkill": 2011
+    },
+    { // pumpkin 호박수류탄
+      "id": 2012,
+      "minlevel": 1,
+      "weaponSkill": 2012
+    },
+    { // chaingrenade 체인수류탄
+      "id": 2036,
+      "minlevel": 10,
+      "weaponSkill": 2036
+    },
+    { // claymore 크레모어
+      "id": 392,
+      "minlevel": 15,
+	  "damage": 0.25,
+      "weaponSkill": 392
+    },
+    { // default knife 씰나이프
+      "id": 4000,
+      "minlevel": 1,
+	  "damage": 1.3,
+      "weaponSkill": 2000029,
+      "dropModel": "models/w_defaultknife.mdl"
+    },
+    { // nata 나타나이프
+      "id": 4001,
+      "minlevel": 15,
+      "weaponSkill": [ 2000039, 2000004 ],
+      "dropModel": "models/w_nataknife.mdl",
+      "damage": 0.1
+    },
+    { // hammer 해머
+      "id": 4002,
+      "minlevel": 1,
+      "weaponSkill": 2000040,
+      "dropModel": "models/w_hammer.mdl",
+      "damage": 0.04
+    },
+    { // jknife 버터플라이 나이프
+      "id": 4004,
+      "minlevel": 1,
+      "weaponSkill": 2000031,
+      "dropModel": "models/w_jknife.mdl",
+      "damage": 1.7
+    },
+    { // skullaxe skull-9
+      "id": 4010,
+      "minlevel": 15,
+      "weaponSkill": 2000030,
+      "dropModel": "models/w_skullaxe.mdl",
+      "damage": 0.3
+    },
+    { // dragonsword 청룡도
+      "id": 4016,
+      "minlevel": 10,
+      "weaponSkill": 2000004,
+      "dropModel": "models/w_dragonsword.mdl",
+      "damage": 0.3
+    },
+    { // thanatos9
+      "id": 4038,
+      "minlevel": 15,
+      "weaponSkill": 2000039,
+      "dropModel": "models/w_thanatos9.mdl",
+      "damage": 0.3
+    },
+    { // stomgiant 워해머 스톰자이언트
+      "id": 4044,
+      "minlevel": 20,
+      "weaponSkill": 2000040,
+      "dropModel": "models/w_stormgiant.mdl",
+      "damage": 0.3
+    },
+    { // armtorch 암토치
+      "id": 4054,
+      "minlevel": 20,
+      "weaponSkill": 2000041,
+      "dropModel": "models/w_armtorch.mdl",
+      "damage": 0.4
+    },
+    { // y20s1dragonsword 언월도
+      "id": 4064,
+      "minlevel": 1,
+      "weaponSkill": 2000004,
+      "dropModel": "models/w_y20s1dragonsword.mdl",
+      "damage": 0.28
+    },
+    { // x-tracker
+      "id": 450,
+      "ratio": 0.5,
+      "minlevel": 25,
+      "weaponSkill": 2000006,      
+	  "damage": 1.5
+    },
+    { // buffm4 m4다크나이트
+      "id": 306,
+      "ratio": 0.3,
+      "minlevel": 25,
+      "weaponSkill": 2000019,      
+	  "damage": 1.25
+    },
+    { // buffak ak47팔라딘
+      "id": 307,
+      "ratio": 0.3,
+      "minlevel": 25,
+      "weaponSkill": 2000018,      
+	  "damage": 1.25
+    },
+    { // buffawp 엘븐레인저
+      "id": 311,
+      "ratio": 0.3,
+      "minlevel": 30,
+      "weaponSkill": 2000043
+    },
+    { // m95tiger 화이트타이거
+      "id": 405,
+      "ratio": 0.3,
+      "minlevel": 30,      
+	  "damage": 1.25,
+      "weaponSkill": 2000021,
+
+      "attrlist": [
+        { // 헤드샷 확률
+          "type": 12,
+          "range": [ 0.25, 0.25 ]
+        }
+      ]
+    },
+    { // m95tigerm ghostknight 고스트나이트
+      "id": 451,
+      "ratio": 0.3,
+      "minlevel": 25,
+      "weaponSkill": 2000022,      
+	  "damage": 1.2
+    },
+    { // m3dragon 블랙드래곤
+      "id": 399,
+      "ratio": 0.3,
+      "minlevel": 30,
+      "weaponSkill": 2000023,      
+	  "damage": 1.15
+    },
+    { // buffm249 피닉스
+      "id": 397,
+      "ratio": 0.3,
+      "minlevel": 25,
+      "damage": 1.8,
+      "weaponSkill": 2000024
+    },
+    { // laserfist 인피니티레이저피스트
+      "id": 440,
+      "ratio": 0.3,
+      "minlevel": 30,
+      "damage": 2.5,
+	  "clip": 2.0,
+      "weaponSkill": 2000025
+    },
+    { // stunrifle 스턴라이플 - 체인라이트닝
+      "id": 385,
+      "minlevel": 15,
+      "weaponSkill": 2000026
+    },
+    { // spmg aeolis 아에올리스
+      "id": 241,
+      "minlevel": 1,
+      "weaponSkill": 2000028
+    },
+    { // balrog11 발록 샷건
+      "id": 203,
+      "minlevel": 10,
+      "damage": 0.5,
+      "weaponSkill": 2000032
+    },
+    { // cannonex reddragon_cannon 적룡포
+      "id": 367,
+      "ratio": 0.3,
+      "minlevel": 30,
+      "damage": 1.6,
+      "weaponSkill": 2000042,
+
+      "attrlist": [
+        { // 경직 확률
+          "type": 10,
+          "range": [ 0.5, 1 ]
+        }
+      ]
+    },
+    { // sgmissile magnum_launcher 매그넘런쳐
+      "id": 390,
+      "ratio": 0.1,
+      "minlevel": 30,
+      "damage": 0.8,
+      "weaponSkill": 2000033
+    },
+    { // gunkata 듀베건
+      "id": 395,
+      "ratio": 0.1,
+      "minlevel": 30,      
+	  "damage": 2.0,
+      "weaponSkill": 2000044
+    },
+    { // bloodhunter 크림슨헌터
+      "id": 329,
+      "minlevel": 25,
+      "weaponSkill": 2000034
+    },
+    { // thanatos7
+      "id": 274,
+      "minlevel": 1,
+      "weaponSkill": 2000035,      
+	  "damage": 1.1
+    },
+    { // laserminigun 레이저미니건
+      "id": 303,
+      "minlevel": 15,
+	  "damage": 2.0,
+      "weaponSkill": 2000046
+    },
+    { // speargun gaebolg 게이볼그
+      "id": 233,
+      "minlevel": 30,
+      "weaponSkill": 2000048,      
+	  "damage": 1.6,
+
+      "attrlist": [
+        { // 넉백 확률
+          "type": 11,
+          "range": [ 1, 1 ]
+        }
+      ]
+    },
+    { // cannonexgold gold_reddragon_cannon 적룡포
+      "id": 396,
+      "ratio": 0.3,
+      "minlevel": 30,
+      "damage": 1.7,
+      "weaponSkill": 2000042,
+
+      "attrlist": [
+        { // 경직 확률
+          "type": 10,
+          "range": [ 0.5, 1 ]
+        }
+      ]
+    },
+    { // buffaktw ak47 로얄나이트
+      "id": 359,
+      "ratio": 0.3,
+      "minlevel": 30,
+      "weaponSkill": 2000018,      
+	  "damage": 1.15
+    },
+    { // buffm4a1tw m4a1 새도우나이트
+      "id": 360,
+      "ratio": 0.3,
+      "minlevel": 30,
+      "weaponSkill": 2000019,      
+	  "damage": 1.15
+    },
+    { // sgmissilem magnum_launcher_minor 비연신기전
+      "id": 473,
+      "ratio": 0.3,
+      "minlevel": 30,
+      "weaponSkill": 2000033
+    },
+    { // kronos5 헌터킬러5
+      "id": 401,
+      "minlevel": 15,
+      "weaponSkill": 2000047,      
+	  "damage": 1.2
+    },
+    { // kronos3 헌터킬러3
+      "id": 402,
+      "minlevel": 15,
+	  "clip": 2.5, 
+      "weaponSkill": 2000047
+    },
+    { // kronos12 헌터킬러12
+      "id": 403,
+      "minlevel": 25,
+      "weaponSkill": 2000047,
+      "damage": 0.4
+    },
+    { // kronos7 헌터킬러7
+      "id": 430,
+      "minlevel": 20,
+      "weaponSkill": 2000047,      
+	  "damage": 1.25
+    },
+    { // gunkatam 윈드라이더
+      "id": 423,
+      "ratio": 0.1,      
+	  "damage": 2.0,
+      "minlevel": 30,
+      "weaponSkill": 2000044
+    },
+    { // 듀얼베레타
+      "id": 10,
+      "minlevel": 1
+    },
+    { // 파이브세븐
+      "id": 11,
+      "minlevel": 1
+    },
+    { // 글록18c
+      "id": 17,
+      "minlevel": 1
+    },
+    { // usp45
+      "id": 16,
+      "minlevel": 1
+    },
+    { // 데저트이글
+      "id": 26,
+      "minlevel": 1
+    },
+    { // 인피니티
+      "id": 67,
+      "minlevel": 1
+    },
+    { // 듀얼 인피니티 커스텀
+      "id": 70,
+      "minlevel": 1
+    },
+    { // 듀얼 인피니티 파이널
+      "id": 78,
+      "minlevel": 1
+    },
+    { // m79
+      "id": 75,
+      "minlevel": 1
+    },
+    { // 싸이클론
+      "id": 235,
+      "damage": 0.5,
+      "minlevel": 1
+    },
+    { // 어택m950
+      "id": 318,      
+	  "damage": 1.4,
+      "minlevel": 1
+    },
+    { // 데저트이글 골드
+      "id": 56,      
+	  "damage": 1.15,
+      "minlevel": 10,
+      "attrlist": [
+        { // 넉백 확률
+          "type": 11,
+          "range": [ 0.5, 1 ]
+        }
+      ]
+    },
+    { // 썬더 고스트워커
+      "id": 431,
+      "minlevel": 20
+    },
+    { // 데스페라도
+      "id": 373,      
+	  "damage": 2.0,
+      "minlevel": 1
+    },
+    { // 갈릴
+      "id": 14,
+      "minlevel": 1
+    },
+    { // 파마스
+      "id": 15,
+      "minlevel": 1
+    },
+    { // m4a1
+      "id": 22,
+      "minlevel": 1
+    },
+    { // sg552
+      "id": 27,
+      "minlevel": 1,
+      "weaponSkill": 2000000
+    },
+    { // ak47
+      "id": 28,
+      "minlevel": 1
+    },
+    { // aug
+      "id": 8,
+      "minlevel": 1
+    },
+    { // an94
+      "id": 107,
+      "minlevel": 1
+    },
+    { // m16a4
+      "id": 108,
+      "minlevel": 1
+    },
+    { // hk416
+      "id": 165,
+      "minlevel": 1
+    },
+    { // ak74u
+      "id": 204,
+      "minlevel": 1
+    },
+    { // akm
+      "id": 163,
+      "minlevel": 1
+    },
+    { // l85a2
+      "id": 161,
+      "minlevel": 1
+    },
+    { // fnc
+      "id": 160,
+      "minlevel": 1
+    },
+    { // tar21
+      "id": 102,
+      "minlevel": 1
+    },
+    { // scar
+      "id": 31,
+      "minlevel": 1
+    },
+    { // skull4
+      "id": 201,
+	  "damage": 0.9,	  
+      "minlevel": 10      
+    },
+    { // oicw
+      "id": 183,
+      "minlevel": 15,
+      "weaponSkill": 2000020
+    },
+    { // 플라즈마건
+      "id": 207,
+      "minlevel": 1,      
+	  "damage": 1.2
+    },
+    { // 스타체이서
+      "id": 398,
+      "minlevel": 1,
+      "weaponSkill": 1000014,      
+	  "damage": 1.4
+    },
+    { // 컴파운드보우
+      "id": 221,
+      "minlevel": 1
+    },
+    { // 바이올린
+      "id": 168,
+      "minlevel": 1
+    },
+    { // 에테리얼
+      "id": 169,
+      "minlevel": 1,      
+	  "damage": 1.15
+    },
+    { // 기타
+      "id": 65,
+      "minlevel": 1
+    },
+    { // f2000
+      "id": 60,
+      "minlevel": 1
+    },
+    { // 크로스보우
+      "id": 83,
+      "minlevel": 1,      
+	  "damage": 1.25
+    },
+    { // 크로스보우 어드벤스
+      "id": 279,
+      "minlevel": 1,
+      "weaponSkill": 2000048,      
+	  "damage": 1.25
+    },
+    { // mac10
+      "id": 7,
+	  "clip": 2.5,
+      "minlevel": 1
+    },
+    { // ump45
+      "id": 12,
+	  "clip": 2.5,
+      "minlevel": 1
+    },
+    { // mp5
+      "id": 19,
+	  "clip": 2.5,
+      "minlevel": 1
+    },
+    { // tmp
+      "id": 23,
+	  "clip": 3.5,
+      "minlevel": 1,      
+	  "damage": 1.15
+    },
+    { // p90
+      "id": 30,
+	  "clip": 3.5,
+      "minlevel": 1,      
+	  "damage": 1.15
+    },
+    { // mp7a1 확장탄창
+      "id": 74,
+	  "clip": 2.5,
+      "minlevel": 1
+    },
+    { // 듀얼크리스
+      "id": 105,
+	  "clip": 3.0,
+      "minlevel": 5
+    },
+    { // 크리스
+      "id": 95,
+	  "clip": 2.5,
+      "minlevel": 1
+    },
+    { // 템페스트
+      "id": 135,
+ 	  "damage": 1.6,	  
+	  "clip": 4.0,
+      "minlevel": 5
+    },
+    { // 톰슨 시카고 골드
+      "id": 89,
+	  "clip": 3.0,
+      "minlevel": 10
+    },	
+    { // 듀얼 mp7a1
+      "id": 469,
+	  "clip": 3.0,
+      "minlevel": 10,      
+	  "damage": 1.4
+    },		
+    { // tmp드래곤
+      "id": 145,
+	  "damage": 1.25,	  
+	  "clip": 4.0,
+      "minlevel": 5
+    },
+    { // p90라팡
+      "id": 110,
+	  "damage": 1.2,	  
+	  "clip": 4.0,
+      "minlevel": 5
+    },
+    { // 듀얼 uzi
+      "id": 302,
+	  "clip": 4.0,
+      "minlevel": 10,      
+	  "damage": 1.1
+    },
+    { // 니들러
+      "id": 200,
+	  "clip": 2.5,
+      "minlevel": 1,      
+	  "damage": 1.2
+    },
+    { // m3
+      "id": 21,
+      "minlevel": 1,
+      "damage": 1.2
+    },
+    { // xm1014 자동샷건
+      "id": 5,
+      "minlevel": 5,
+      "damage": 0.8
+    },
+    { // 더블베럴샷건
+      "id": 90,
+      "minlevel": 1,
+      "damage": 0.6
+    },
+    { // m1887
+      "id": 58,
+      "minlevel": 1
+    },
+    { // usas12
+      "id": 39,
+      "minlevel": 10,
+      "damage": 0.15
+    },
+    { // 잭해머
+      "id": 284,
+      "minlevel": 15,
+      "damage": 0.9
+    },
+    { // 트리플바렐 샷건
+      "id": 192,
+      "minlevel": 15,
+      "damage": 0.65
+    },
+    { // spas12 매버릭
+      "id": 239,
+      "minlevel": 15,
+      "damage": 0.9
+    },
+    { // 파이어발칸
+      "id": 281,
+      "minlevel": 10,
+      "damage": 1.0
+    },
+    { // 바운서
+      "id": 381,
+      "minlevel": 20,
+      "damage": 0.8
+    },
+    { // 플레임 잭해머
+      "id": 337,
+      "minlevel": 20,
+      "damage": 0.36
+    },
+    { // 레일캐논
+      "id": 257,
+      "minlevel": 1,
+      "damage": 0.55,
+      "weaponSkill": 2000046
+    },
+    { // 라이트닝 sg-1(우산)
+      "id": 126,
+      "minlevel": 1,
+      "damage": 0.75
+    },
+    { // usas12 camo
+      "id": 88,
+      "minlevel": 15,
+      "damage": 0.12
+    },
+    { // m1887골드
+      "id": 63,
+      "minlevel": 10,      
+	  "damage": 1.2
+    },
+    { // uts15g
+      "id": 217,
+      "minlevel": 1,
+      "damage": 0.55
+    },
+    { // 볼케이노
+      "id": 111,
+      "minlevel": 20,
+      "damage": 0.8
+    },
+    { // m249
+      "id": 20,
+      "minlevel": 10
+    },
+    { // mg3
+      "id": 45,
+      "minlevel": 1
+    },
+    { // m134 미니건
+      "id": 59,
+      "minlevel": 10,
+      "damage": 1.3
+    },
+    { // mg36
+      "id": 115,
+      "minlevel": 15
+    },
+    { // mk48
+      "id": 147,
+      "minlevel": 10
+    },
+    { // k3
+      "id": 197,
+      "minlevel": 10
+    },
+    { // qbb95
+      "id": 41,
+      "minlevel": 1
+    },
+    { // qbb95 추가탄창
+      "id": 73,
+      "minlevel": 10
+    },
+    { // balrog7
+      "id": 172,
+      "minlevel": 1,      
+	  "damage": 1.15
+    },
+    { // mg3 10th
+      "id": 417,
+      "minlevel": 1,      
+	  "damage": 1.2
+    },
+    { // chager7
+      "id": 377,
+      "minlevel": 1
+    },
+    { // 샤이닝하트로드
+      "id": 449,
+      "minlevel": 20,      
+	  "damage": 1.25
+    },
+    { // 코일건
+      "id": 295,
+      "minlevel": 15,      
+	  "damage": 1.1
+    },
+    { // 브로드디바인
+      "id": 339,
+      "minlevel": 10
+    },
+    { // m32 mgl
+      "id": 170,      
+	  "damage": 0.7,
+      "minlevel": 20
+    },
+    { // 페트롤부머
+      "id": 249,
+	  "damage": 4.0,
+      "minlevel": 10
+    },
+    { // 슬래셔
+      "id": 259,
+      "damage": 3.8,
+      "minlevel": 1
+    },
+    { // 용격포
+      "id": 258,
+      "damage": 2.15,
+      "minlevel": 5
+    },
+    { // 레비아탄
+      "id": 209,
+	  "damage": 4.0,
+      "minlevel": 10
+    },
+    { // 샐러맨더
+      "id": 118,
+      "damage": 1.5,
+      "minlevel": 10
+    },
+    { // rpg7
+      "id": 275,
+      "damage": 1.86,	  
+	  "clip": 3.0,
+      "minlevel": 10
+    },
+    { // m32 베놈
+      "id": 400,	  
+	  "damage": 0.9,
+      "minlevel": 20
+    },
+    { // 스팅어
+      "id": 432,
+      "minlevel": 25,
+      "weaponSkill": 2000048,
+
+      "attrlist": [
+        { // 넉백 확률
+          "type": 11,
+          "range": [ 0.25, 1 ]
+        }
+      ]
+    },
+    { // 매그넘드릴
+      "id": 319,
+      "minlevel": 25,
+      "weaponSkill": 2000029
+    },
+    { // 리퍼
+      "id": 193,
+      "damage": 3.0,
+      "minlevel": 25
+    },
+    { // 흑룡포
+      "id": 144,
+      "damage": 1.5,
+      "minlevel": 20
+    },
+    { // 혈적자
+      "id": 277,
+      "minlevel": 1,
+      "damage": 3.0,
+      "attrlist": [
+        { // 경직 확률
+          "type": 10,
+          "range": [ 0.5, 1 ]
+        }
+      ]
+    },
+    { // G3/SG-1
+      "id": 24,
+      "minlevel": 1,	  
+	  "damage": 0.55,
+      "weaponSkill": 2000000
+    },
+    { // 스카우트
+      "id": 3,
+      "minlevel": 1,
+      "weaponSkill": 2000000,
+      "damage": 1.4
+    },
+    { // AWP
+      "id": 18,
+      "minlevel": 1,
+      "weaponSkill": 2000000
+    },
+    { // M24
+      "id": 66,
+      "minlevel": 1,
+      "weaponSkill": 2000000
+    },
+    { // 바렛 M95
+      "id": 103,
+      "minlevel": 1,
+      "weaponSkill": 2000000
+    },
+    { // TRG-42
+      "id": 47,
+      "minlevel": 1,
+      "weaponSkill": 2000000
+    },
+    { // wa20000
+      "id": 98,
+      "minlevel": 1,
+      "weaponSkill": 2000000,
+      "damage": 0.42
+    },
+    { // SL8
+      "id": 57,
+      "minlevel": 10,
+      "weaponSkill": 2000000,
+	  "damage": 0.74
+    },
+    { // XM2010
+      "id": 119,
+      "minlevel": 10,
+      "weaponSkill": 2000000
+    },
+    { // AS50
+      "id": 122,
+      "minlevel": 10,
+      "weaponSkill": 2000000
+    },
+    { // AWP-Z
+      "id": 206,
+      "minlevel": 10,
+      "weaponSkill": 2000043
+    },
+    { // 라이트닝 레일
+      "id": 280,
+      "minlevel": 15,
+      "weaponSkill": 2000000
+    },
+    { // PSG-1
+      "id": 208,
+      "minlevel": 15,
+      "weaponSkill": 2000000
+    },
+    { // SL8 10th 에디션
+      "id": 411,
+      "minlevel": 20,
+      "weaponSkill": 2000043,
+	  "damage": 0.85
+    },
+    { // TRG-42 10th 에디션
+      "id": 415,
+      "minlevel": 20,
+      "weaponSkill": 2000043
+    },
+    { // WA20000 10th 에디션
+      "id": 418,
+      "minlevel": 20,
+      "weaponSkill": 2000043,
+      "damage": 0.5
+    },
+    { // M24 트랜스기어
+      "id": 426,
+      "minlevel": 20,
+      "weaponSkill": 2000043,      
+	  "damage": 1.2
+    },
+    { // 모신나강 엘레강트
+      "id": 436,
+      "minlevel": 20,
+      "weaponSkill": 2000000,      
+	  "damage": 1.2
+    },
+    { // 썬더볼트
+      "id": 181,
+      "minlevel": 25,
+      "weaponSkill": 2000043
+    },
+    { // 세이버리
+      "id": 227,
+      "minlevel": 30,
+      "weaponSkill": 2000000,
+      "damage": 0.85
+    },
+    { // 벤디타
+      "id": 250,
+      "minlevel": 20,
+      "weaponSkill": 2000000
+    },
+    { // SKULL-5 CSOWC Edition
+      "id": 272,
+      "minlevel": 30,
+	  "damage": 0.8,
+      "weaponSkill": 2000000
+    },
+    { // Falcon
+      "id": 310,
+      "minlevel": 15,
+      "weaponSkill": 2000000
+    },
+    { // 파워 Falcon
+      "id": 336,
+      "minlevel": 25,
+      "weaponSkill": 2000043
+    },
+    { // DESTROYER
+      "id": 320,
+      "minlevel": 25,
+      "weaponSkill": 2000000
+    },
+    { // 스타체이서 SR
+      "id": 388,
+      "minlevel": 30,
+      "weaponSkill": 2000000,
+      "damage": 1.2
+    },
+    { // M200 스플래쉬
+      "id": 447,
+      "minlevel": 30,
+      "weaponSkill": 2000043,      
+	  "damage": 1.2
+    },
+    { // 홀리소드 디바인 오더
+      "id": 4055,
+      "minlevel": 30,
+      "damage": 0.3,
+      "dropModel": "models/w_holysword.mdl"
+    },
+    { // 지옥무쌍검
+      "id": 4056,
+      "minlevel": 30,
+	  "damage": 0.9,
+      "dropModel": "models/w_dualswordm.mdl"
+    }
+  ],
+
+  "skillinfo": [
+    { // claymore 크레모어
+      "type": 392,
+      "cooltime": 75.0,
+      "numuse": 1,
+      "startfx": 1,
+      "customstart": true,
+      "useAgain": true,
+      "args": [
+        [ 100, 100 ],
+        500,
+        6
+      ] // damage, 넉백, 범위
+    },
+    { // flashgrenade
+      "type": 2002,
+      "duration": 2.0,
+      "cooltime": 10.0,
+      "numuse": 1,
+      "startfx": 1,
+      "args": [
+        [ 0, 0 ],
+        4
+      ] // damage, 범위
+    },
+    { // hegrenade
+      "type": 2003,
+      "cooltime": 45.0,
+      "numuse": 1,
+      "startfx": 1,
+      "args": [
+        [ 125, 125 ],
+        4
+      ] // damage, 범위
+    },
+    { // smokegrenade
+      "type": 2004,
+      "duration": 5.0,
+      "cooltime": 20.0,
+      "numuse": 1,
+      "startfx": 1,
+      "args": [
+        [ 0, 0 ],
+        7,
+        0.8
+      ] // damage, 범위, 피해 감소율
+    },
+    { // fraggrenade
+      "type": 2008,
+      "cooltime": 60.0,
+      "numuse": 1,
+      "startfx": 1,
+      "args": [
+        [ 115, 115 ],
+        6
+      ] // damage, 범위
+    },
+    { // firebomb
+      "type": 2009,
+      "duration": 5.0,
+      "cooltime": 60.0,
+      "numuse": 1,
+      "startfx": 1,
+      "args": [
+        [ 150, 150 ],
+        4
+      ] // damage, 범위
+    },
+    { // eventbomb
+      "type": 2010,
+      "cooltime": 60.0,
+      "numuse": 1,
+      "startfx": 1,
+      "args": [
+        [ 150, 150 ],
+        6
+      ] // damage, 범위
+    },
+    { // mooncake
+      "type": 2011,
+      "cooltime": 60.0,
+      "numuse": 1,
+      "startfx": 1,
+      "args": [
+        [ 150, 150 ],
+        6
+      ] // damage, 범위
+    },
+    { // pumpkin
+      "type": 2012,
+      "cooltime": 60.0,
+      "numuse": 1,
+      "startfx": 1,
+      "args": [
+        [ 150, 150 ],
+        6
+      ] // damage, 범위
+    },
+    { // chaingren 체인수류탄
+      "type": 2036,
+      "cooltime": 75.0,
+      "numuse": 1,
+      "startfx": 1,
+      "args": [
+        [ 175, 175 ],
+        3,
+        0.5
+      ] // damage, 2, 파편 대미지 감소율
+    },
+    { // passive drone 보조헬하운드
+      "type": 1000000, // pureskill이면 스킬 타입, 아니면 weaponID
+      "duration": 10.0, // 유지시간 (기본값 0.0)
+      "cooltime": 15.0, // 쿨타임 (기본값 0)
+      "autouse": "hit", // 플레이어 특정행동시 자동 시전 (hit, kill, dash, equip)
+      "autouseindex": 1, // 자동 시전 발동확률로 사용할 args의 인덱스(없으면 100%)
+      "restrict": "primary", // "primary", "secondary", "shotgun", "smg", "rifle", "sniper", "mg", "knife", "grenade",
+      "args": [
+        [ 0.25, 0.25 ],
+        0.05,
+        6
+      ] // damage ratio, 발동확률, 범위
+      //"attachedOnly": false // 패시브스킬 효과가 현재무기에만 적용되는가
+      //"damageArg": -1 // UI세부사항 표시용 (기본값 -1)
+      //"specialist": 1, // 전문가 제한 (기본값 0)
+      //"numuse": 1, // 최대 사용횟수 (기본값 1)
+      //"ratio": 1, // 스킬이 아이템에 붙을 확률 가중치 (기본값 1)
+      //"toggle": true, // 토글형 스킬인지 아닌지 (기본값 false)
+      //"needclip": false, // 뒷탄창이 필요한 스킬인지 (기본값 false)
+      //"allowduplicate": false, // 같은 스킬 동시 사용 가능 (기본값 false)
+      //"useAgain": false, // UseSkill 재호출 가능 (기본값 false)
+      //"sync": false, // dedi의 스킬 정보를 client로 전송(데디패치로 스킬 수정할때만 임시로 사용하며 클라패치후에는 반드시 삭제)
+      //"hitcnt": 0, // 스킬을 사용하기 전에 필요한 몬스터 적중 횟수(기본값 0)
+      //"boss": -1, // 에픽 키트에 붙는 보스 스킬 여부
+      //"startfx": 0, // 시작이펙트
+      //"intArg": [ false, false, false ] // args 중에 int가 있는지 여부(범위가 있는 것만 지정하면 된다)
+    },
+    { // explosion damage 폭발력증가
+      "type": 1000001,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 0.25, 0.25, 0.25, 1.0, 0.25, 1.0 ], //폭발 = 스나,장비
+      "restrict": "primary",
+      "specialist": 1,
+      "args": [ 0.1 ] // damage ratio
+    },
+    { // 4번무기 사용횟수 증가 폭탄가방
+      "type": 1000002,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 0.25, 0.25, 0.25, 1.0, 0.25, 1.0 ], //폭발 = 스나,장비
+      "restrict": "primary",
+      "specialist": 1,
+      "args": [ 1 ] // 증가시킬 횟수
+    },
+    { // explosion 폭발전이
+      "type": 1000003,
+      "autouse": "hit",
+      "autouseindex": 1,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 0.25, 0.25, 0.25, 1.0, 0.25, 1.0 ], //폭발 = 스나,장비
+      "restrict": "primary",
+      "specialist": 1,
+      "args": [ // damage ratio, 발동확률, 폭발 범위, 넉백
+        [ 1.0, 2.0 ],
+        [ 0.05, 0.10 ],
+        4.0,
+        150
+      ]
+    },
+    { // 근접대미지 근접전
+      "type": 1000004,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 1.0, 1.0, 0.25, 0.25, 0.25, 0.25 ], //타격 = 샷건,smg
+      "restrict": "primary",
+      "specialist": 2,
+      "args": [ 0.15, 0.15 ] // 대미지 증가 15%
+    },
+    { // 근접 치명타확률 난전유도
+      "type": 1000005,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 1.0, 1.0, 0.25, 0.25, 0.25, 0.25 ], //타격 = 샷건,smg
+      "restrict": "primary",
+      "specialist": 2,
+      "args": [ 0.45 ] //
+    },
+    { // 근접 적 제거시 쿨타임 감소 민첩함
+      "type": 1000006,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 1.0, 1.0, 0.25, 0.25, 0.25, 0.25 ], //타격 = 샷건,smg
+      "restrict": "primary",
+      "specialist": 2,
+      "args": [ 0.1 ] //
+    },
+    { // 흡혈
+      "type": 1000007,
+      "autouse": "hit",
+      "autouseindex": 1,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 0.25, 1.0, 1.0, 0.25, 0.25, 0.25 ], //생존 = 돌소,smg
+      "restrict": "primary",
+      "specialist": 3,
+      "args": [ 0.03, 0.15 ] // 회복량, 발동확률
+    },
+    { // 긴급회피 -> 응급처치 (스킬명 변경)
+      "type": 1000008,
+      "duration": 2.0,
+      "cooltime": 160.0,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 0.25, 1.0, 1.0, 0.25, 0.25, 0.25 ], //생존 = 돌소,smg
+      "restrict": "primary",
+      "specialist": 3,
+      "args": [ 0.3, 500, 5 ] // 회복량, 넉백, 넉백범위
+    },
+    { // 구를때 대미지 감소 - 구르는돌
+      "type": 1000009,
+      "autouse": "dash",
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 0.25, 1.0, 1.0, 0.25, 0.25, 0.25 ], //생존 = 돌소,smg
+      "restrict": "primary",
+      "specialist": 3,
+      "args": [ 0.5 ] // 방어율
+    },
+    { // 일정시간마다 탄약 충전 자동보급
+      "type": 1000010,
+      "autouse": "equip",
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 0.25, 0.25, 0.25, 1.0, 1.0, 1.0 ], //지원 = 기관,스나,장비
+      "restrict": "primary",
+      "specialist": 4,
+      "args": [ 10, 0.05 ] // 충전 시간간격, 충전량
+    },
+    { // 장전시간 감소 장전의달인
+      "type": 1000011,
+      "needclip": true,
+      "attachedOnly": true,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 0.25, 0.25, 0.25, 1.0, 1.0, 1.0 ], //지원 = 기관,스나,장비
+      "restrict": "primary",
+      "specialist": 4,
+      "args": [ 0.25 ] //
+    },
+    { // 탄약 드랍율 보급요청
+      "type": 1000012,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 0.25, 0.25, 0.25, 1.0, 1.0, 1.0 ], //지원 = 기관,스나,장비
+      "restrict": "primary",
+      "specialist": 4,
+      "args": [ 1 ] // 드랍율 증가율
+    },
+    { // 포보스 보스 스킬
+      "type": 1000013,
+      "boss": 5,
+      "args": [ 0.25, 0.25 ] // 근접 대미지 증가 25%
+    },
+    { // 킬할때 스타체이서 폭발 스타샷
+      "type": 1000014,
+      "autouse": "kill",
+      "autouseindex": 1,
+      "restrict": "primary",
+      "args": [
+        [ 0.25, 0.5 ],
+        [ 0.10, 0.20 ],
+        3
+      ] // 대미지, 발동확률, 범위
+    },
+    { // 킬할때 장전 자동장전
+      "type": 1000015,
+      "needclip": true,
+      "autouse": "kill",
+      "autouseindex": 0,
+      "restrict": "primary",
+      "args": [ [ 0.1, 0.25 ] ] // 발동확률
+    },
+    { // 구를때 장전 전술장전
+      "type": 1000016,
+      "needclip": true,
+      "autouse": "dash",
+      "restrict": "primary"
+    },
+    { // 킬할때 치명타 대미지 중첩 기회주의자
+      "type": 1000017,
+      "autouse": "equip",
+      "restrict": "primary",
+      "args": [
+        [ 0.5, 0.5 ],
+        5,
+        5
+      ] // 대미지, 유지시간, 중첩횟수
+    },
+    { // 킬할때 쿨타임 감소 충전중
+      "type": 1000018,
+      "cooltime": 2,
+      "autouse": "kill",
+      "restrict": "primary",
+      "args": [ 0.03 ] //
+    },
+    { // 쿨타임 걸린 액티브스킬 없을때 대미지증가, 클래식애호가
+      "type": 1000019,
+      "autouse": "equip",
+      "restrict": "primary",
+      "args": [ [ 0.20, 0.20 ] ] // 대미지 증가 20%
+    },
+    { // 킬할때 시체 폭발 부패총알
+      "type": 1000020,
+      "autouse": "kill",
+      "autouseindex": 1,
+      "restrict": "primary",
+      "args": [
+        [ 0.8, 2 ],
+        [ 0.10, 0.20 ],
+        4
+      ] // 대미지, 발동확률, 범위
+    },
+    { // 탄창을 비우면 치명타 확률 증가 자산관리
+      "type": 1000021,
+      "autouse": "equip",
+      "restrict": "primary",
+      "args": [ 0.03, 0.5 ] // 최소, 최대
+    },
+    { // 대미지 증가 + 받는 대미지 증가 유리대포
+      "type": 1000022,
+      "attachedOnly": true,
+      "autouse": "equip",
+      "restrict": "primary",
+      "args": [
+        [ 0.20, 0.20 ],
+        [ -0.25, -0.25 ]
+      ] // 대미지증가 , 받는 대미지증가 
+    },
+    { // 액티브스킬 쿨타임 중일때 대미지 증가 바쁜일상
+      "type": 1000023,
+      "autouse": "equip",
+      "restrict": "primary",
+      "args": [
+        [ 0.05, 0.05 ],
+        2
+      ] // 대미지증가 15% , 스킬 개수
+    },
+    { // 킬할때 1개 쿨타임 초기화 엔지니어
+      "type": 1000024,
+      "autouse": "kill",
+      "autouseindex": 0,
+      "restrict": [ "sniper", "special" ],
+      "args": [ [ 0.03, 0.03 ] ] // 발동확률
+    },
+    { // 스킬사용할때 장전 손기술
+      "type": 1000025,
+      "autouse": "skill",
+      "restrict": [ "shotgun", "sniper", "mg", "special" ]
+    },
+    { // 넉백, 경직 대미지 약점노출
+      "type": 1000026,
+      "attachedOnly": true,
+      "restrict": [ "smg", "shotgun", "sniper" ],
+      "args": [ 0.25, 0.25 ] //
+    },
+    { // 스킬사용후 대미지 증가 보조수단
+      "type": 1000027,
+      "duration": 10,
+      "autouse": "skill",
+      "restrict": [ "smg", "rifle", "mg" ],
+      "args": [ 0.15, 0.15 ] //
+    },
+    { // 적 제거 시 주무기 스킬 쿨타임 초기화 어시스트
+      "type": 1000028,
+      "cooltime": 30,
+      "autouse": "kill",
+      "restrict": "secondary"
+    },
+    { // sniper scope 정밀조준
+      "type": 2000000,
+      "cooltime": 1.0,
+      "toggle": true,
+      "startfx": 4,
+      "restrict": "sniper",
+      "damageArg": 0,
+      "args": [ 0.2 ] // 헤드샷 확률 arg% 증가 .
+    },
+    { // active drone 헬하운드호출
+      "type": 2000001,
+      "casttime": 1.0,
+      "duration": 20.0,
+      "cooltime": 30.0,
+      "startfx": 4,
+      "restrict": "primary",
+      "damageArg": 0,
+      "args": [
+        [ 0.25, 0.25 ],
+		0,
+        5
+      ] // damage ratio, 범위
+    },
+    { // 체력 회복
+      "type": 2000002,
+      "cooltime": 60.0,
+      "startfx": 2,
+      "restrict": "primary",
+      "args": [ [ 0.3, 1.0 ] ] // 회복량
+    },
+    { // 뒷탄창 회복 탄환생성
+      "type": 2000003,
+      "casttime": 1.0,
+      "cooltime": 30.0,
+      "startfx": 0,
+      "restrict": "primary"
+    },
+    { // 횡베기 가르기
+      "type": 2000004,
+      "cooltime": 5.0,
+      "restrict": "knife",
+      "startfx": 1,
+      "damageArg": 0,
+      "args": [
+        [ 4, 4 ],
+        3,
+        120,
+        300
+      ] // damage, dist, angle, knockback
+    },
+    { // 4번무기 쿨타임 초기화 수류탄충전
+      "type": 2000005,
+      "casttime": 1.0,
+      "cooltime": 30.0,
+      "startfx": 0,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 0.25, 0.25, 0.25, 1.0, 0.25, 1.0 ], //폭발 = 스나,장비
+      "restrict": "primary",
+      "specialist": 1
+    },
+    { // 유도탄
+      "type": 2000006,
+      "cooltime": 30.0,
+      "startfx": 1,
+      "restrict": "primary",
+      "damageArg": 0,
+      "args": [ // damage, 미사일 개수, 타겟 범위, 타겟 개수
+        [ 2, 2 ],
+        [ 2, 8 ],
+        4.0,
+        3
+      ],
+      "intArg": [ false, true, false, false ]
+    },
+    { // C4
+      "type": 2000007,
+      "cooltime": 30.0,
+      "startfx": 1,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 0.25, 0.25, 0.25, 1.0, 0.25, 1.0 ], //폭발 = 스나,장비
+      "restrict": "primary",
+      "specialist": 1,
+      "damageArg": 0,
+      "args": [ // damage, 범위, 시간
+        [ 1.5, 2.0 ],
+        4,
+        3
+      ]
+    },
+    { // m79 향상된유탄
+      "type": 2000008,
+      "cooltime": 20.0,
+      "startfx": 4,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 0.25, 0.25, 0.25, 1.0, 0.25, 1.0 ], //폭발 = 스나,장비
+      "restrict": "primary",
+      "specialist": 1,
+      "damageArg": 0,
+      "args": [ // damage, 범위, 발사간격, 발사횟수
+        [ 2.25, 2.25 ],
+        3.0,
+        0.5,
+        3
+      ]
+    },
+    { // 헤드샷 확인사살
+      "type": 2000009,
+      "casttime": 1.0,
+      "duration": 5.0,
+      "cooltime": 30.0,
+      "startfx": 4,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 1.0, 1.0, 0.25, 0.25, 0.25, 0.25 ], //타격 = 샷건,smg
+      "restrict": "primary",
+      "specialist": 2
+    },
+    { // 구르기 이후 일정시간 대미지 증가 돌격앞으로
+      "type": 2000010,
+      "casttime": 1.0,
+      "duration": 10.0,
+      "cooltime": 30.0,
+      "startfx": 3,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 1.0, 1.0, 0.25, 0.25, 0.25, 0.25 ], //타격 = 샷건,smg
+      "restrict": "primary",
+      "specialist": 2,
+      "args": [
+        [ 5, 5 ],
+        [ 0.6, 1.4 ]
+      ] // damage증가 (300%) , 대미지 증가 시간
+    },
+    { // 일정시간동안 항상 치명타 정밀타격
+      "type": 2000011,
+      "casttime": 1.0,
+      "duration": 5.0,
+      "cooltime": 30.0,
+      "startfx": 3,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 1.0, 1.0, 0.25, 0.25, 0.25, 0.25 ], //타격 = 샷건,smg
+      "restrict": "primary",
+      "specialist": 2
+    },
+    { // 빠른이동 질주
+      "type": 2000012,
+      "duration": 5.0,
+      "cooltime": 30.0,
+      "startfx": 3,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 0.25, 1.0, 1.0, 0.25, 0.25, 0.25 ], //생존 = 돌소,smg
+      "restrict": "primary",
+      "specialist": 3,
+      "args": [ 0.5 ] // 증가
+    },
+    { // 긴급회피 = 구를때 체력회복
+      "type": 2000013,
+      "duration": 10.0,
+      "cooltime": 30.0,
+      "startfx": 2,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 0.25, 1.0, 1.0, 0.25, 0.25, 0.25 ], //생존 = 돌소,smg
+      "restrict": "primary",
+      "specialist": 3,
+      "args": [ 0.45 ] // 회복량
+    },
+    { // 일정영역 체력회복 의무병
+      "type": 2000014,
+      "casttime": 1.0,
+      "duration": 10.0,
+      "cooltime": 60.0,
+      "startfx": 2,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 0.25, 1.0, 1.0, 0.25, 0.25, 0.25 ], //생존 = 돌소,smg
+      "restrict": "primary",
+      "specialist": 3,
+      "args": [ 0.03, 1, 2 ] // 회복량, 회복간격 초단위, 범위
+    },
+    { // 탄약보급
+      "type": 2000015,
+      "casttime": 1.0,
+      "cooltime": 30.0,
+      "startfx": 0,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 0.25, 0.25, 0.25, 1.0, 1.0, 1.0 ], //지원 = 기관,스나,장비
+      "restrict": "primary",
+      "specialist": 4,
+      "args": [ 1.0 ] // 탄약량
+    },
+    { // 진행중인 쿨타임 본인은 제거, 팀원은 15초 쿨링타임
+      "type": 2000016,
+      "casttime": 1.0,
+      "cooltime": 75.0,
+      "startfx": 0,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 0.25, 0.25, 0.25, 1.0, 1.0, 1.0 ], //지원 = 기관,스나,장비
+      "restrict": "primary",
+      "specialist": 4,
+      "args": [ 15 ] // 파티원 쿨타임 감소 초
+    },
+    { // 스캔후 추가대미지 탐지병
+      "type": 2000017,
+      "duration": 5,
+      "cooltime": 25.0,
+      "startfx": 4,
+      "weaponTypeRatio": [ 0.25, 0, 0, 0, 0.25, 0.25, 0.25, 1.0, 1.0, 1.0 ], //지원 = 기관,스나,장비
+      "restrict": "primary",
+      "specialist": 4,
+      "args": [
+        [ 1, 1 ],
+        9
+      ] // 대미지, 범위
+    },
+    { // buffak47 에너지탄
+      "type": 2000018,
+      "cooltime": 5.0,
+      "startfx": 1,
+      "restrict": "primary",
+      "damageArg": 0,
+      "args": [
+        [ 2, 2 ],
+        3,
+        500
+      ] // 대미지, 범위, 넉백
+    },
+    { // buffm4 b모드 사격 관통샷
+      "type": 2000019,
+      "cooltime": 15.0,
+      "startfx": 4,
+      "restrict": [ "smg", "shotgun", "rifle", "sniper", "mg" ],
+      "damageArg": 0,
+      "args": [
+        [ 1.75, 1.75 ],
+        1.0,
+        5
+      ] // 대미지, 발사 시간간격, 발사횟수
+    },
+    { // m79 유탄발사기
+      "type": 2000020,
+      "cooltime": 15.0,
+      "startfx": 1,
+      "restrict": [ "rifle", "special" ],
+      "damageArg": 0,
+      "args": [ 2, 2 ] // 대미지
+    },
+    { // m95tiger 화이트타이거 백호
+      "type": 2000021,
+      "ratio": 0.2,
+      "hitcnt": 10,
+      "startfx": 1,
+      "restrictWeapon": [ 3, 18, 66, 103, 47, 119, 206, 280, 415, 426, 436, 181, 336, 447 ],
+      "damageArg": 0,
+      "args": [ 3.0, 3.0 ] // 대미지
+    },
+    { // m95tigerm 유령기사
+      "type": 2000022,
+      "ratio": 0.5,
+      "cooltime": 40,
+      "startfx": 1,
+      "restrict": "sniper",
+      "damageArg": 0,
+      "args": [ 2.0, 2.0 ] // 대미지
+    },
+    { // m3dragon 화룡승천
+      "type": 2000023,
+      "ratio": 0.5,
+      "hitcnt": 8,
+      "startfx": 1,
+      "restrictWeapon": [ 21, 90, 58, 192, 63, 126 ],
+      "damageArg": 0,
+      "args": [
+        [ 4.0, 4.0 ],
+        2
+      ] // 대미지, 범위
+    },
+    { // buffm249 피닉스샷
+      "type": 2000024,
+      "cooltime": 5,
+      "startfx": 1,
+      "restrict": "primary",
+      "damageArg": 0,
+      "args": [ 5, 5 ] // 대미지
+    },
+    { // laserfist 레이저샷
+      "type": 2000025,      
+      "cooltime": 40,
+      "startfx": 1,
+      "restrict": "smg",
+      "damageArg": 0,
+      "args": [
+        [ 20, 20 ],
+        4
+      ] // 대미지, 폭발범위
+    },
+    { // stunrifle 체인라이트닝
+      "type": 2000026,
+      "duration": 4,
+      "cooltime": 35,
+      "startfx": 4,
+	  "restrict": [ "smg", "rifle", "mg" ],
+      "damageArg": 0,
+      "args": [ [ 0.25, 0.25 ], 0.15 ] // 데미지, 발사간격
+    },
+    { // 가속기
+      "type": 2000027,
+      "allowduplicate": true,
+      "duration": 10,
+      "cooltime": 20,
+      "startfx": 3,
+      "restrict": [ "smg", "shotgun", "rifle", "mg", "secondary" ],
+      "damageArg": 0,
+      "args": [ 0.3, 0.5 ] // 연사력, 재장전속도
+    },
+    { // spmg 아에올리스 화염방사
+      "type": 2000028,
+      "duration": 5,
+      "cooltime": 30,
+      "startfx": 4,
+      "restrict": "primary",
+      "damageArg": 0,
+      "args": [
+        [ 0.5, 0.5 ],
+        0.1,
+        6
+      ] // 대미지, 간격, 사거리
+    },
+    { // 찌르기
+      "type": 2000029,
+      "cooltime": 2.5,
+      "startfx": 1,
+      "restrict": "knife",
+      "damageArg": 0,
+      "args": [
+        [ 4, 4 ],
+        3,
+        300,
+        90
+      ] // damage, dist(블록 단위), knockback, 각도
+    },
+    { // 360도 공격 회전베기
+      "type": 2000030,
+      "cooltime": 10.0,
+      "startfx": 1,
+      "restrict": "knife",
+      "damageArg": 0,
+      "args": [
+        [ 4, 4 ],
+        2,
+        300
+      ] // damage, dist, knockback
+    },
+    { // 근접 공격 반사 가시
+      "type": 2000031,
+      "duration": 3.0,
+      "cooltime": 20.0,
+      "startfx": 4,
+      "restrict": "knife",
+      "damageArg": 0,
+      "args": [
+        [ 5, 5 ],
+        2,
+        0.5
+      ] // damage, dist, 대미지 시간 간격
+    },
+    { // 발샷 발록의숨결
+      "type": 2000032,
+      "cooltime": 30.0,
+      "startfx": 1,
+      "restrict": "shotgun",
+      "damageArg": 0,
+      "args": [
+        [ 0.8, 1.5 ],
+        0.1
+      ] // damage, 쿨타임 감소율
+    },
+    { // 매그넘런쳐 매그넘미사일
+      "type": 2000033,
+      //"ratio": 0.1,
+      "cooltime": 8.0,
+      "startfx": 1,
+      "restrictWeapon": [ 390, 473 ],
+      //"restrict": "primary",
+      "damageArg": 0,
+      "args": [ [ 1.5, 3.0 ] ] // damage 범위
+    },
+    { // 크림슨헌터 혈류탄
+      "type": 2000034,
+      "cooltime": 15.0,
+      "startfx": 1,
+      "restrict": "secondary",
+      "damageArg": 0,
+      "args": [ 2, 2 ] // damage
+    },
+    { // 타나토스7 타나토스
+      "type": 2000035,
+      "cooltime": 20.0,
+      "startfx": 1,
+      "restrict": "secondary",
+      "damageArg": 0,
+      "args": [
+        [ 2.5, 2.5 ],
+        [ 4, 6 ]
+      ], // damage, time
+      "intArg": [ false, true ]
+    },
+    { // 흡혈귀
+      "type": 2000036,
+      "duration": 3.0,
+      "cooltime": 20.0,
+      "startfx": 4,
+      "restrict": "secondary",
+      "args": [ [ 0.03, 0.05 ] ] // 흡혈량
+    },
+    { // 이동속도 증가 라이트웨이트
+      "type": 2000037,
+      "duration": 5.0,
+      "cooltime": 10.0,
+      "startfx": 3,
+      "restrict": "secondary",
+      "args": [ 0.2 ] // 이동속도 증가
+    },
+    { // 그물탄
+      "type": 2000038,
+      "cooltime": 5.0,
+      "startfx": 1,
+      "restrict": "primary"
+    },
+    { // 연속찌르기
+      "type": 2000039,
+      "cooltime": 10.0,
+      "startfx": 4,
+      "restrict": "knife",
+      "damageArg": 0,
+      "args": [
+        [ 3.5, 3.5 ],
+        3,
+        300,
+        1,
+        5,
+        90
+      ] // damage, dist, knockback, interval, firecnt, width
+    },
+    { // 강타
+      "type": 2000040,
+      "cooltime": 5.0,
+      "startfx": 1,
+      "restrict": "knife",
+      "damageArg": 0,
+      "args": [
+        [ 3.0, 3.0 ],
+        3,
+        300,
+        0.2,
+        90
+      ] // damage, dist, knockback, 타격시간, 각도
+    },
+    { // 암토치 화염방사기
+      "type": 2000041,
+      "duration": 2.0,
+      "cooltime": 10.0,
+      "startfx": 4,
+      "restrict": "knife",
+      "damageArg": 0,
+      "args": [
+        [ 2.5, 2.5 ],
+        0.1,
+        3
+      ] // 대미지, 간격, 사거리
+      //"args": [ 3, 5, 300 ] // damage, dist, knockback
+    },
+    { // 적룡포 레드드래곤
+      "type": 2000042,
+      "ratio": 0.5,
+      "duration": 5.0,
+      "cooltime": 60.0,
+      "startfx": 4,
+      "restrict": "primary",
+      "damageArg": 0,
+      "args": [ 1.0, 1.0 ] // damage
+    },
+    { // buffawp 엘븐레인저 정밀조준ex
+      "type": 2000043,
+      "customstart": true,
+      "cooltime": 5,
+      "startfx": 1,
+      "restrict": "sniper",
+      "damageArg": 0,
+      "args": [
+        1.5,
+        6,
+        3
+      ] // 최소 대미지, 최대 대미지, 차징 최대 시간
+    },
+    { // gunkata 건카타
+      "type": 2000044,
+      //"ratio": 0.1,
+      "customstart": true,
+      "cooltime": 30,
+      "startfx": 4,
+      "restrictWeapon": [ 395, 423 ],
+      //"restrict": "secondary",
+      "damageArg": 0,
+      "args": [
+        [ 0.5, 0.5 ],
+        3,
+        3,
+        1000
+      ] // damage, 차징 최대 시간, 공격 범위, 넉백
+    },
+    { // gunkata knockback 충격파
+      "type": 2000045,
+      "ratio": 0.3,
+      "cooltime": 45,
+      "startfx": 1,
+      "restrict": "primary",
+      "args": [ 3, 1000 ] // 공격 범위, 넉백
+    },
+    { // laserminigun 차징샷
+      "type": 2000046,
+      "customstart": true,
+      "cooltime": 10,
+      "startfx": 1,
+      "restrict": "primary",
+      "damageArg": 0,
+      "args": [ 1.2, 6, 3 ] // 최소 대미지, 최대 대미지, 차징 최대 시간
+    },
+    { // 스캔후 대미지공유 택티컬스캐닝
+      "type": 2000047,
+      "duration": 5,
+      "cooltime": 60.0,
+      "startfx": 4,
+      "restrict": "primary",
+      "args": [ 7 ] // 범위
+    },
+    { // 게이볼그 폭발화살
+      "type": 2000048,
+      "duration": 1,
+      "cooltime": 2.0,
+      "startfx": 1,
+      "customstart": true,
+      "useAgain": true,
+      "restrict": "primary",
+      "damageArg": 0,
+      "args": [
+        [ 1.25, 1.25 ],
+        4
+      ] // 대미지, 범위
+    }
+  ],
+
+  "setitem": [
+    {
+      "type": 1, // 세트아이템 종류
+      "setinfo": [
+        {
+          "require": 2, // 발동에 필요한 아이템 개수
+          "args": [ 0.5 ] // 효과에 들어가는 인수들
+        },
+        {
+          "require": 3,
+          "args": [ 1.0 ]
+        }
+      ]
+    },
+    {
+      "type": 2,
+      "setinfo": [
+        {
+          "require": 2,
+          "args": [ 0.5 ]
+        },
+        {
+          "require": 3,
+          "args": [ 1.0 ]
+        }
+      ]
+    }
+  ]
+}

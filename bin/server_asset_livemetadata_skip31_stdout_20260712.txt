@@ -1,0 +1,117 @@
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/MapList.csv.zip raw ZIP payload (13737 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using MetadataArtifacts/resource/MapModeV2/ModeList.csv
+[07/12/26 14:59:10] [INFO]  [Shop] Loaded 86 products.
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using MetadataArtifacts/resource/itemBox.csv
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/weaponparts.csv.zip raw ZIP payload (1429 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using MetadataArtifacts/MileageShop.csv
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/MatchOption.csv.zip raw ZIP payload (437 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/progress_unlock.csv.zip raw ZIP payload (3148 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/GameModeList.csv.zip raw ZIP payload (1855 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ReinforceMaxLv.csv.zip raw ZIP payload (1046 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ReinforceMaxEXP.csv.zip raw ZIP payload (424 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ItemExpireTime.csv.zip raw ZIP payload (1869 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/HonorMoneyShop.csv.zip raw ZIP payload (1245 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/scenariotx_common.zip.zip raw ZIP payload (9589 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/scenariotx_dedi.json.zip raw ZIP payload (2814 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/shopitemlist_dedi.json.zip raw ZIP payload (3835 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/EpicPieceShop.csv.zip raw ZIP payload (935 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ZBCompetitive.json.zip raw ZIP payload (501 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ppsystem.json.zip raw ZIP payload (991 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/Item.csv.zip raw ZIP payload (69737 bytes, chunked)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/CodisData.csv.zip raw ZIP payload (5830 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/WeaponProp.json.zip raw ZIP payload (182 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ModeEvent.csv.zip raw ZIP payload (1470 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using MetadataArtifacts/resource/CPShop/EventShop.csv
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/FamilyTotalWarMap.csv.zip raw ZIP payload (580 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/FamilyTotalWar.json.zip raw ZIP payload (832 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/WeaponAscend.csv.zip raw ZIP payload (451 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/PerkParam.csv.zip raw ZIP payload (1152 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/Synthesis.csv.zip raw ZIP payload (393 bytes)
+[07/12/26 14:59:10] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ZCoinShop.csv.zip raw ZIP payload (2186 bytes)
+[07/12/26 14:59:10] [INFO]  TCP listen active: socket=440, configuredPort=30002, boundPort=30002, ssl=1
+[07/12/26 14:59:10] [INFO]  Server starts listening. Server developers: Jusic, Hardee, NekoMeow, Smilex_Gamer, xRiseless. Thx to Ochii for CSO2 server.
+For more information visit discord.gg/EvUAY6D
+[07/12/26 14:59:10] [INFO]  Server build: 2640, Private Release
+[07/12/26 14:59:10] [INFO]  Memory usage: 17.17mb. Connected users: 0. Logged in users: 0. Connected dedicated servers: 0.
+[07/12/26 14:59:24] [INFO]  TLS handshake completed with client (127.0.0.1)
+[07/12/26 14:59:24] [INFO]  Client (0, 127.0.0.1) has been connected to the server
+[07/12/26 14:59:24] [INFO]  RX packet from 127.0.0.1: seq=1, size=16, id=0, hex=55 01 0C 00 00 43 1A 00 83 C2 52 6A 14 FF 97 15
+[07/12/26 14:59:24] [INFO]  Latest local client detected after version packet, scheduling delayed local handshake
+[07/12/26 14:59:24] [WARN]  CUserManager::OnVersionPacket: the server may not support the client build: 12.07.26 (supported build: 06.07.26)
+[07/12/26 14:59:27] [INFO]  Delayed local version reply after client UI startup
+[07/12/26 14:59:27] [INFO]  TX packet to 127.0.0.1: seq=1, size=6, id=0, hex=55 01 02 00 00 00
+[07/12/26 14:59:27] [INFO]  RX packet from 127.0.0.1: seq=2, size=57, id=3, hex=55 02 35 00 03 00 01 00 00 4D 49 42 76 4C 68 66 48 59 4A 7E 59 50 53 38 6A 37 34 6F 4E 6D 5A 74 00 BC FC E7 C9 7E 75 E3 3C CD BE 00 00 00 00 33 0E 00 00 00 00 7F 00 00 01
+[07/12/26 14:59:27] [INFO]  Client (127.0.0.1) sent login packet
+[07/12/26 14:59:27] [INFO]  Client (127.0.0.1) login packet parsed as latest layout: steamID='', passportSize=1, locale='MIBvLhfHYJ~YPS8j74oNmZt', pcBang=0, ip=1.0.0.127
+[07/12/26 14:59:27] [INFO]  User logged in (IP: 127.0.0.1, UID: 1, Username: localuser)
+[07/12/26 14:59:27] [INFO]  TX packet to 127.0.0.1: seq=2, size=18, id=1, hex=55 02 0E 00 01 00 53 5F 52 45 50 4C 59 5F 4F 4B 00 00
+[07/12/26 14:59:27] [INFO]  TX packet to 127.0.0.1: seq=3, size=71, id=7, hex=55 03 43 00 07 00 02 A7 7A 90 6F 5B 98 3E 8B 7B 29 90 15 E8 A2 1E D6 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 45 C3 59 0D 1C 9A B2 5A 9C B9 EE E4 21 5E 0E 28 00 00 00 00 00 00 00 00 00 ...
+[07/12/26 14:59:27] [INFO]  TX encrypted packet to 127.0.0.1: plainSeq=4, plainSize=71, plainId=7, encryptedHex=AD C3 32 A2 35 59 32 CC 62 59 55 AC F4 3E 7F 21 4B 49 85 11 80 19 06 87 7E CC C6 49 F3 3F 3F 74 9B 22 CD 56 04 C9 45 5D D4 FA 69 B4 EA 4E A3 B7 A0 56 CB 2C 01 9F 16 C5 66 A6 C2 AE 03 32 B7 1E ...
+[07/12/26 14:59:27] [INFO]  TX packet to 127.0.0.1: seq=4, size=71, id=7, hex=55 04 43 00 07 01 02 A7 7A 90 6F 5B 98 3E 8B 7B 29 90 15 E8 A2 1E D6 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 45 C3 59 0D 1C 9A B2 5A 9C B9 EE E4 21 5E 0E 28 00 00 00 00 00 00 00 00 00 ...
+[07/12/26 14:59:27] [INFO]  Latest login crypt bootstrap sent; waiting for plaintext client acknowledgement
+[07/12/26 14:59:27] [INFO]  Waiting for latest client crypt acknowledgement before login bootstrap
+[07/12/26 14:59:28] [INFO]  RX packet from 127.0.0.1: seq=3, size=5, id=12, hex=55 03 01 00 0C
+[07/12/26 14:59:28] [INFO]  Client (127.0.0.1) crypt acknowledgement received
+[07/12/26 14:59:28] [INFO]  Sending asset HostServer transfer to 127.0.0.1:30002
+[07/12/26 14:59:28] [INFO]  TX encrypted packet to 127.0.0.1: plainSeq=5, plainSize=12, plainId=81, encryptedHex=40 0F 03 80 D0 80 8C BA 00 CF 95 B6
+[07/12/26 14:59:28] [INFO]  TX packet to 127.0.0.1: seq=5, size=12, id=81, hex=55 05 08 00 51 01 7F 00 00 01 32 75
+[07/12/26 14:59:28] [INFO]  TCP disconnect requested (0, 127.0.0.1): revents=0x12, bytesSent=195, bytesReceived=78, sendQueue=0, pendingMsg=0
+[07/12/26 14:59:28] [INFO]  User logged out (1, 'localuser', 0x2E67E48)
+[07/12/26 14:59:28] [INFO]  Client (0, 127.0.0.1) has been disconnected from the server
+[07/12/26 14:59:32] [INFO]  TLS handshake completed with client (127.0.0.1)
+[07/12/26 14:59:32] [INFO]  Client (1, 127.0.0.1) has been connected to the server
+[07/12/26 14:59:32] [INFO]  RX packet from 127.0.0.1: seq=1, size=12, id=81, hex=55 01 08 00 51 00 32 75 00 00 00 00
+[07/12/26 14:59:32] [WARN]  CDedicatedServerManager::OnPacket(AddServer): no IP specified, using IP: 127.0.0.1
+[07/12/26 14:59:32] [INFO]  RX packet from 127.0.0.1: seq=2, size=7, id=81, hex=55 02 03 00 51 03 00
+[07/12/26 14:59:32] [WARN]  CDedicatedServerManager::OnPacket(3): 
+[07/12/26 14:59:32] [INFO]  Dedicated host server ready, scheduling metadata
+[07/12/26 14:59:34] [INFO]  Sending delayed dedicated host metadata
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=0, name=resource/MapList.csv
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=12, name=Matching.csv
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=27, name=resource/GameModeList.csv
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=30, name=resource/zombiez/progress_unlock.csv
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=35, name=resource/item.csv
+[07/12/26 14:59:34] [INFO]  TX chunked metadata: id=35, total=69737, chunk=28672
+[07/12/26 14:59:34] [INFO]  TX metadata chunk: id=35, flag=0x01, offset=0, size=28672
+[07/12/26 14:59:34] [INFO]  TX metadata chunk: id=35, flag=0x02, offset=28672, size=28672
+[07/12/26 14:59:34] [INFO]  TX metadata chunk: id=35, flag=0x04, offset=57344, size=12393
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=38, name=resource/codis/codisdata.cso
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=39, name=HonorShop.csv
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=40, name=resource/ItemExpireTime.csv
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=41, name=resource/scenariotx/scenariotx_common.json
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=42, name=resource/scenariotx/scenariotx_dedi.json
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=43, name=resource/scenariotx/shopitemlist_dedi.json
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=44, name=EpicPieceShop.csv
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=45, name=models/SkinWeaponInfo_server.json
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=48, name=ppsystem/config.json
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=51, name=resource/zombiecompetitive/ZBCompetitive.json
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=53, name=resource/ModeEvent/ModeEvent.csv
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=55, name=resource/ClanWar/FamilyTotalWarMap.csv
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=56, name=resource/ClanWar/FamilyTotalWar.json
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=59, name=resource/WeaponAscend.csv
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=61, name=resource/zombi/PerkParam.csv
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=66, name=resource/Synthesis/SynthesisItem.csv
+[07/12/26 14:59:34] [INFO]  TX latest metadata: id=69, name=ZCoinShop.csv
+[07/12/26 14:59:34] [INFO]  Skipping dedicated host user bootstrap; set CSNZ_DEDI_USER_BOOTSTRAP=1 for diagnostics
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=1, size=13746, id=91, hex=55 01 AE 35 5B 00 05 A9 35 50 4B 03 04 14 00 02 00 08 00 8F 30 E9 5C D5 AF B8 E2 17 35 00 00 26 68 01 00 0B 00 11 00 4D 61 70 4C 69 73 74 2E 63 73 76 55 54 0D 00 07 5D BB 4E 6A 5D BB 4E 6A 5D ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=2, size=446, id=91, hex=55 02 BA 01 5B 0C 05 B5 01 50 4B 03 04 14 00 02 00 08 00 BA 92 C3 4E 1F 30 EB D6 1B 01 00 00 11 02 00 00 0F 00 11 00 4D 61 74 63 68 4F 70 74 69 6F 6E 2E 63 73 76 55 54 0D 00 07 AF E6 F4 5C AF ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=3, size=1864, id=91, hex=55 03 44 07 5B 1B 05 3F 07 50 4B 03 04 14 00 02 00 08 00 9C 30 9D 5C D3 73 31 11 A3 06 00 00 94 1B 00 00 10 00 11 00 47 61 6D 65 4D 6F 64 65 4C 69 73 74 2E 63 73 76 55 54 0D 00 07 F6 20 F1 69 ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=4, size=3157, id=91, hex=55 04 51 0C 5B 1E 05 4C 0C 50 4B 03 04 14 00 02 00 08 00 8F 30 E9 5C 45 55 47 A0 AA 0B 00 00 BF 2A 00 00 13 00 11 00 70 72 6F 67 72 65 73 73 5F 75 6E 6C 6F 63 6B 2E 63 73 76 55 54 0D 00 07 5D ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=5, size=28681, id=91, hex=55 05 05 70 5B 23 01 00 70 50 4B 03 04 14 00 02 00 08 00 23 50 E9 5C BB D2 EF EA DD 0F 01 00 BC 0D 09 00 08 00 11 00 49 74 65 6D 2E 63 73 76 55 54 0D 00 07 D0 F2 4E 6A D0 F2 4E 6A D0 F2 4E 6A ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=6, size=28681, id=91, hex=55 06 05 70 5B 23 02 00 70 BB EB C2 00 44 73 E3 A4 BB 2E 0B 80 C7 CD 8D D3 EE BA 30 00 14 3D 95 60 3A DD AF FE F9 B7 9F FE 92 57 07 08 C3 05 05 E2 CC F4 F5 7B 94 7B 94 5B 48 39 58 23 B6 79 F5 ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=7, size=12402, id=91, hex=55 07 6E 30 5B 23 04 69 30 7D 81 F6 E5 99 3B 34 2D 51 3C BE C8 29 8F 51 D3 9E 92 FA C7 98 24 46 EF 44 15 63 92 90 A6 49 CD 1D 8E E5 5F 71 0F 4E 7F 70 CD 9B 7E 79 24 07 0D 6C 48 60 AB 5F CB 6A ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=8, size=5839, id=91, hex=55 08 CB 16 5B 26 05 C6 16 50 4B 03 04 14 00 02 00 08 00 B4 30 83 5A C0 63 98 98 30 16 00 00 06 5A 00 00 0D 00 11 00 43 6F 64 69 73 44 61 74 61 2E 63 73 76 55 54 0D 00 07 A2 A6 ED 67 A2 A6 ED ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=9, size=1254, id=91, hex=55 09 E2 04 5B 27 05 DD 04 50 4B 03 04 14 00 02 00 08 00 3B 30 6D 5B 3D 9A EC 7A 3D 04 00 00 3E 1D 00 00 12 00 11 00 48 6F 6E 6F 72 4D 6F 6E 65 79 53 68 6F 70 2E 63 73 76 55 54 0D 00 07 C0 F5 ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=10, size=1878, id=91, hex=55 0A 52 07 5B 28 05 4D 07 50 4B 03 04 14 00 02 00 08 00 8F 30 E9 5C 8C EF 23 2C AD 06 00 00 3E 22 00 00 12 00 11 00 49 74 65 6D 45 78 70 69 72 65 54 69 6D 65 2E 63 73 76 55 54 0D 00 07 5D BB ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=11, size=9598, id=91, hex=55 0B 7A 25 5B 29 05 75 25 50 4B 03 04 14 00 02 00 08 00 13 7A 6D 51 E5 D5 76 AD CD 24 00 00 E3 DB 00 00 16 00 11 00 73 63 65 6E 61 72 69 6F 74 78 5F 63 6F 6D 6D 6F 6E 2E 6A 73 6F 6E 55 54 0D ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=12, size=2823, id=91, hex=55 0C 03 0B 5B 2A 05 FE 0A 50 4B 03 04 14 00 02 00 08 00 C6 48 6C 51 15 F3 40 59 5A 0A 00 00 E0 2E 00 00 14 00 11 00 73 63 65 6E 61 72 69 6F 74 78 5F 64 65 64 69 2E 6A 73 6F 6E 55 54 0D 00 07 ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=13, size=3844, id=91, hex=55 0D 00 0F 5B 2B 05 FB 0E 50 4B 03 04 14 00 02 00 08 00 28 4C 6C 51 81 AB 8F 4C 53 0E 00 00 BF B4 00 00 16 00 11 00 73 68 6F 70 69 74 65 6D 6C 69 73 74 5F 64 65 64 69 2E 6A 73 6F 6E 55 54 0D ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=14, size=944, id=91, hex=55 0E AC 03 5B 2C 05 A7 03 50 4B 03 04 14 00 02 00 08 00 6C 30 E9 5C 1C 2C 41 50 09 03 00 00 4D 11 00 00 11 00 11 00 45 70 69 63 50 69 65 63 65 53 68 6F 70 2E 63 73 76 55 54 0D 00 07 1B BB 4E ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=15, size=191, id=91, hex=55 0F BB 00 5B 2D 05 B6 00 50 4B 03 04 14 00 02 00 08 00 88 30 46 5A 5A 15 30 3C 1C 00 00 00 1B 00 00 00 0F 00 11 00 57 65 61 70 6F 6E 50 72 6F 70 2E 6A 73 6F 6E 55 54 0D 00 07 4F D2 A3 67 4F ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=16, size=1000, id=91, hex=55 10 E4 03 5B 30 05 DF 03 50 4B 03 04 14 00 02 00 08 00 2E 4A 19 55 E7 9C 4F 82 49 03 00 00 7B 1B 00 00 0D 00 11 00 70 70 73 79 73 74 65 6D 2E 6A 73 6F 6E 55 54 0D 00 07 96 BF 06 63 96 BF 06 ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=17, size=510, id=91, hex=55 11 FA 01 5B 33 05 F5 01 50 4B 03 04 14 00 02 00 08 00 69 30 BD 5A 8E A5 45 D1 55 01 00 00 08 04 00 00 12 00 11 00 5A 42 43 6F 6D 70 65 74 69 74 69 76 65 2E 6A 73 6F 6E 55 54 0D 00 07 15 7A ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=18, size=1479, id=91, hex=55 12 C3 05 5B 35 05 BE 05 50 4B 03 04 14 00 02 00 08 00 54 31 AE 5C 5C AE 63 E0 28 05 00 00 4A 28 00 00 0D 00 11 00 4D 6F 64 65 45 76 65 6E 74 2E 63 73 76 55 54 0D 00 07 CE E8 04 6A CE E8 04 ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=19, size=589, id=91, hex=55 13 49 02 5B 37 05 44 02 50 4B 03 04 14 00 02 00 08 00 A3 30 6E 59 B0 11 C3 8B 9E 01 00 00 C1 03 00 00 15 00 11 00 46 61 6D 69 6C 79 54 6F 74 61 6C 57 61 72 4D 61 70 2E 63 73 76 55 54 0D 00 ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=20, size=841, id=91, hex=55 14 45 03 5B 38 05 40 03 50 4B 03 04 14 00 02 00 08 00 7A 30 8C 59 1A 84 C6 9A 9E 02 00 00 25 09 00 00 13 00 11 00 46 61 6D 69 6C 79 54 6F 74 61 6C 57 61 72 2E 6A 73 6F 6E 55 54 0D 00 07 37 ...
+[07/12/26 14:59:34] [INFO]  TX packet to 127.0.0.1: seq=21, size=460, id=91, hex=55 15 C8 01 5B 3B 05 C3 01 50 4B 03 04 14 00 02 00 08 00 1B 31 D9 5C BE 16 57 15 27 01 00 00 4C 04 00 00 10 00 11 00 57 65 61 70 6F 6E 41 73 63 65 6E 64 2E 63 73 76 55 54 0D 00 07 64 47 3C 6A ...
+[07/12/26 14:59:34] [INFO]  

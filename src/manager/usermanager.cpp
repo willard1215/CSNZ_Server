@@ -795,8 +795,14 @@ void CUserManager::SendLoginPacket(IUser* user, const CUserCharacter& character,
 	CUserCharacter loginCharacter = user->GetCharacter(loginLowFlags, loginHighFlags);
 
 	g_PacketManager.SendUserStartStep(socket, 0);
-	g_PacketManager.SendUserStart(socket, user->GetID(), user->GetUsername(), loginCharacter.gameName, true);
-	g_PacketManager.SendUserUpdateInfo(socket, user, loginCharacter);
+	g_PacketManager.SendUserStart(socket, user->GetID(), user->GetUsername(), loginCharacter.gameName, includeMetadata);
+	if (includeMetadata)
+		g_PacketManager.SendUserUpdateInfo(socket, user, loginCharacter);
+	else
+	{
+		Logger().Info("Latest host bootstrap: sending minimal UserUpdateInfo(157) for latest full-user flags\n");
+		g_PacketManager.SendUserUpdateInfoMinimal(socket, user);
+	}
 
 	CUserCharacterExtended characterExtended = user->GetCharacterExtended(EXT_UFLAG_CONFIG | EXT_UFLAG_BANSETTINGS);
 	if (characterExtended.config.size())
@@ -859,18 +865,15 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 {
 	uint64_t flag = g_pServerConfig->metadataToSend;
 
-	// Keep only entries whose latest hw.dll handlers can accept payloads from
-	// MetadataArtifacts. ModeList is registered in the latest table, but its
-	// current handler is an unconditional rejecting stub.
+	// Keep the default stream close to the live server startup burst captured in
+	// Error.log. Item/Codis are deliberately delayed; the live client first logs
+	// hash mismatches for them, then parses both after the lobby starts.
 	flag &= ~kMetadataFlag_ModeList;
-	flag &= ~kMetadataFlag_MatchOption;
-	flag &= ~kMetadataFlag_WeaponParts;
 	flag &= ~kMetadataFlag_MileageShop;
-	flag &= ~kMetadataFlag_GameModeList;
-	flag &= ~kMetadataFlag_ProgressUnlock;
-	flag &= ~kMetadataFlag_ReinforceMaxLvl;
 	flag &= ~kMetadataFlag_ReinforceItemsExp;
-	flag &= ~kMetadataFlag_HonorMoneyShop;
+	flag &= ~kMetadataFlag_Item;
+	flag &= ~kMetadataFlag_CodisData;
+	flag &= ~kMetadataFlag_EventShop;
 
 	// These legacy flags do not currently have a mapped latest send path here.
 	flag &= ~kMetadataFlag_WeaponPaints;
@@ -880,13 +883,21 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 	flag &= ~kMetadataFlag_Unk20;
 	flag &= ~kMetadataFlag_Encyclopedia;
 	flag &= ~kMetadataFlag_Unk31;
-	flag &= ~kMetadataFlag_CodisData;
-	flag &= ~kMetadataFlag_WeaponProp;
 	flag &= ~kMetadataFlag_Unk43;
 	flag &= ~kMetadataFlag_Unk49;
 	flag &= ~kMetadataFlag_RandomWeaponList;
 	flag &= ~kMetadataFlag_Unk54;
 	flag &= ~kMetadataFlag_Unk55;
+
+	const char* extraMetadataEnv = getenv("CSNZ_FULL_METADATA");
+	bool extraMetadata = extraMetadataEnv && extraMetadataEnv[0] == '1';
+	const bool legacyMetadataIDs = g_PacketManager.UsesLegacyMetadataIDs();
+	const char* minMetadataEnv = getenv("CSNZ_ASSET_MIN_METADATA");
+	if (minMetadataEnv && minMetadataEnv[0] == '1')
+	{
+		flag = kMetadataFlag_MapList | kMetadataFlag_MatchOption | kMetadataFlag_GameModeList;
+		Logger().Info("Using asset-safe minimal metadata set\n");
+	}
 
 	const char* metadataFilterEnv = getenv("CSNZ_METADATA_FILTER");
 	if (metadataFilterEnv && metadataFilterEnv[0])
@@ -927,7 +938,7 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 
 	auto logMetadata = [](int id, const char* name)
 	{
-		Logger().Info("TX latest metadata: id=%d, name=%s\n", id, name);
+		Logger().Info("TX metadata: id=%d, name=%s\n", g_PacketManager.GetMetadataWireID(id), name);
 	};
 
 	// Keep the host-server metadata stream in the latest hw.dll table order.
@@ -976,12 +987,18 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 		logMetadata(kPacket_Metadata_ReinforceMaxEXP, "ReinforceMaxEXP.csv");
 		g_PacketManager.SendMetadataReinforceMaxEXP(socket);
 	}
+	g_PacketManager.SendMetadataHash(socket);
 	if (flag & kMetadataFlag_ReinforceItemsExp)
 		g_PacketManager.SendMetadataReinforceItemsExp(socket);
 	if (flag & kMetadataFlag_Item)
 	{
 		logMetadata(kPacket_Metadata_Item, "resource/item.csv");
 		g_PacketManager.SendMetadataItem(socket);
+	}
+	if (flag & kMetadataFlag_CodisData)
+	{
+		logMetadata(kPacket_Metadata_CodisData, "resource/codis/codisdata.cso");
+		g_PacketManager.SendMetadataCodisData(socket);
 	}
 	if (flag & kMetadataFlag_HonorMoneyShop)
 	{
@@ -1008,6 +1025,17 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 		logMetadata(kPacket_Metadata_ShopItemList_Dedi, "resource/scenariotx/shopitemlist_dedi.json");
 		g_PacketManager.SendMetadataShopItemList_Dedi(socket);
 	}
+	if (extraMetadata)
+	{
+		logMetadata(kPacket_Metadata_EpicPieceShop, "EpicPieceShop.csv");
+		g_PacketManager.SendMetadataEpicPieceShop(socket);
+	}
+
+	if (flag & kMetadataFlag_WeaponProp)
+	{
+		logMetadata(kPacket_Metadata_WeaponProp, "models/SkinWeaponInfo_server.json");
+		g_PacketManager.SendMetadataWeaponProp(socket);
+	}
 	if (flag & kMetadataFlag_PPSystem)
 	{
 		logMetadata(kPacket_Metadata_PPSystem, "ppsystem/config.json");
@@ -1028,16 +1056,31 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 		logMetadata(kPacket_Metadata_EventShop, "resource/CPShop/EventShop.csv");
 		g_PacketManager.SendMetadataEventShop(socket);
 	}
-	if (flag & kMetadataFlag_FamilyTotalWarMap)
-	{
-		logMetadata(kPacket_Metadata_FamilyTotalWarMap, "resource/ClanWar/FamilyTotalWarMap.csv");
-		g_PacketManager.SendMetadataFamilyTotalWarMap(socket);
-	}
 	if (flag & kMetadataFlag_FamilyTotalWar)
 	{
 		logMetadata(kPacket_Metadata_FamilyTotalWar, "resource/ClanWar/FamilyTotalWar.json");
 		g_PacketManager.SendMetadataFamilyTotalWar(socket);
 	}
+	if (flag & kMetadataFlag_FamilyTotalWarMap)
+	{
+		logMetadata(kPacket_Metadata_FamilyTotalWarMap, "resource/ClanWar/FamilyTotalWarMap.csv");
+		g_PacketManager.SendMetadataFamilyTotalWarMap(socket);
+	}
+	if (!legacyMetadataIDs)
+	{
+		logMetadata(kPacket_Metadata_WeaponAscend, "resource/WeaponAscend.csv");
+		g_PacketManager.SendMetadataWeaponAscend(socket);
+		logMetadata(kPacket_Metadata_PerkParam, "resource/zombi/PerkParam.csv");
+		g_PacketManager.SendMetadataPerkParam(socket);
+		logMetadata(kPacket_Metadata_Synthesis, "resource/Synthesis/SynthesisItem.csv");
+		g_PacketManager.SendMetadataSynthesis(socket);
+	}
+	if (extraMetadata && !legacyMetadataIDs)
+	{
+		logMetadata(kPacket_Metadata_ZCoinShop, "ZCoinShop.csv");
+		g_PacketManager.SendMetadataZCoinShop(socket);
+	}
+
 	if (flag & kMetadataFlag_Unk54)
 		g_PacketManager.SendMetadataUnk54(socket);
 	if (flag & kMetadataFlag_Unk55)
@@ -1710,6 +1753,35 @@ bool CUserManager::OnCryptPacket(CReceivePacket* msg, IExtendedSocket* socket)
 	IUser* user = GetUserBySocket(socket);
 	if (user != NULL && user->IsCharacterExists())
 	{
+		const char* sameSocketEnv = getenv("CSNZ_SAME_SOCKET_BOOTSTRAP");
+		if (sameSocketEnv && sameSocketEnv[0] == '1')
+		{
+			Logger().Info("Scheduling latest login bootstrap on same user socket after crypt acknowledgement\n");
+			std::thread([socket]()
+			{
+				SleepMS(3000);
+				g_Events.AddEventFunction([socket]()
+				{
+					if (!g_pServerInstance->IsServerActive())
+						return;
+
+					IUser* delayedUser = g_UserManager.GetUserBySocket(socket);
+					if (delayedUser == NULL || !delayedUser->IsCharacterExists())
+						return;
+
+					CUserCharacter character = delayedUser->GetCharacter(UFLAG_LOW_ALL, UFLAG_HIGH_ALL);
+
+					g_ItemManager.OnUserLogin(delayedUser);
+					g_ClanManager.OnUserLogin(delayedUser);
+					g_QuestManager.OnUserLogin(delayedUser);
+
+					Logger().Info("Continuing latest login bootstrap on same user socket after delay\n");
+					g_UserManager.SendLoginPacket(delayedUser, character);
+				});
+			}).detach();
+			return true;
+		}
+
 		int transferPort = 30002;
 		try
 		{
@@ -1721,8 +1793,17 @@ bool CUserManager::OnCryptPacket(CReceivePacket* msg, IExtendedSocket* socket)
 				g_pServerConfig->tcpPort.c_str(), transferPort);
 		}
 
-		Logger().Info("Sending latest login HostServer transfer to 127.0.0.1:%d\n", transferPort);
-		g_PacketManager.SendHostServerTransfer(socket, "127.0.0.1", transferPort);
+		const char* transferPacketEnv = getenv("CSNZ_TRANSFER_PACKET");
+		if (transferPacketEnv && transferPacketEnv[0] == '1')
+		{
+			Logger().Info("Sending diagnostic Transfer(2) packet to 127.0.0.1:%d\n", transferPort);
+			g_PacketManager.SendTransfer(socket, "127.0.0.1", transferPort, user->GetUsername());
+		}
+		else
+		{
+			Logger().Info("Sending asset HostServer transfer to 127.0.0.1:%d\n", transferPort);
+			g_PacketManager.SendHostServerTransfer(socket, "127.0.0.1", transferPort);
+		}
 	}
 
 	return true;

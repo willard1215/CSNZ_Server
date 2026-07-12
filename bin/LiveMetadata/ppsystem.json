@@ -1,0 +1,365 @@
+{
+	"Point" : {
+		"Punish" : 1,
+		"MaxPP": 120,
+		"MinPP": 30,
+		"Default": 100,
+		"Disadvantage": 80,
+		"PlayStart": 15,
+		"BadPoint": 10
+	},
+	"Type" : {
+		"Reason01": 1,				
+		"Reason02": 2,						
+		"Reason03": 3,					
+		"Reason04": 4,				
+		"Reason05": 5,						
+		"Reason06": 6,					
+		"Reason07": 7,				
+		"Reason08": 8,				
+		"Reason09": 9,				
+		"Reason10": 10,			
+		"Reason11": 11,		
+		"Reason12": 12,		
+		"Reason13": 13,		
+		"Reason14": 14,			
+		"Reason15": 15,		
+		"Reason16": 16,			
+		"Reason17": 17,			
+		"Reason18": 18,		
+		"Reason19": 19,			
+		"Reason20": 20,		
+		"Reason21": 21	
+	},	
+	"Config": {
+		"__SAMPLE": {		
+			"Point": 0.1,	
+			"Weight": 1,	
+			"ModeWeight": [	
+				{ "id": 20, "rate": 0.1 },
+				{ "id": 25, "rate": 0.5 }
+			],
+			"Setting": {}	
+		},
+		
+		"Reason01": {
+			"Point": 0.15,
+			"Weight": 1,
+			"Setting": {
+				"threshold":  60 
+			}
+		},
+		
+		"Reason02": {
+			"Point": 0.12,
+			"Weight": 1,
+			"Setting": {
+				"threshold": 60 
+			}
+		},
+		
+		"Reason03": {
+			"Point": 0.13,
+			"Weight": 1.05,
+			"Setting": {
+				"threshold": 4, 		
+				"threshold2": 1200, 	
+				"threshold3": 60		
+			}
+		},
+		
+		"Reason04": {
+			"Point": 0.1,
+			"Weight": 1.1,
+			"Setting": {
+				"threshold": 25,		
+				"threshold2": 1200,		
+				"threshold3" : 60 	
+			}
+		},
+		
+		"Reason05": {
+			"Point": -0.1,
+			"Weight": 1.5,
+			"ModeWeight": [	
+				{ "id": 41, "rate": 0 },	
+				{ "id": 48, "rate": 0 },
+				{ "id": 55, "rate": 0 }	
+				
+			],
+			"Setting": {
+				"threshold": 180,	
+				"threshold2": 60 
+			}
+		},
+		
+		"Reason06": {
+			"Point": -0.1,
+			"Weight": 1.4,
+			"ModeWeight": [	
+				{ "id": 12, "rate": 0.0 },
+				{ "id": 39, "rate": 0.3 },	
+				{ "id": 49, "rate": 0.5 },	
+				{ "id": 37, "rate": 0.5 },	
+				{ "id": 41, "rate": 0 },	
+				{ "id": 48, "rate": 0 },
+				{ "id": 55, "rate": 0 }
+			],
+			"Setting": {
+				"threshold": 180,	
+				"threshold2": 60 	
+			}
+		},
+		
+		"Reason07": {
+			"Point": -0.1,
+			"Weight": 1.3,
+			"ModeWeight": [	
+				{ "id": 12, "rate": 0 },	
+				{ "id": 38, "rate": 0.3 },	
+				{ "id": 39, "rate": 0.3 },	
+				{ "id": 49, "rate": 0.5 },	
+				{ "id": 37, "rate": 0.5 },	
+				{ "id": 20, "rate": 0.5 },	
+				{ "id": 41, "rate": 0 },		
+				{ "id": 48, "rate": 0 },
+				{ "id": 55, "rate": 0 }
+			],
+			"Setting": {
+				"threshold": 300,			
+				"threshold2": 60 			
+			}
+		},
+		
+		"Reason08": {
+			"Point": -0.1,
+			"Weight": 1.3,
+			"ModeWeight": [	
+				{ "id": 12, "rate": 0 },	
+				{ "id": 38, "rate": 0.3 },
+				{ "id": 39, "rate": 0.3 },	
+				{ "id": 49, "rate": 0.5 },
+				{ "id": 37, "rate": 0.5 },	
+				{ "id": 20, "rate": 0.5 },
+				{ "id": 41, "rate": 0 },
+				{ "id": 48, "rate": 0 },
+				{ "id": 55, "rate": 0 }
+			],
+			"Setting": {
+				"threshold": 300,
+				"threshold2": 60 
+			}
+		},
+		
+		"Reason09": {
+			"Point": -0.1,
+			"Weight": 1.4,
+			"ModeWeight": [
+				{ "id": 41, "rate": 0 },
+				{ "id": 48, "rate": 0 },
+				{ "id": 55, "rate": 0 }
+			],
+			"Setting": {
+				"threshold": 3,	
+				"threshold2": 2,
+				"offset": 30	
+			}
+		},
+		
+		"Reason10": {
+			"Point": -0.1,
+			"Weight": 1.5,
+			"ModeWeight": [	
+				{ "id": 41, "rate": 0 },
+				{ "id": 48, "rate": 0 },
+				{ "id": 55, "rate": 0 }
+			],
+			"Setting": {
+				"threshold": 60,
+				"threshold2": 60 
+			}
+		},
+		
+		"Reason11": {
+			"Point": -0.1,
+			"Weight": 1.6,
+			"ModeWeight": [	
+				{ "id": 41, "rate": 0 },
+				{ "id": 48, "rate": 0 },	
+				{ "id": 0, "rate": 0.9 },	
+				{ "id": 2, "rate": 0.7 },	 
+				{ "id": 1, "rate": 0.7 },	 
+				{ "id": 22, "rate": 0.7 }, 
+				{ "id": 40, "rate": 0.7 }
+			],
+			"Setting": {
+				"threshold": 10,
+				"threshold2": 1		
+			}
+		},
+		
+		"Reason12": {
+			"Point": -0.1,
+			"Weight": 1.6,
+			"ModeWeight": [	
+				{ "id": 41, "rate": 0 },
+				{ "id": 48, "rate": 0 },	
+				{ "id": 0, "rate": 0.9 },
+				{ "id": 2, "rate": 0.7 }, 
+				{ "id": 1, "rate": 0.7 }, 
+				{ "id": 22, "rate": 0.7 },
+				{ "id": 40, "rate": 0.7 }
+			],
+			"Setting": {
+				"threshold": 10,
+				"threshold2": 1	
+			}
+		},
+		
+		"Reason13": {
+			"Point": -0.1,
+			"Weight": 2,
+			"ModeWeight": [
+				{ "id": 41, "rate": 0 },
+				{ "id": 48, "rate": 0 },
+				{ "id": 55, "rate": 0 }
+			],
+			"Setting": {
+				"threshold": 10,
+				"threshold2": 1,
+				"offset": 20
+			}
+		},
+		
+		"Reason14": {
+			"Point": -0.1,
+			"Weight": 1.5,
+			"ModeWeight": [	
+				{ "id": 41, "rate": 0 },
+				{ "id": 48, "rate": 0 },
+				{ "id": 55, "rate": 0 }
+			],
+			"Setting": {
+				"threshold": 10,	
+				"threshold2": 1,	
+				"offset": 50		
+			}
+		},
+		
+		"Reason15": {
+			"Point": -0.05,
+			"Weight": 1.0,
+			"ModeWeight": [	
+				{ "id": 41, "rate": 0 },
+				{ "id": 48, "rate": 0 },
+				{ "id": 55, "rate": 0 }
+			],
+			"Setting": {
+				"threshold": 1200, 
+				"threshold2": 60 
+			}
+		},
+		
+		"Reason16": {
+			"Point": -0.05,
+			"Weight": 1.0,
+			"ModeWeight": [
+				{ "id": 41, "rate": 0 },
+				{ "id": 48, "rate": 0 },
+				{ "id": 55, "rate": 0 }
+			],
+			"Setting": {
+				"threshold": 1200,  
+				"threshold2": 60, 
+				"threshold3" : 2 
+			}
+		},
+		
+		"Reason17": {
+			"Point": -0.08,
+			"Weight": 1.3,
+			"ModeWeight": [	
+				{ "id": 12, "rate": 0 },	
+				{ "id": 39, "rate": 0.5 },
+				{ "id": 16, "rate": 0 },	
+				{ "id": 28, "rate": 0 },	
+				{ "id": 52, "rate": 0 },	
+				{ "id": 49, "rate": 0 },	
+				{ "id": 37, "rate": 0 },	
+				{ "id": 33, "rate": 0 },
+				{ "id": 51, "rate": 0 },
+				{ "id": 41, "rate": 0 },
+				{ "id": 48, "rate": 0 },
+				{ "id": 55, "rate": 0 }
+			],
+			"Setting": {
+				"threshold": 4, 		
+				"threshold2": 1200, 	
+				"threshold3": 4,		
+				"threshold4": 60	
+			}
+		},
+		
+		"Reason18": {
+			"Point": -0.1,
+			"Weight": 1.2,
+			"ModeWeight": [	
+				{ "id": 12, "rate": 0 },	
+				{ "id": 39, "rate": 0.5 },
+				{ "id": 16, "rate": 0 },	
+				{ "id": 28, "rate": 0 },
+				{ "id": 52, "rate": 0 },
+				{ "id": 49, "rate": 0 },
+				{ "id": 37, "rate": 0 },	
+				{ "id": 33, "rate": 0 },
+				{ "id": 41, "rate": 0 },
+				{ "id": 48, "rate": 0 },
+				{ "id": 55, "rate": 0 }
+			],
+			"Setting": {
+				"threshold": 4, 	
+				"threshold2": 1200, 
+				"threshold3": 80,	
+				"threshold4": 60
+			}
+		},
+		
+		"Reason19": {
+			"Point": -0.5,
+			"Weight": 2,
+			"ModeWeight": [	
+				{ "id": 41, "rate": 0 },
+				{ "id": 48, "rate": 0 },
+				{ "id": 55, "rate": 0 }
+			],
+			"Setting": {
+				"threshold": 5,			
+				"threshold2": 5,		
+				"threshold3": 1200, 
+				"threshold4": 1		
+			}
+		},
+		
+		"Reason20": {
+			"Point": -0.2,
+			"Weight": 1.2,
+			"ModeWeight": [	
+				{ "id": 41, "rate": 0 },
+				{ "id": 48, "rate": 0 },
+				{ "id": 55, "rate": 0 }
+			],
+			"Setting": {
+				"threshold": 60 	
+			}
+		},
+		
+		"Reason21": {
+			"Point": -3.0,
+			"Weight": 2,
+			"Setting": {
+				"dmg": 0,
+				"threshold": 300  
+			}
+		}
+	}
+}

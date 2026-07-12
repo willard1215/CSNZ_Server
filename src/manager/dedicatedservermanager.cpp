@@ -142,6 +142,13 @@ bool CDedicatedServerManager::OnPacket(CReceivePacket* msg, IExtendedSocket* soc
 					Logger().Info("Sending delayed dedicated host metadata\n");
 					g_UserManager.SendMetadata(socket);
 
+					const char* bootstrapEnv = getenv("CSNZ_DEDI_USER_BOOTSTRAP");
+					if (!bootstrapEnv || bootstrapEnv[0] != '1')
+					{
+						Logger().Info("Skipping dedicated host user bootstrap; set CSNZ_DEDI_USER_BOOTSTRAP=1 for diagnostics\n");
+						return;
+					}
+
 					std::thread([socket]()
 					{
 						SleepMS(500);
@@ -155,6 +162,20 @@ bool CDedicatedServerManager::OnPacket(CReceivePacket* msg, IExtendedSocket* soc
 
 							Logger().Info("Sending dedicated host user bootstrap after metadata grace period\n");
 							g_UserManager.BootstrapLocalUserAfterMetadata(socket);
+						});
+
+						SleepMS(500);
+						g_Events.AddEventFunction([socket]()
+						{
+							if (!g_pServerInstance->IsServerActive())
+								return;
+
+							if (g_DedicatedServerManager.GetServerBySocket(socket) == NULL)
+								return;
+
+							Logger().Info("Sending delayed live metadata payloads after lobby bootstrap: item/codis\n");
+							g_PacketManager.SendMetadataItem(socket);
+							g_PacketManager.SendMetadataCodisData(socket);
 						});
 					}).detach();
 				});

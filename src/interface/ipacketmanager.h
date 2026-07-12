@@ -33,6 +33,7 @@ public:
 	virtual void SendUMsgRewardSelect(IExtendedSocket* socket, Reward* reward) = 0;
 
 	virtual void SendServerList(IExtendedSocket* socket) = 0;
+	virtual void SendTransfer(IExtendedSocket* socket, const std::string& ipAddress, int port, const std::string& ticket) = 0;
 
 	virtual void SendStatistic(IExtendedSocket* socket) = 0;
 
@@ -46,6 +47,7 @@ public:
 	virtual void SendUserStartStep(IExtendedSocket* socket, int step) = 0;
 	virtual void SendUserStart(IExtendedSocket* socket, int userID, const std::string& userName, const std::string& gameName, bool firstConnect) = 0;
 	virtual void SendUserUpdateInfo(IExtendedSocket* socket, IUser* user, const CUserCharacter& character) = 0;
+	virtual void SendUserUpdateInfoMinimal(IExtendedSocket* socket, IUser* user) = 0;
 	virtual void SendUserSurvey(IExtendedSocket* socket, const Survey& survey) = 0;
 	virtual void SendUserSurveyReply(IExtendedSocket* socket, int result) = 0;
 

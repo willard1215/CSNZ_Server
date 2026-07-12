@@ -69,10 +69,12 @@ const char* defaultServerConfig = R"(
 		"ClientTable": true,
 		"Unk3": true,
 		"ItemBox": true,
+		"WeaponAuction": true,
 		"Unk8": true,
 		"MatchOption": true,
 		"ZombieWarWeaponList": true,
 		"WeaponParts": true,
+		"SeasonPass": true,
 		"Unk20": true,
 		"Encyclopedia": false,
 		"GameModeList": true,
@@ -1007,16 +1009,16 @@ bool CServerConfig::Load()
 				metadataToSend |= kMetadataFlag_Unk3;
 			if (jMetadata.value("ItemBox", false))
 				metadataToSend |= kMetadataFlag_ItemBox;
-			if (jMetadata.value("Unk8", false))
-				metadataToSend |= kMetadataFlag_Unk8;
+			if (jMetadata.value("WeaponAuction", false) || jMetadata.value("Unk8", false))
+				metadataToSend |= kMetadataFlag_WeaponAuction;
 			if (jMetadata.value("MatchOption", false))
 				metadataToSend |= kMetadataFlag_MatchOption;
 			if (jMetadata.value("ZombieWarWeaponList", false))
 				metadataToSend |= kMetadataFlag_ZombieWarWeaponList;
 			if (jMetadata.value("WeaponParts", false))
 				metadataToSend |= kMetadataFlag_WeaponParts;
-			if (jMetadata.value("Unk20", false))
-				metadataToSend |= kMetadataFlag_Unk20;
+			if (jMetadata.value("SeasonPass", false) || jMetadata.value("Unk20", false))
+				metadataToSend |= kMetadataFlag_SeasonPass;
 			if (jMetadata.value("Encyclopedia", false))
 				metadataToSend |= kMetadataFlag_Encyclopedia;
 			if (jMetadata.value("GameModeList", false))
@@ -1396,7 +1398,7 @@ bool CServerConfig::Load()
 
 void CServerConfig::LoadDefaultConfig(ordered_json& cfg)
 {
-	// или просто вьебать целый файл без ебли
+	// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	cfg = ordered_json::parse(defaultServerConfig, nullptr, true, true);
 
 	//cfg = ordered_json();

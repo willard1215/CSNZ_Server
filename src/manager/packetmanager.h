@@ -9,6 +9,46 @@
 
 struct Notice_s;
 
+struct SeasonPassRewardItem
+{
+	unsigned short itemID = 0;
+	unsigned short count = 0;
+	unsigned short duration = 0;
+	unsigned short unk1 = 0;
+	unsigned short unk2 = 0;
+	unsigned short unk3 = 0;
+	unsigned short unk4 = 0;
+};
+
+struct SeasonPassLevel
+{
+	unsigned short level = 0;
+	unsigned short needCoin = 0;
+	std::vector<SeasonPassRewardItem> rewardGroup1;
+	std::vector<SeasonPassRewardItem> rewardGroup2;
+};
+
+struct SeasonPassHeader
+{
+	unsigned short Season = 0;
+	unsigned short TotalLevel = 0;
+	std::string StartDate;
+	std::string EndDate;
+	unsigned int PerLevelPrice = 0;
+	unsigned int SeasonPassPrice = 0;
+	unsigned int SeasonPassBundleSalePrice = 0;
+	unsigned int SeasonPassBundlePrice = 0;
+	unsigned int SeasonPassBundleDiscountPercent = 0;
+	unsigned int unk06 = 0;
+	unsigned short unk07 = 0;
+};
+
+struct SeasonPassData
+{
+	SeasonPassHeader header;
+	std::vector<SeasonPassLevel> levels;
+};
+
 class CBinMetadata
 {
 public:
@@ -49,6 +89,8 @@ public:
 	virtual void Shutdown();
 
 	CSendPacket* CreatePacket(IExtendedSocket* socket, int msgID);
+	bool UsesLegacyMetadataIDs();
+	int GetMetadataWireID(int latestMetadataID);
 
 	void SendUMsgNoticeMsgBoxToUuid(IExtendedSocket* socket, const std::string& text);
 	void SendUMsgNoticeMessageInChat(IExtendedSocket* socket, const std::string& text);
@@ -60,6 +102,7 @@ public:
 	void SendUMsgRewardSelect(IExtendedSocket* socket, Reward* reward);
 
 	void SendServerList(IExtendedSocket* socket);
+	void SendTransfer(IExtendedSocket* socket, const std::string& ipAddress, int port, const std::string& ticket);
 
 	void SendStatistic(IExtendedSocket* socket);
 
@@ -73,6 +116,7 @@ public:
 	void SendUserStartStep(IExtendedSocket* socket, int step);
 	void SendUserStart(IExtendedSocket* socket, int userID, const std::string& userName, const std::string& gameName, bool firstConnect);
 	void SendUserUpdateInfo(IExtendedSocket* socket, IUser* user, const CUserCharacter& character);
+	void SendUserUpdateInfoMinimal(IExtendedSocket* socket, IUser* user);
 	void SendUserSurvey(IExtendedSocket* socket, const Survey& survey);
 	void SendUserSurveyReply(IExtendedSocket* socket, int result);
 
@@ -92,12 +136,15 @@ public:
 	void SendMetadataReinforceMaxLvl(IExtendedSocket* socket);
 	void SendMetadataReinforceMaxEXP(IExtendedSocket* socket);
 	void SendMetadataUnk8(IExtendedSocket* socket);
+	void SendMetadataWeaponAuction(IExtendedSocket* socket);
 	void SendMetadataProgressUnlock(IExtendedSocket* socket);
 	void SendMetadataWeaponPaints(IExtendedSocket* socket, std::vector<WeaponPaint>& weaponPaints);
 	void SendMetadataUnk3(IExtendedSocket* socket);
 	void SendMetadataReinforceItemsExp(IExtendedSocket* socket);
 	void SendMetadataItemExpireTime(IExtendedSocket* socket);
 	void SendMetadataUnk20(IExtendedSocket* socket);
+	void SendMetadataSeasonPass(IExtendedSocket* socket);
+	void SendMetadataSeasonPass(IExtendedSocket* socket, const SeasonPassData& seasonpass);
 	void SendMetadataZombieWarWeaponList(IExtendedSocket* socket, std::vector<int>& zombieWarWeapons);
 	void SendMetadataRandomWeaponList(IExtendedSocket* socket, std::vector<RandomWeapon>& randomWeapons);
 	void SendMetadataHash(IExtendedSocket* socket);
@@ -106,6 +153,7 @@ public:
 	void SendMetadataScenarioTX_Common(IExtendedSocket* socket);
 	void SendMetadataScenarioTX_Dedi(IExtendedSocket* socket);
 	void SendMetadataShopItemList_Dedi(IExtendedSocket* socket);
+	void SendMetadataEpicPieceShop(IExtendedSocket* socket);
 	void SendMetadataZBCompetitive(IExtendedSocket* socket);
 	void SendMetadataUnk43(IExtendedSocket* socket);
 	void SendMetadataUnk49(IExtendedSocket* socket);
@@ -118,6 +166,10 @@ public:
 	void SendMetadataEventShop(IExtendedSocket* socket);
 	void SendMetadataFamilyTotalWarMap(IExtendedSocket* socket);
 	void SendMetadataFamilyTotalWar(IExtendedSocket* socket);
+	void SendMetadataWeaponAscend(IExtendedSocket* socket);
+	void SendMetadataPerkParam(IExtendedSocket* socket);
+	void SendMetadataSynthesis(IExtendedSocket* socket);
+	void SendMetadataZCoinShop(IExtendedSocket* socket);
 	void SendMetadataUnk54(IExtendedSocket* socket);
 	void SendMetadataUnk55(IExtendedSocket* socket);
 
@@ -304,6 +356,7 @@ private:
 	CBinMetadata* m_pScenarioTX_CommonZip;
 	CBinMetadata* m_pScenarioTX_DediZip;
 	CBinMetadata* m_pShopItemList_DediZip;
+	CBinMetadata* m_pEpicPieceShopZip;
 	CBinMetadata* m_pZBCompetitiveZip;
 	CBinMetadata* m_pPPSystemZip;
 	CBinMetadata* m_pItemZip;
@@ -321,6 +374,10 @@ private:
 	CBinMetadata* m_pEventShopZip;
 	CBinMetadata* m_pFamilyTotalWarMapZip;
 	CBinMetadata* m_pFamilyTotalWarZip;
+	CBinMetadata* m_pWeaponAscendZip;
+	CBinMetadata* m_pPerkParamZip;
+	CBinMetadata* m_pSynthesisZip;
+	CBinMetadata* m_pZCoinShopZip;
 	CBinMetadata* m_pUnk54;
 	CBinMetadata* m_pUnk55;
 };

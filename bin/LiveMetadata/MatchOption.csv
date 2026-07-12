@@ -1,0 +1,7 @@
+;mode,option name,expand time,"default(-1은 상관없음, group의 경우 group2와 같은 식으로 표기)",visible(0은 뒤쪽에 배치바랍니다),group,group string,option value 1,option value 2,option value 3,option value 4,option value 5,option value 6,option value 7,option value 8,option value 9,option value 10
+42,map,300,-1,0,0,,5,7,8,13,100,,,,,
+42,player count,300,-1,0,0,,6,,,,,,,,,
+42,weapon limit,300,2,0,0,,2,,,,,,,,,
+42,gamestyle,300,0,0,0,,0,,,,,,,,,
+44,map,300,-1,0,0,,4,19,22,26,63,24,,,,
+47,map,300,-1,0,0,,233,234,,,,,,,,
