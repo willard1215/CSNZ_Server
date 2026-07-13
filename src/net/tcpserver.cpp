@@ -415,10 +415,20 @@ IExtendedSocket* CTCPServer::Accept(unsigned int id)
 
 	m_Clients.push_back(newSocket);
 
-	// send server connected message
-	static const string connectedMsg = TCP_CONNECTED_MESSAGE;
-	static vector<unsigned char> msg(connectedMsg.begin(), connectedMsg.end());
-	newSocket->Send(msg, true);
+	const char* skipConnectedMarker = getenv("CSNZ_SKIP_CONNECTED_MARKER");
+	if (!skipConnectedMarker || skipConnectedMarker[0] != '1')
+	{
+		// send server connected message for the legacy plain TCP client wrapper
+		static const string connectedMsg = TCP_CONNECTED_MESSAGE;
+		static vector<unsigned char> msg(connectedMsg.begin(), connectedMsg.end());
+		int markerResult = newSocket->Send(msg, true);
+		Logger().Info("TCP connected marker sent to client (%s): result=%d, size=%u\n",
+			ip, markerResult, static_cast<unsigned int>(msg.size()));
+	}
+	else
+	{
+		Logger().Info("TCP connected marker skipped for client (%s) by CSNZ_SKIP_CONNECTED_MARKER\n", ip);
+	}
 
 	if (m_bSSL)
 	{

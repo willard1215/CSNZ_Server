@@ -68,7 +68,7 @@ public:
 
 private:
 	void SendGuestUserPacket(IExtendedSocket* socket);
-	void SendLoginPacket(IUser* user, const CUserCharacter& character, bool includeMetadata = true);
+	void SendLoginPacket(IUser* user, const CUserCharacter& character, bool includeMetadata = true, bool sendStartPackets = true);
 	void SendUserInventory(IUser* user);
 	void SendUserLoadout(IUser* user);
 	void SendUserNotices(IUser* user);

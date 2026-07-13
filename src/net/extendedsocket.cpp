@@ -33,6 +33,48 @@ static string HexPreview(const vector<unsigned char>& data, size_t limit = 64)
 	return out;
 }
 
+static bool IsAllZero(const unsigned char* data, size_t len)
+{
+	for (size_t i = 0; i < len; ++i)
+	{
+		if (data[i] != 0)
+			return false;
+	}
+
+	return true;
+}
+
+static void FillLocalCryptMaterial(unsigned char* key, unsigned char* iv, uintptr_t salt)
+{
+	uint32_t state = static_cast<uint32_t>(GetTickCount()) ^ static_cast<uint32_t>(salt) ^ 0xA5C35A19;
+	for (size_t i = 0; i < 32; ++i)
+	{
+		state = state * 1664525u + 1013904223u;
+		key[i] = static_cast<unsigned char>((state >> 16) & 0xFF);
+		state = state * 1664525u + 1013904223u;
+		iv[i] = static_cast<unsigned char>((state >> 16) & 0xFF);
+	}
+}
+
+static void FillSampleCryptMaterial(unsigned char* key, unsigned char* iv)
+{
+	static const unsigned char kSampleKey[32] = {
+		0xB5, 0x71, 0xF2, 0x24, 0xAC, 0x51, 0x8B, 0x69,
+		0x08, 0x03, 0xA8, 0x82, 0x9C, 0x3C, 0x92, 0xD8,
+		0x84, 0x33, 0xF8, 0x1A, 0xD1, 0x30, 0x45, 0x92,
+		0x8B, 0x15, 0x45, 0x6B, 0xF4, 0xA3, 0x8C, 0xB4
+	};
+	static const unsigned char kSampleIV[32] = {
+		0x97, 0x62, 0x97, 0x48, 0xB7, 0xF5, 0x0C, 0x3B,
+		0x12, 0xD6, 0x43, 0xD0, 0xDC, 0xDC, 0xAE, 0x20,
+		0x60, 0x2F, 0x0F, 0x43, 0x67, 0x01, 0x00, 0x00,
+		0x20, 0x2F, 0x0F, 0x43, 0x67, 0x01, 0x00, 0x00
+	};
+
+	memcpy(key, kSampleKey, sizeof(kSampleKey));
+	memcpy(iv, kSampleIV, sizeof(kSampleIV));
+}
+
 /**
  * Constructor.
  * @param id
@@ -109,13 +151,23 @@ bool CExtendedSocket::SetupCrypt()
 		return false;
 	}
 
+	if (IsAllZero(m_pCryptKey, sizeof(m_pCryptKey)) && IsAllZero(m_pCryptIV, sizeof(m_pCryptIV)))
+	{
+		FillLocalCryptMaterial(m_pCryptKey, m_pCryptIV, reinterpret_cast<uintptr_t>(this));
+		Logger().Info("CExtendedSocket::SetupCrypt(%s): generated local non-zero crypt material for empty HWID\n", GetIP().c_str());
+	}
+
+	if (getenv("CSNZ_USE_SAMPLE_CRYPT"))
+	{
+		FillSampleCryptMaterial(m_pCryptKey, m_pCryptIV);
+		Logger().Info("CExtendedSocket::SetupCrypt(%s): using sample crypt material\n", GetIP().c_str());
+	}
+
 	m_pEncEVPCTX = EVP_CIPHER_CTX_new();
 	m_pDecEVPCTX = EVP_CIPHER_CTX_new();
 
 	EVP_CipherInit(m_pEncEVPCTX, EVP_rc4(), NULL, NULL, 1);
 	EVP_CipherInit(m_pDecEVPCTX, EVP_rc4(), NULL, NULL, 0);
-	EVP_CIPHER_CTX_set_key_length(m_pEncEVPCTX, 16);
-	EVP_CIPHER_CTX_set_key_length(m_pDecEVPCTX, 16);
 
 	// useless?
 	//EVP_CIPHER_CTX_set_padding(m_pEncEVPCTX, 0);

@@ -113,6 +113,7 @@ public:
 
 	void SendVersion(IExtendedSocket* socket, int result);
 
+	void SendSessionID(IExtendedSocket* socket, int sessionID);
 	void SendUserStartStep(IExtendedSocket* socket, int step);
 	void SendUserStart(IExtendedSocket* socket, int userID, const std::string& userName, const std::string& gameName, bool firstConnect);
 	void SendUserUpdateInfo(IExtendedSocket* socket, IUser* user, const CUserCharacter& character);

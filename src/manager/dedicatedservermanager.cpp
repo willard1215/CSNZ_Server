@@ -143,9 +143,9 @@ bool CDedicatedServerManager::OnPacket(CReceivePacket* msg, IExtendedSocket* soc
 					g_UserManager.SendMetadata(socket);
 
 					const char* bootstrapEnv = getenv("CSNZ_DEDI_USER_BOOTSTRAP");
-					if (!bootstrapEnv || bootstrapEnv[0] != '1')
+					if (bootstrapEnv && bootstrapEnv[0] == '0')
 					{
-						Logger().Info("Skipping dedicated host user bootstrap; set CSNZ_DEDI_USER_BOOTSTRAP=1 for diagnostics\n");
+						Logger().Info("Skipping dedicated host user bootstrap because CSNZ_DEDI_USER_BOOTSTRAP=0\n");
 						return;
 					}
 

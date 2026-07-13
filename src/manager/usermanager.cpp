@@ -18,7 +18,9 @@
 #include "common/utils.h"
 
 #include <cstdlib>
+#include <algorithm>
 #include <thread>
+#include <climits>
 
 using namespace std;
 
@@ -30,6 +32,8 @@ using namespace std;
 #define RANDOM_WEAPON_LIST_VERSION 1
 
 CUserManager g_UserManager;
+
+static bool ReplayLatestLoginSample(IExtendedSocket* socket);
 
 static void QueueDelayedLocalHandshake(IExtendedSocket* socket)
 {
@@ -43,19 +47,6 @@ static void QueueDelayedLocalHandshake(IExtendedSocket* socket)
 
 			Logger().Info("Delayed local version reply after client UI startup\n");
 			g_PacketManager.SendVersion(socket, 0);
-		});
-
-		SleepMS(500);
-		g_Events.AddEventFunction([socket]()
-		{
-			if (!g_pServerInstance->IsServerActive())
-				return;
-
-			if (g_UserManager.GetUserBySocket(socket))
-				return;
-
-			Logger().Info("Delayed local bootstrap after version packet\n");
-			g_UserManager.BootstrapLocalUser(socket, false);
 		});
 	}).detach();
 }
@@ -227,6 +218,21 @@ bool CUserManager::OnLoginPacket(CReceivePacket* msg, IExtendedSocket* socket)
 
 		g_pServerInstance->DisconnectClient(socket);
 
+		return true;
+	}
+
+	IUser* user = GetUserBySocket(socket);
+	if (user != NULL && user->IsCharacterExists())
+	{
+		CUserCharacter character = user->GetCharacter(UFLAG_LOW_ALL, UFLAG_HIGH_ALL);
+
+		g_ItemManager.OnUserLogin(user);
+		g_ClanManager.OnUserLogin(user);
+		g_QuestManager.OnUserLogin(user);
+
+		Logger().Info("Continuing local login bootstrap after client Login(3) packet\n");
+		if (!ReplayLatestLoginSample(socket))
+			SendLoginPacket(user, character, true, false);
 		return true;
 	}
 
@@ -410,8 +416,9 @@ bool CUserManager::OnVersionPacket(CReceivePacket* msg, IExtendedSocket* socket)
 		{
 			if (ENABLE_LOCAL_BOOTSTRAP || (launcherVersion == 67 && gameVersion == 26 && socket->GetIP() == "127.0.0.1"))
 			{
-				Logger().Info("Latest local client detected after version packet, scheduling delayed local handshake\n");
-				QueueDelayedLocalHandshake(socket);
+				Logger().Info("Latest local client detected after version packet, starting local login bootstrap\n");
+				g_PacketManager.SendVersion(socket, 0);
+				BootstrapLocalUser(socket, true);
 			}
 			else
 			{
@@ -711,6 +718,12 @@ bool CUserManager::BootstrapLocalUser(IExtendedSocket* socket, bool sendLoginRep
 			return false;
 		}
 
+		if (sendLoginReply)
+		{
+			Logger().Info("Local bootstrap character created; deferring login packet until crypt acknowledgement\n");
+			return true;
+		}
+
 		CUserCharacter character = user->GetCharacter(UFLAG_LOW_ALL, UFLAG_HIGH_ALL);
 
 		g_ItemManager.OnUserLogin(user);
@@ -783,7 +796,7 @@ bool CUserManager::BootstrapLocalUserAfterMetadata(IExtendedSocket* socket)
 	return true;
 }
 
-void CUserManager::SendLoginPacket(IUser* user, const CUserCharacter& character, bool includeMetadata)
+void CUserManager::SendLoginPacket(IUser* user, const CUserCharacter& character, bool includeMetadata, bool sendStartPackets)
 {
 	IExtendedSocket* socket = user->GetExtendedSocket();
 	(void)character;
@@ -794,10 +807,14 @@ void CUserManager::SendLoginPacket(IUser* user, const CUserCharacter& character,
 	const int loginHighFlags = 0;
 	CUserCharacter loginCharacter = user->GetCharacter(loginLowFlags, loginHighFlags);
 
-	g_PacketManager.SendUserStartStep(socket, 0);
-	g_PacketManager.SendUserStart(socket, user->GetID(), user->GetUsername(), loginCharacter.gameName, includeMetadata);
+	if (sendStartPackets)
+	{
+		g_PacketManager.SendUserStartStep(socket, 0);
+		g_PacketManager.SendUserStart(socket, user->GetID(), user->GetUsername(), loginCharacter.gameName, includeMetadata);
+	}
+
 	if (includeMetadata)
-		g_PacketManager.SendUserUpdateInfo(socket, user, loginCharacter);
+		SendMetadata(socket);
 	else
 	{
 		Logger().Info("Latest host bootstrap: sending minimal UserUpdateInfo(157) for latest full-user flags\n");
@@ -824,7 +841,7 @@ void CUserManager::SendLoginPacket(IUser* user, const CUserCharacter& character,
 	}
 
 	if (includeMetadata)
-		SendMetadata(socket);
+		g_PacketManager.SendUserUpdateInfo(socket, user, loginCharacter);
 
 	if (!includeMetadata)
 	{
@@ -865,23 +882,14 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 {
 	uint64_t flag = g_pServerConfig->metadataToSend;
 
-	// Keep the default stream close to the live server startup burst captured in
-	// Error.log. Item/Codis are deliberately delayed; the live client first logs
-	// hash mismatches for them, then parses both after the lobby starts.
-	flag &= ~kMetadataFlag_ModeList;
-	flag &= ~kMetadataFlag_MileageShop;
-	flag &= ~kMetadataFlag_ReinforceItemsExp;
-	flag &= ~kMetadataFlag_Item;
-	flag &= ~kMetadataFlag_CodisData;
-	flag &= ~kMetadataFlag_EventShop;
-
-	// These legacy flags do not currently have a mapped latest send path here.
+	// These legacy flags either collide with latest metadata IDs or do not have
+	// a verified latest hw.dll layout yet. Keep the live ZIP metadata enabled by
+	// default; only suppress layouts known to be unsafe for the current client.
 	flag &= ~kMetadataFlag_WeaponPaints;
 	flag &= ~kMetadataFlag_Unk3;
-	flag &= ~kMetadataFlag_Unk8;
 	flag &= ~kMetadataFlag_ZombieWarWeaponList;
-	flag &= ~kMetadataFlag_Unk20;
 	flag &= ~kMetadataFlag_Encyclopedia;
+	flag &= ~kMetadataFlag_ReinforceItemsExp;
 	flag &= ~kMetadataFlag_Unk31;
 	flag &= ~kMetadataFlag_Unk43;
 	flag &= ~kMetadataFlag_Unk49;
@@ -889,8 +897,6 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 	flag &= ~kMetadataFlag_Unk54;
 	flag &= ~kMetadataFlag_Unk55;
 
-	const char* extraMetadataEnv = getenv("CSNZ_FULL_METADATA");
-	bool extraMetadata = extraMetadataEnv && extraMetadataEnv[0] == '1';
 	const bool legacyMetadataIDs = g_PacketManager.UsesLegacyMetadataIDs();
 	const char* minMetadataEnv = getenv("CSNZ_ASSET_MIN_METADATA");
 	if (minMetadataEnv && minMetadataEnv[0] == '1')
@@ -914,6 +920,7 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 		if (hasMetadataID(kPacket_Metadata_MapList)) filteredFlag |= kMetadataFlag_MapList;
 		if (hasMetadataID(kPacket_Metadata_ModeList)) filteredFlag |= kMetadataFlag_ModeList;
 		if (hasMetadataID(kPacket_Metadata_MatchOption)) filteredFlag |= kMetadataFlag_MatchOption;
+		if (hasMetadataID(kPacket_Metadata_WeaponAuction)) filteredFlag |= kMetadataFlag_WeaponAuction;
 		if (hasMetadataID(kPacket_Metadata_WeaponParts)) filteredFlag |= kMetadataFlag_WeaponParts;
 		if (hasMetadataID(kPacket_Metadata_MileageShop)) filteredFlag |= kMetadataFlag_MileageShop;
 		if (hasMetadataID(kPacket_Metadata_GameModeList)) filteredFlag |= kMetadataFlag_GameModeList;
@@ -961,6 +968,11 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 	{
 		logMetadata(kPacket_Metadata_WeaponParts, "weaponparts.csv");
 		g_PacketManager.SendMetadataWeaponParts(socket);
+	}
+	if (flag & kMetadataFlag_WeaponAuction)
+	{
+		logMetadata(kPacket_Metadata_WeaponAuction, "WeaponAuction");
+		g_PacketManager.SendMetadataWeaponAuction(socket);
 	}
 	if (flag & kMetadataFlag_MileageShop)
 	{
@@ -1025,7 +1037,7 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 		logMetadata(kPacket_Metadata_ShopItemList_Dedi, "resource/scenariotx/shopitemlist_dedi.json");
 		g_PacketManager.SendMetadataShopItemList_Dedi(socket);
 	}
-	if (extraMetadata)
+	if (!legacyMetadataIDs)
 	{
 		logMetadata(kPacket_Metadata_EpicPieceShop, "EpicPieceShop.csv");
 		g_PacketManager.SendMetadataEpicPieceShop(socket);
@@ -1056,15 +1068,15 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 		logMetadata(kPacket_Metadata_EventShop, "resource/CPShop/EventShop.csv");
 		g_PacketManager.SendMetadataEventShop(socket);
 	}
-	if (flag & kMetadataFlag_FamilyTotalWar)
-	{
-		logMetadata(kPacket_Metadata_FamilyTotalWar, "resource/ClanWar/FamilyTotalWar.json");
-		g_PacketManager.SendMetadataFamilyTotalWar(socket);
-	}
 	if (flag & kMetadataFlag_FamilyTotalWarMap)
 	{
 		logMetadata(kPacket_Metadata_FamilyTotalWarMap, "resource/ClanWar/FamilyTotalWarMap.csv");
 		g_PacketManager.SendMetadataFamilyTotalWarMap(socket);
+	}
+	if (flag & kMetadataFlag_FamilyTotalWar)
+	{
+		logMetadata(kPacket_Metadata_FamilyTotalWar, "resource/ClanWar/FamilyTotalWar.json");
+		g_PacketManager.SendMetadataFamilyTotalWar(socket);
 	}
 	if (!legacyMetadataIDs)
 	{
@@ -1075,7 +1087,7 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 		logMetadata(kPacket_Metadata_Synthesis, "resource/Synthesis/SynthesisItem.csv");
 		g_PacketManager.SendMetadataSynthesis(socket);
 	}
-	if (extraMetadata && !legacyMetadataIDs)
+	if (!legacyMetadataIDs)
 	{
 		logMetadata(kPacket_Metadata_ZCoinShop, "ZCoinShop.csv");
 		g_PacketManager.SendMetadataZCoinShop(socket);
@@ -1120,10 +1132,100 @@ static bool SendLatestLoginCrypt(IExtendedSocket* socket)
 	unsigned char* iv = socket->GetCryptIV();
 
 	g_PacketManager.SendCrypt(socket, 0, key, iv);
-	Sleep(100);
+	int cryptDelayMs = 100;
+	if (const char* envDelay = getenv("CSNZ_CRYPT1_DELAY_MS"))
+		cryptDelayMs = max(0, atoi(envDelay));
+	Sleep(cryptDelayMs);
 	socket->SetCryptOutput(true);
 	g_PacketManager.SendCrypt(socket, 1, key, iv);
-	Logger().Info("Latest login crypt bootstrap sent; waiting for plaintext client acknowledgement\n");
+	Logger().Info("Latest login crypt bootstrap sent; delayMs=%d, encrypted output enabled while waiting for client acknowledgement\n", cryptDelayMs);
+	return true;
+}
+
+static bool ReplayLatestLoginSample(IExtendedSocket* socket)
+{
+	if (getenv("CSNZ_DISABLE_LOGIN_SAMPLE_REPLAY"))
+		return false;
+
+	int minIndex = 6;
+	int maxIndex = INT_MAX;
+	if (const char* envMin = getenv("CSNZ_LOGIN_SAMPLE_MIN_INDEX"))
+		minIndex = max(0, atoi(envMin));
+	if (const char* envMax = getenv("CSNZ_LOGIN_SAMPLE_MAX_INDEX"))
+		maxIndex = max(0, atoi(envMax));
+
+	const char* sampleDirEnv = getenv("CSNZ_LOGIN_SAMPLE_DIR");
+	vector<string> roots;
+	if (sampleDirEnv && *sampleDirEnv)
+		roots.push_back(sampleDirEnv);
+	roots.push_back("..\\Packets_sampel\\2");
+	roots.push_back("Packets_sampel\\2");
+	roots.push_back("CSNZ_Server\\Packets_sampel\\2");
+
+	struct SamplePacket
+	{
+		int index;
+		string path;
+	};
+
+	vector<SamplePacket> packets;
+	string selectedRoot;
+
+	for (const auto& root : roots)
+	{
+		WIN32_FIND_DATAA data = {};
+		string pattern = root + "\\Packet_*_ID_*_*.bin";
+		HANDLE find = FindFirstFileA(pattern.c_str(), &data);
+		if (find == INVALID_HANDLE_VALUE)
+			continue;
+
+		do
+		{
+			int index = -1;
+			if (sscanf(data.cFileName, "Packet_%d_ID_%*d_%*d.bin", &index) == 1 && index >= minIndex && index <= maxIndex)
+				packets.push_back({ index, root + "\\" + data.cFileName });
+		} while (FindNextFileA(find, &data));
+
+		FindClose(find);
+
+		if (!packets.empty())
+		{
+			selectedRoot = root;
+			break;
+		}
+	}
+
+	if (packets.empty())
+	{
+		Logger().Info("Latest login sample replay skipped: sample packets not found\n");
+		return false;
+	}
+
+	sort(packets.begin(), packets.end(), [](const SamplePacket& a, const SamplePacket& b)
+	{
+		return a.index < b.index;
+	});
+
+	Logger().Info("Latest login sample replay: root=%s, packets=%u, range=%d..%d, first=%d, last=%d\n",
+		selectedRoot.c_str(), static_cast<unsigned int>(packets.size()),
+		minIndex, maxIndex == INT_MAX ? -1 : maxIndex,
+		packets.front().index, packets.back().index);
+
+	int delayMs = 10;
+	if (const char* envDelay = getenv("CSNZ_LOGIN_SAMPLE_DELAY_MS"))
+		delayMs = max(0, atoi(envDelay));
+
+	for (size_t i = 0; i < packets.size(); ++i)
+	{
+		const auto& packet = packets[i];
+		if ((i % 16) == 0 || i + 1 == packets.size())
+			Logger().Info("Latest login sample replay progress: packetIndex=%d (%u/%u)\n",
+				packet.index, static_cast<unsigned int>(i + 1), static_cast<unsigned int>(packets.size()));
+		g_PacketManager.SendPacketFromFile(socket, packet.path);
+		if (delayMs > 0)
+			SleepMS(delayMs);
+	}
+
 	return true;
 }
 
@@ -1397,6 +1499,17 @@ int CUserManager::LoginUser(IExtendedSocket* socket, const string& userName, con
 	if (sendLoginReply)
 	{
 		g_PacketManager.SendReply(socket, ServerReply::S_REPLY_YES);
+		g_PacketManager.SendSessionID(socket, 167);
+
+		string gameName = newUser->GetUsername();
+		if (newUser->IsCharacterExists())
+		{
+			CUserCharacter loginCharacter = newUser->GetCharacter(UFLAG_LOW_GAMENAME | UFLAG_LOW_UNK27, 0);
+			if (!loginCharacter.gameName.empty())
+				gameName = loginCharacter.gameName;
+		}
+		g_PacketManager.SendUserStart(socket, newUser->GetID(), newUser->GetUsername(), gameName, true);
+
 		if (SendLatestLoginCrypt(socket))
 		{
 			Logger().Info("Waiting for latest client crypt acknowledgement before login bootstrap\n");
@@ -1753,32 +1866,17 @@ bool CUserManager::OnCryptPacket(CReceivePacket* msg, IExtendedSocket* socket)
 	IUser* user = GetUserBySocket(socket);
 	if (user != NULL && user->IsCharacterExists())
 	{
-		const char* sameSocketEnv = getenv("CSNZ_SAME_SOCKET_BOOTSTRAP");
-		if (sameSocketEnv && sameSocketEnv[0] == '1')
+		const char* transferEnv = getenv("CSNZ_TRANSFER_AFTER_CRYPT");
+		if (!transferEnv || transferEnv[0] != '1')
 		{
-			Logger().Info("Scheduling latest login bootstrap on same user socket after crypt acknowledgement\n");
-			std::thread([socket]()
-			{
-				SleepMS(3000);
-				g_Events.AddEventFunction([socket]()
-				{
-					if (!g_pServerInstance->IsServerActive())
-						return;
+			CUserCharacter character = user->GetCharacter(UFLAG_LOW_ALL, UFLAG_HIGH_ALL);
 
-					IUser* delayedUser = g_UserManager.GetUserBySocket(socket);
-					if (delayedUser == NULL || !delayedUser->IsCharacterExists())
-						return;
+			g_ItemManager.OnUserLogin(user);
+			g_ClanManager.OnUserLogin(user);
+			g_QuestManager.OnUserLogin(user);
 
-					CUserCharacter character = delayedUser->GetCharacter(UFLAG_LOW_ALL, UFLAG_HIGH_ALL);
-
-					g_ItemManager.OnUserLogin(delayedUser);
-					g_ClanManager.OnUserLogin(delayedUser);
-					g_QuestManager.OnUserLogin(delayedUser);
-
-					Logger().Info("Continuing latest login bootstrap on same user socket after delay\n");
-					g_UserManager.SendLoginPacket(delayedUser, character);
-				});
-			}).detach();
+			Logger().Info("Continuing latest login bootstrap on same user socket after crypt acknowledgement\n");
+			SendLoginPacket(user, character, true, false);
 			return true;
 		}
 

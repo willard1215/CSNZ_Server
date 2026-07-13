@@ -1,10 +1,13 @@
 # CSNZ_Server Progress
 
-Last updated: 2026-07-12
+Last updated: 2026-07-13
 
 ## Current Goal
 
 Adapt the server login/bootstrap protocol to the latest CSNZ `hw.dll` so the launcher can authenticate locally and proceed to the lobby without crashing or disconnecting.
+
+The injected dump DLL / internal packet-capture launcher path has been abandoned.
+Further work should focus on making `CSNZ_Server` itself match the client protocol.
 
 ## Metadata Source Rule
 
@@ -17,6 +20,20 @@ send payloads that are backed by `LiveMetadata` or explicitly isolated with
 
 ## Implemented
 
+- Server-focused continuation on 2026-07-13:
+    - Rebuilt the Release server target successfully:
+      `bin/Release/CSNZ_Server.exe`.
+    - Started the rebuilt server from `bin`; it loads `bin/LiveMetadata` and
+      listens on TCP 30002 with SSL enabled.
+    - Removed the default server-side metadata skips for live ZIP payloads such
+      as `Item.csv.zip`, `CodisData.csv.zip`, `MileageShop`, and `EventShop`.
+    - Enabled default dedicated-host user bootstrap after delayed metadata.
+      Set `CSNZ_DEDI_USER_BOOTSTRAP=0` only when intentionally testing the
+      metadata-only host path.
+    - Adjusted latest metadata order so `FamilyTotalWarMap(55)` is sent before
+      `FamilyTotalWar(56)`.
+    - Kept unsafe legacy-only layouts suppressed by default where the latest
+      layout is not verified or collides with current metadata IDs.
 - Updated local login path so the latest client can authenticate with `localuser/localpass1`.
 - Added `Transfer(2)` sender based on the latest `hw.dll` `Packet_Transfer` parser:
     - `uint32 ip` in network byte order on the wire.
@@ -444,4 +461,482 @@ chunked=1`. The chunked payload is `resource/item.csv`, which zips to about
   target address (`242.129.53.22:3`) before the server was contacted. The asset
   test path therefore needs an asset-compatible/JusicP launcher build rather
   than the latest-hw launcher binary.
+
+### 2026-07-12: Steam/Nexon dumpall launcher check
+
+- Compared `D:/SteamLibrary/steamapps/common/CSNZ/Bin` and
+  `C:/Nexon/Counter-Strike Online/Bin` after `-dumpall` behavior differed.
+- The two active `CSOLauncher.exe` files are not the same:
+  - Steam `CSOLauncher.exe`: 645,120 bytes, SHA256 starts
+    `1C1DC06458B50219`, contains `-dumpall` and packet parser strings.
+  - Nexon `CSOLauncher.exe`: 4,919,776 bytes, SHA256 starts
+    `9A95841F5FCD93EA`, does not contain `-dumpall`/launcher trace strings and
+    appears to be the official launcher.
+- Steam `LauncherTrace.log` was created by `CSOLauncher_local.exe`, not by the
+  current `logLaunch.bat` target. The logged command line starts with
+  `CSOLauncher_local.exe`.
+- Nexon path has no `LauncherTrace.log` and no `Packets` directory, so the
+  dump launcher code was not running there.
+- Scanned JusicP dump launcher patterns against both `hw.dll` files. Core
+  dump hooks are present in both Steam and Nexon DLLs:
+  `Packet_Metadata_Parse`, `Packet_Quest_Parse`, `Packet_Item_Parse`,
+  `Packet_Crypt_Parse`, `ReadPacket`, `ServerConnect`, and `NGClient_Init`
+  each matched once. `NGClient_Quit` matched neither and is non-critical.
+- Current conclusion: Nexon dumpall failure is primarily because the official
+  Nexon `CSOLauncher.exe` is being executed, not the dump-capable launcher. If
+  the dump-capable executable is copied into the Nexon folder under another
+  name, the batch must invoke that exact filename. If it is copied over
+  `CSOLauncher.exe`, re-check the hash immediately because the official
+  launcher/updater may restore it.
+- Created a non-destructive Nexon-side dump launcher setup:
+  - `C:/Nexon/Counter-Strike Online/Bin/_CSOLauncher_dump.exe`
+    from `CSONLINE_GitHub_Source/Launcher_CSNZ_JusicP/Release/CSOLauncher.exe`.
+  - `C:/Nexon/Counter-Strike Online/Bin/_logLaunch.bat`, which invokes
+    `_CSOLauncher_dump.exe -game cstrike-online -useoriginalserver -dumpall
+    -debug -nonghook`.
+- A short Nexon-path launch test started `_CSOLauncher_dump.exe` and opened the
+  engine `Error.log`, so the executable can run from that install path. No
+  `Packets` folder was created during the short unattended test because packet
+  dumps are only written once server packets are actually received, typically
+  after manual login / lobby or room traffic.
+- Nexon-path manual login later produced `error TS1,4 (GetLastError 0x7e)`.
+  `0x7e` is `ERROR_MOD_NOT_FOUND`, and this happened while running the dump
+  launcher under `_CSOLauncher_dump.exe`. JusicP's hook patches the internal
+  launcher-name string to `CSOLauncher.exe`, and the Steam packet dump was also
+  produced by a dump-capable executable named `CSOLauncher.exe`, so the
+  alternate executable name is a likely BlackCipher / launcher-name mismatch.
+- Updated `C:/Nexon/Counter-Strike Online/Bin/_logLaunch.bat` to:
+  1. back up the official launcher as `CSOLauncher_official.exe` if needed;
+  2. copy `_CSOLauncher_dump.exe` over `CSOLauncher.exe`;
+  3. run `CSOLauncher.exe -game cstrike-online -useoriginalserver -dumpall
+     -debug -nonghook`;
+  4. restore the official launcher after the process exits.
+- Added `C:/Nexon/Counter-Strike Online/Bin/_restoreOfficialLauncher.bat` for
+  manual recovery if the game is interrupted before restore.
+- After running the renamed-as-`CSOLauncher.exe` dump launcher, the TS1,4
+  popup no longer appears, but pressing the login button can hang for roughly
+  30 seconds without a crash or packet dumps. During that hang:
+  - the running process is responsive and named `CSOLauncher.exe`;
+  - no `Packets` directory exists yet;
+  - `SocketError.log` is opened but contains no socket error detail;
+  - `Get-NetTCPConnection` shows no active TCP connection owned by the process;
+  - loaded modules include `nmcogame.dll` and a `nmconew_*.dll` from
+    `C:/ProgramData/Nexon/Common`.
+- This narrows the hang to the Nexon/NMC/NGM login module before the game
+  opens the server socket. It is not yet a server packet parser issue.
+- Steam and Nexon key login-support modules differ substantially:
+  `nmcogame.dll`, `NPS.dll`, `bdcap32.dll`, `BlackCipher/config.bc`, and the
+  main game DLLs have different hashes/sizes. `NGClient.aes` itself is the
+  same.
+- Updated Nexon `_logLaunch.bat` to add explicit `-lang ko_`.
+- Added `_logLaunch_nghook.bat`, identical except it omits `-nonghook`, so the
+  next manual test can determine whether the hang is caused by leaving
+  NGClient/NMC fully active or by bypassing it.
+- The subsequent Nexon login test reached NMC successfully:
+  `Login Result : ResultCode(0) ErrorCode(0)`, followed by
+  `Connecting Game Server` and `Connect Game Server Failed`.
+- Important option clarification:
+  `-useoriginalserver` disables the JusicP `ServerConnect` and hole-punch
+  local redirect hooks. Therefore `g_pServerIP = 127.0.0.1` is only the parsed
+  default value in official-server mode; it is not used for the game-server
+  connection. The client attempts to connect to the official game-server
+  endpoint returned by Nexon.
+- Added `C:/Nexon/Counter-Strike Online/Bin/_logLaunch_local.bat` for local
+  redirect testing. It removes `-useoriginalserver` and passes
+  `-ip 127.0.0.1 -port 30002`.
+- Fixed a batch-generation mistake where the generated run line could become
+  just `"%ORIG%"` without arguments. Current run lines are:
+  - `_logLaunch.bat`:
+    `"%ORIG%" -game cstrike-online -lang ko_ -useoriginalserver -dumpall
+    -debug -nonghook`
+  - `_logLaunch_nghook.bat`:
+    `"%ORIG%" -game cstrike-online -lang ko_ -useoriginalserver -dumpall
+    -debug`
+  - `_logLaunch_local.bat`:
+    `"%ORIG%" -game cstrike-online -lang ko_ -ip 127.0.0.1 -port 30002
+    -dumpall -debug -nonghook`
+- Added diagnostic logging to the JusicP dump launcher and rebuilt it:
+  - `DumpLauncherTrace.log` is written in the current `Bin` directory.
+  - `ServerConnect` is now hooked even in `-useoriginalserver` mode, but in
+    that mode it logs and forwards the original IP/port unchanged.
+  - Local mode still overrides the IP/port with `-ip` and `-port`.
+  - `HolePunch_SetServerInfo` also logs original/override values when hooked.
+- Copied the rebuilt diagnostic binary to
+  `C:/Nexon/Counter-Strike Online/Bin/_CSOLauncher_dump.exe`.
+  The currently running launcher, if any, must be closed and `_logLaunch.bat`
+  rerun before these diagnostics appear.
+- Official Nexon `CSOLauncher.exe` execution model was inspected from imports
+  and embedded strings after the user reported that login reaches Nexon but
+  does not transition into the game:
+  - The official launcher is not just a thin `hw.dll` host like JusicP's
+    launcher. It contains a DHTML/COM launcher UI with script entry points such
+    as `StartGame`, `CheckFiles`, `AddUpdatePackageJob`, `ShowUrl`,
+    `FlashWindow`, and `GetHostVersion`.
+  - It imports `CreateProcessA`, `ShellExecuteA`,
+    `CreateFileMappingA`, `MapViewOfFile`, `MapViewOfFileEx`, COM/OLE browser
+    APIs, WinINet, and URLMon.
+  - It contains a launcher hand-off path with strings:
+    `CSO.SharedDict`, `SharedDict: File mapping not found. Created a new
+    object`, `mode`, `child`, `selfpath`, `parentProcess`,
+    `CSOLauncher.exe -passport`, `-url`, `patched`, and `UWM_START`.
+  - It also contains script/shared-dict keys: `type`, `passport`, `slotid`,
+    and `launched`.
+  - This strongly indicates the official launcher performs a parent/child
+    hand-off after web/NMC authentication: the parent obtains or stores a
+    passport/slot id in shared memory, then starts `CSOLauncher.exe` again as a
+    child with `-passport ... -url ...` and signals it with `UWM_START`.
+- Difference from JusicP dump launcher:
+  - JusicP directly loads `filesystem_nar.dll` and `hw.dll`, then calls the
+    engine `Run(...)`.
+  - It does not implement the official launcher's DHTML `StartGame` workflow,
+    shared dictionary, child mode, `-passport` hand-off, or `UWM_START`
+    message flow.
+  - Therefore, on the official Nexon path, NMC login can succeed while the
+    subsequent official game-server start fails because the required launcher
+    passport/child context is missing or incomplete.
 - live server packets are stored on `Packets_sample` directory. It can be used to analyze how client-server connect
+
+### 2026-07-13: Ghidra MCP auth argument check
+
+- Confirmed the Ghidra MCP bridge is reachable and both `CSOLauncher.exe` and
+  `hw.dll` are available as open programs.
+- Official `CSOLauncher.exe` confirms the parent/child launch hand-off:
+  `CSO.SharedDict`, `mode=child`, `selfpath`, `parentProcess`,
+  `CSOLauncher.exe -passport`, `-url`, `patched`, and `UWM_START`.
+- Latest `hw.dll` auth flow has two separate entry points:
+  - `Auth()` at RVA `0x8170A0`:
+    `thiscall Auth(this, loginString, passwordString, extra)`.
+  - `AuthWithPassport()` at RVA `0x818F10`:
+    `thiscall AuthWithPassport(this, char** passportString)`.
+- The official/latest path reads the `passport` launch parameter and calls
+  `AuthWithPassport()`. The older direct launcher path still uses ID/password
+  `Auth()`, so treating the latest passport path as the old 3-argument auth
+  path is the argument mismatch that can break startup/login.
+- Updated `Launcher_CSNZ` to parse `-passport`, log passport length at init,
+  and hook/log `HWAuthManager::AuthWithPassport` without mutating the passport
+  argument. This is diagnostic and keeps the original latest flow intact.
+- Built `Launcher_CSNZ/Release/CSOLauncher.exe` successfully. Only existing
+  C4819 codepage warnings were emitted.
+- Follow-up Nexon path test still froze for roughly 30 seconds after manual
+  login. `LauncherTrace.log` showed why the new passport diagnostics did not
+  fire: `_logLaunch.bat` runs with `-useoriginalserver`, and the existing code
+  installed all latest `HWLogin/Auth/HWSocket` hooks only inside the local
+  redirect block. Also, `HWSocketManager::Connect` RVA mismatch disabled the
+  whole latest hook group even though auth/passport RVAs are valid.
+- Fixed the launcher hook split:
+  - corrected latest `Auth()` RVA to `0x818B20`;
+  - kept `AuthWithPassport()` at `0x818F10`;
+  - install `Auth`/`AuthWithPassport` hooks independently from local
+    server-redirect hooks and independently from the socket RVA check;
+  - use a simple function prologue guard before installing each auth hook.
+- Rebuilt `Launcher_CSNZ/Release/CSOLauncher.exe` and copied it to the Nexon
+  install as `_CSOLauncher_dump.exe`; the official `CSOLauncher.exe` was
+  restored from `CSOLauncher_official.exe`.
+- Next trace showed `Auth()` entered with valid auth state, but
+  `CSONMWrapper::AuthUser` and `AuthUse` diagnostics did not install because
+  their Ghidra addresses had been pasted as raw addresses instead of RVAs.
+  Corrected them to latest runtime RVAs:
+  - `CSONMWrapper::AuthUser`: `0xA77490`
+  - `CSONMWrapper::AuthUse`: `0xA779B0`
+- Rebuilt and refreshed the Nexon `_CSOLauncher_dump.exe` again. The next run
+  should show whether the 30-45 second stall is inside NMC `LoginAuth`
+  (`AuthUser`) or the post-login service validation (`AuthUse`).
+- Follow-up trace with corrected NMC RVAs showed:
+  - `CSONMWrapper::AuthUser` succeeds in about 2.1 seconds.
+  - `CSONMWrapper::AuthUse` succeeds in about 31 ms.
+  Therefore the Nexon login and post-login service validation are not the
+  remaining blocker. The failure is after that, around server-info loading or
+  game-server connection.
+- Added diagnostic hooks for:
+  - `HWAuthManager::ReadServerInfo` at RVA `0x81A3E0`
+  - `HWAuthManager::ConnectGameServer` at RVA `0x8193A0`
+- Rebuilt and refreshed the Nexon `_CSOLauncher_dump.exe` again. The next run
+  should show whether the post-login stop is in server-info parsing or the
+  game-server connect attempt.
+- Follow-up trace showed the remaining failure is specifically inside
+  `HWAuthManager::ConnectGameServer`: `ReadServerInfo` succeeds immediately,
+  `CSONMWrapper::AuthUser` and `AuthUse` both return success, then
+  `ConnectGameServer` returns false after about 42 seconds.
+- Ghidra/dumpbin inspection of asset/latest-compatible `hw.dll` confirmed the
+  connect flow:
+    - `ConnectGameServer` at RVA `0x8193A0` iterates three server-list vectors
+      in the auth manager at offsets `+0x04`, `+0x10`, and `+0x1C`.
+    - Each server entry is 16 bytes: type/region, host string pointer, port,
+      and optional alive-check UDP port.
+    - The resolver is at RVA `0x819060`; it resolves the host string with
+      `inet_addr`/`DnsQuery_A`.
+    - The TCP connect helper is at RVA `0x819280`; it receives network-order
+      IPv4 and `htons(port)` and calls the lower socket/connect path.
+- Updated `Launcher_CSNZ` diagnostics to dump the auth-manager server vectors
+  before and after `ReadServerInfo` and `ConnectGameServer`, and to hook/log:
+    - `HWAuthManager::ResolveServerAddress` at RVA `0x819060`
+    - `HWAuthManager::TryConnectGameServer` at RVA `0x819280`
+- Built `Launcher_CSNZ/Release/CSOLauncher.exe` successfully with these
+  diagnostics. Copying it to the Nexon install as `_CSOLauncher_dump.exe`
+  could not be completed in this session because the required elevated write
+  was blocked by tool usage limits.
+- The next run confirmed the direct manual-login path receives only one
+  official game-server candidate from `ReadServerInfo`:
+    - `175.207.4.147:8001`
+    - `alivePort=0`
+  The launcher tries that address twice through `TryConnectGameServer`; the
+  first attempt times out after about 21 seconds. This explains the earlier
+  30-45 second freeze before the parent flow gives up or spawns the official
+  passport child.
+- The official parent flow launches a child process as:
+  `CSOLauncher.exe -passport <NP20...> -game CSOLauncher -lang ko_`.
+  That is an official launcher-internal convention; the JusicP-style launcher
+  expects the actual game directory (`cstrike-online`) and also needs dump
+  flags in the child process.
+- Updated `Launcher_CSNZ` so a passport child with `-game CSOLauncher` is
+  normalized before `engineAPI->Run(...)`:
+    - replace `-game CSOLauncher` with `-game cstrike-online`
+    - append `-useoriginalserver` if missing
+    - append `-dumpall` if missing
+- Added extra `Init` checkpoints for module base/size, passport length, and
+  latest-RVA hook usability, because the previous passport child log stopped
+  immediately after `Init cmdline`.
+- Rebuilt successfully and copied the new executable to the Nexon install as
+  `_CSOLauncher_dump.exe`. A new `_logLaunch.bat` run starts the dump launcher
+  correctly; the next required observation is after manual login, where the log
+  should show `Init normalized passport child cmdline` for the child process.
+- Found one more parent/child compatibility issue: the JusicP launcher checks
+  the global `NexonCSOMutex` before `Hook()` is installed, so a passport child
+  can be blocked before any diagnostic log appears if the parent process is
+  still alive.
+- Updated `Launcher_CSNZ/launcher.cpp` so `-passport` launches bypass the
+  `NexonCSOMutex` single-instance guard. This edit was applied with CP949
+  encoding preservation because the source file is not valid UTF-8 and could
+  not be handled by the normal patch tool.
+- Rebuilt successfully and refreshed the Nexon `_CSOLauncher_dump.exe`; the
+  official `CSOLauncher.exe` was restored from `CSOLauncher_official.exe`
+  before the next test run.
+- The latest `_logLaunch.bat` run is active and has initialized the dump
+  launcher. It is currently waiting at the manual login stage. After login, the
+  expected next check is whether the official child handoff logs:
+  `Init normalized passport child cmdline`.
+- Follow-up local testing showed `-forceconnectsuccess` is only useful as a
+  diagnostic bypass. It lets `HWAuthManager::Auth` return success and the
+  engine load, but it skips the real game-server socket creation and leaves the
+  client without a logged-in game-server session. Packet dumping also does not
+  start because no auth socket exists.
+- Added `-redirectauthgameserver` in `Launcher_CSNZ`. This keeps the original
+  `HWAuthManager::ConnectGameServer` / `TryConnectGameServer` code path but
+  changes the TCP target to `-ip/-port` (`127.0.0.1:30002` for local tests).
+  Local mode enables this redirect by default.
+- Removed `-forceconnectsuccess` from the Nexon `_logLaunch.bat` test path and
+  added `-redirectauthgameserver` plus `-id localuser -pw localpass1` to the
+  local test batch.
+- Local server test run:
+    - `CSNZ_Server.exe` started successfully from `CSNZ_Server/bin`.
+    - It loaded `LiveMetadata` payloads and listened on TCP `30002` with SSL.
+    - The first local launcher run failed before connecting because
+      `ValidateLocalUserAccount` searched for `UserDatabase.db3` relative to
+      the Nexon client directory.
+- Updated `Launcher_CSNZ` local-account lookup to also check:
+    - `CSNZ_SERVER_BIN\UserDatabase.db3`
+    - `D:\project\CSONLINE\CSNZ_Server\bin\UserDatabase.db3`
+  The next run validated `localuser/localpass1` successfully from that DB.
+- The next crash point was narrowed to command-line auth argument handling:
+    - With `-forcelocalauthmode` behavior active, latest `hw.dll` stopped after
+      `HWAuthManager::Auth forced local game-server auth mode: 0 -> 100`.
+    - After making that behavior opt-in only, the process still exited inside
+      the command-line auth path before reaching `TryConnectGameServer`.
+    - The missing `HWAuthManager::Auth using allocated hw strings` log suggests
+      the old `HW_ALLOC_STRING_RVA` string allocator path is not safe for this
+      latest/asset `hw.dll`.
+- Updated `Launcher_CSNZ` again so command-line `-id/-pw` auth uses raw C
+  string pointers by default, with the old allocator path available only via
+  `-usehwauthstrings`. Also added an explicit log immediately before calling
+  original `HWAuthManager::Auth`.
+- Build succeeded after this change. The next required step is to copy the new
+  `Launcher_CSNZ/Release/CSOLauncher.exe` to the Nexon install as
+  `_CSOLauncher_dump.exe`, then rerun `_logLaunch_local.bat` and check whether
+  the log reaches:
+    - `HWAuthManager::Auth using command line raw strings`
+    - `HWAuthManager::Auth calling original`
+    - `HWAuthManager::TryConnectGameServer redirect target=127.0.0.1:30002`
+- That copy/run step could not be completed in this session because the
+  escalated command touching `C:\Nexon\Counter-Strike Online\Bin` and launching
+  the GUI was rejected by the approval reviewer. Do not treat the latest source
+  build as already deployed to the Nexon folder until this step is rerun.
+
+## 2026-07-13 Nexon packet-dump launcher focus
+
+- The active goal was clarified as creating a launcher that generates/dumps
+  packets while attached to the Nexon servers, not continuing local server
+  compatibility first.
+- Added raw Winsock dump hooks in `Launcher_CSNZ/hook.cpp` for:
+    - `connect`
+    - `send`
+    - `recv`
+    - `WSASend`
+    - `WSARecv`
+- The first Winsock hook build caused `CSONMWrapper::AuthUser` to fail and the
+  client could show an auth-server connection failure. The likely cause was
+  that hook-side logging did not preserve `WSAGetLastError()` for nonblocking
+  socket APIs.
+- Fixed all Winsock hooks to capture and restore `WSASetLastError(...)` before
+  returning when the original API returns `SOCKET_ERROR`.
+- Rebuilt `Launcher_CSNZ` Release x86 successfully and deployed it as:
+  `C:\Nexon\Counter-Strike Online\Bin\_CSOLauncher_dump.exe`
+- `_logLaunch.bat` currently runs:
+  `CSOLauncher.exe -game cstrike-online -lang ko_ -useoriginalserver -dumpall -debug -nonghook`
+- Latest Nexon test result:
+    - `CSONMWrapper::AuthUser` succeeded.
+    - `CSONMWrapper::AuthUse` succeeded.
+    - Raw socket dumps were created under:
+      `C:\Nexon\Counter-Strike Online\Bin\WinsockDump`
+    - 44 raw dump files were observed, including Nexon auth traffic to
+      `183.110.0.50:47611` and `183.110.0.178:47611`, plus HTTP/TLS traffic.
+- `Packets` was still not created in that run because the launcher had not
+  reached the hooked `ReadPacket` path. After auth, `HWAuthManager` tried game
+  server `175.207.4.147:8001`; the first TCP connect timed out with
+  `WSAETIMEDOUT` / `10060` after about 21 seconds.
+- Current next investigation point: why official auth returns or selects only
+  `175.207.4.147:8001` and why that game-server TCP connection times out.
+  Until that connect succeeds, `WinsockDump` is the reliable packet output and
+  `Packets` will not be produced.
+- Follow-up test changed the launch topology to match the official flow more
+  closely:
+    - run `CSOLauncher_official.exe` as the parent/login process
+    - install `_CSOLauncher_dump.exe` as `CSOLauncher.exe` so the official
+      parent can spawn the dump launcher as its passport child
+    - helper batch created in the Nexon install:
+      `_logLaunch_parentOfficial_childDump.bat`
+- User confirmed that game-server login succeeded with this official-parent /
+  dump-child flow. This strongly suggests the previous timeout was caused by
+  direct ID/PW login through the modified launcher path, not by the raw packet
+  dumping hooks themselves.
+- Next verification should inspect the Nexon install outputs after a successful
+  game-server login:
+    - whether `Packets` now exists and contains parsed packet dumps
+    - whether `WinsockDump` contains the game-server TCP stream after passport
+      login
+    - whether `LauncherTrace.log` contains
+      `Init normalized passport child cmdline`
+- User confirmed that `Packets` was still not created, while `WinsockDump`
+  did receive additional files. This means the raw Winsock hook is active in
+  the successful login path, but the high-level `ReadPacket` dump hook either
+  is not installed in the actual passport child process or that official path
+  receives game packets through a different callsite.
+- Updated `Launcher_CSNZ/hook.cpp` so any `-passport` child process forces
+  `-useoriginalserver` and `-dumpall`, not only the older
+  `-passport ... -game CSOLauncher` form. This covers official children started
+  as `-game cstrike-online` or other variants.
+- Rebuilt `Launcher_CSNZ` Release x86 successfully after that change.
+- The next intended deployment/test step is:
+    - copy the rebuilt `Launcher_CSNZ\Release\CSOLauncher.exe` to the Nexon
+      install as `_CSOLauncher_dump.exe`
+    - run an official-parent/dump-child test
+    - if the official parent launches `cstrike-online.exe` directly, use a
+      temporary test batch that backs up both `CSOLauncher.exe` and
+      `cstrike-online.exe`, installs the dump executable under both names, then
+      restores both after the parent exits
+- That Nexon-folder deployment/test batch creation could not be completed in
+  this step because the approval layer rejected the escalated write to
+  `C:\Nexon\Counter-Strike Online\Bin`.
+- User later explicitly allowed the Nexon-folder write/process test, but the
+  approval layer rejected the escalated command again before execution. A
+  workspace copy of the intended all-names batch was created instead at:
+  `tools/logLaunch_parentOfficial_childDump_allnames.bat`
+- Later deployment succeeded and the all-names/hold tests showed:
+    - `cstrike-online.exe` is not a trivial child stub; it is the actual
+      official engine launcher that loads `filesystem_nar.dll` and `hw.dll`.
+    - Replacing `cstrike-online.exe` with the dump launcher does not persist;
+      the official parent restores the original 138720-byte executable before
+      or during launch.
+    - A `filesystem_nar.dll` proxy was implemented and built successfully as
+      `Launcher_CSNZ\Release\filesystem_nar.dll`.
+    - The proxy forwards `CreateInterface` to
+      `filesystem_nar_original.dll`, then waits for `hw.dll` and calls
+      `Hook(hw, originalFilesystem)`.
+    - However, the official parent also restored `filesystem_nar.dll` to the
+      original 1367520-byte DLL before the game process used it, so the proxy
+      was not loaded. No `FileSystemProxy` lines appeared in
+      `LauncherTrace.log`.
+    - The official game process did log a full successful game-server login in
+      `Error.log`, including metadata receive/parse messages, but this happened
+      without our hook code inside the process.
+- Current conclusion: file replacement alone is not sufficient because the
+  official launcher restores both `cstrike-online.exe` and
+  `filesystem_nar.dll`. The next required observation is the exact child
+  process command line/passport created by `CSOLauncher_official.exe`.
+- Added WinDbg command notes at:
+  `tools/windbg_capture_launch_command.txt`
+  Attach to `CSOLauncher_official.exe` before pressing Login and break on
+  `CreateProcessA/W`, `ShellExecuteExA/W`, and `_spawnv` to capture the real
+  child command line. Once the `-passport ...` command is known, the dump
+  launcher can be started directly in that mode without relying on file
+  replacement.
+- WinDbg was later attached to the visible login-stage process, which is
+  already `cstrike-online.exe`, not `CSOLauncher.exe`. `tools/result.txt`
+  confirms:
+    - `filesystem_nar.dll` and `hw.dll` are already loaded in
+      `cstrike-online.exe`.
+    - `client.dll` and `GameUI.dll` are loaded by the same process.
+    - `CreateProcessW` hits are only CEF helper children
+      (`CefSubProcess.exe` GPU/network/renderer). No game handoff child was
+      observed.
+  Therefore the packet dumping hook needs to be loaded into the already-running
+  `cstrike-online.exe` process instead of relying on executable/DLL replacement
+  or a later passport child process.
+- Added and built a dedicated injected dump DLL:
+  `Launcher_CSNZ\CSODumpHook.vcxproj`
+  Output: `Launcher_CSNZ\Release\CSODumpHook.dll`
+  This DLL does not replace `filesystem_nar.dll`; it waits for the already
+  loaded `hw.dll` and `filesystem_nar.dll`, obtains `IFileSystem` from the
+  real filesystem module, appends `-useoriginalserver -dumpall -nonghook` to
+  the in-process command line, and calls the existing `Hook(hw, filesystem)`.
+- Added manual WinDbg load helper notes:
+  `tools/windbg_load_csodumphook_command.txt`
+  Expected validation is `CSODumpHook` lines in the install folder
+  `LauncherTrace.log`, followed by raw packet files under `WinsockDump` and,
+  if the high-level packet hook is hit, parsed dumps under `Packets`.
+- The first manual WinDbg load attempt failed before the DLL was loaded:
+  `.dvalloc` and `ea` succeeded, but
+  `.call KERNELBASE!LoadLibraryA(...)` failed with
+  `Function not of supported type`. No `CSODumpHook.dll` `ModLoad` entry was
+  produced.
+- Added and built a 32-bit helper injector:
+  `tools\CSODumpHookInjector.vcxproj`
+  Output: `tools\CSODumpHookInjector.exe`
+  It finds `cstrike-online.exe`, writes the absolute
+  `CSODumpHook.dll` path into the target process, and starts a remote
+  `LoadLibraryW` thread. This avoids the WinDbg `.call` type-resolution
+  problem while still leaving original Nexon files untouched.
+- A first run of `tools\CSODumpHookInjector.exe` returned
+  `process not found: cstrike-online.exe`, meaning the client process had
+  already exited. Re-run it while the login/game process is visible.
+- The next injector run succeeded:
+  `LoadLibraryW returned: 0x6c130000`. `LauncherTrace.log` then showed
+  `RawNet dump`, `Winsock send/recv/WSASend/WSARecv`, and `ReadPacket`
+  entries. `WinsockDump` files were created, including game-server traffic to
+  `222.122.48.22:8002`.
+- The client then showed `error TS1,4 (GetLastError 0x7e)` and `Error.log`
+  recorded `Packet Version Invalid` / `[Packet_Reply] 38`. The immediate
+  trace around that failure showed the injected `-dumpall` path had installed
+  the high-level `ReadPacket` hook as well as raw Winsock hooks.
+- To reduce impact on the live official flow, added a separate
+  `-dumpwinsock` option:
+    - `DumpRawNetPacket()` and `InstallWinsockDumpHooks()` now run when either
+      `-dumpall` or `-dumpwinsock` is present.
+    - `CSODumpHook.dll` now appends `-dumpwinsock` instead of `-dumpall`, so
+      injection captures raw socket traffic without installing the
+      `ReadPacket` hook or other `-dumpall`-gated hooks.
+- Rebuilt `Launcher_CSNZ\Release\CSODumpHook.dll` successfully with this
+  change. The currently running client must be restarted before reinjecting,
+  because the old DLL is already loaded in that process.
+- Retest with the rebuilt DLL confirmed the new command line:
+  `-useoriginalserver -dumpwinsock -nonghook`. No new `ReadPacket` hook was
+  installed in that run, but the official game-server flow still failed with
+  `Packet Version Invalid` / `[Packet_Reply] 38`.
+- Current conclusion: even raw Winsock-only injection is likely affecting the
+  client's integrity/module/hook checks. The capture objective should move to
+  an external packet capture path that does not load modules or patch code
+  inside `cstrike-online.exe`.
+- Added external capture helpers:
+  `tools\capture_official_cso_packets.bat`
+  `tools\analyze_official_cso_capture.bat`
+  These use Wireshark's `dumpcap.exe`/`tshark.exe` from
+  `C:\Program Files\Wireshark` and leave the official client process untouched.

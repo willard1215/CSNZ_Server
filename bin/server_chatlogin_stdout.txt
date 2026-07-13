@@ -1,0 +1,35 @@
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/MapList.csv.zip raw ZIP payload (13737 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using MetadataArtifacts/resource/MapModeV2/ModeList.csv
+[07/13/26 16:39:08] [INFO]  [Shop] Loaded 86 products.
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using MetadataArtifacts/resource/itemBox.csv
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/weaponparts.csv.zip raw ZIP payload (1429 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using MetadataArtifacts/MileageShop.csv
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/MatchOption.csv.zip raw ZIP payload (437 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/progress_unlock.csv.zip raw ZIP payload (3148 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/GameModeList.csv.zip raw ZIP payload (1855 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ReinforceMaxLv.csv.zip raw ZIP payload (1046 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ReinforceMaxEXP.csv.zip raw ZIP payload (424 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ItemExpireTime.csv.zip raw ZIP payload (1869 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/HonorMoneyShop.csv.zip raw ZIP payload (1245 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/scenariotx_common.zip.zip raw ZIP payload (9589 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/scenariotx_dedi.json.zip raw ZIP payload (2814 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/shopitemlist_dedi.json.zip raw ZIP payload (3835 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/EpicPieceShop.csv.zip raw ZIP payload (935 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ZBCompetitive.json.zip raw ZIP payload (501 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ppsystem.json.zip raw ZIP payload (991 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/Item.csv.zip raw ZIP payload (69737 bytes, chunked)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/CodisData.csv.zip raw ZIP payload (5830 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/WeaponProp.json.zip raw ZIP payload (182 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ModeEvent.csv.zip raw ZIP payload (1470 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using MetadataArtifacts/resource/CPShop/EventShop.csv
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/FamilyTotalWarMap.csv.zip raw ZIP payload (580 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/FamilyTotalWar.json.zip raw ZIP payload (832 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/WeaponAscend.csv.zip raw ZIP payload (451 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/PerkParam.csv.zip raw ZIP payload (1152 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/Synthesis.csv.zip raw ZIP payload (393 bytes)
+[07/13/26 16:39:08] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ZCoinShop.csv.zip raw ZIP payload (2186 bytes)
+[07/13/26 16:39:08] [INFO]  TCP listen active: socket=440, configuredPort=30002, boundPort=30002, ssl=0
+[07/13/26 16:39:08] [INFO]  Server starts listening. Server developers: Jusic, Hardee, NekoMeow, Smilex_Gamer, xRiseless. Thx to Ochii for CSO2 server.
+For more information visit discord.gg/EvUAY6D
+[07/13/26 16:39:08] [INFO]  Server build: 2640, Private Release
+[07/13/26 16:39:08] [INFO]  Memory usage: 16.88mb. Connected users: 0. Logged in users: 0. Connected dedicated servers: 0.

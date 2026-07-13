@@ -967,7 +967,15 @@ void CPacketManager::SendVersion(IExtendedSocket* socket, int result)
 	CSendPacket* msg = CreatePacket(socket, PacketId::Version);
 	msg->BuildHeader();
 	msg->WriteUInt8(result); // 0 - Packet Version Ok, 1 - Packet Version Invalid, 2 - Packet Version Patch
-	socket->Send(msg);
+	socket->Send(msg, true);
+}
+
+void CPacketManager::SendSessionID(IExtendedSocket* socket, int sessionID)
+{
+	CSendPacket* msg = CreatePacket(socket, PacketId::SessionID);
+	msg->BuildHeader();
+	msg->WriteUInt32(sessionID);
+	socket->Send(msg, true);
 }
 
 void CPacketManager::SendUserStartStep(IExtendedSocket* socket, int step)
@@ -975,7 +983,7 @@ void CPacketManager::SendUserStartStep(IExtendedSocket* socket, int step)
 	CSendPacket* msg = CreatePacket(socket, PacketId::UserStartStep);
 	msg->BuildHeader();
 	msg->WriteUInt8(step);
-	socket->Send(msg);
+	socket->Send(msg, true);
 }
 
 void CPacketManager::SendUserStart(IExtendedSocket* socket, int userID, const string& userName, const string& gameName, bool firstConnect)
@@ -991,7 +999,7 @@ void CPacketManager::SendUserStart(IExtendedSocket* socket, int userID, const st
 	msg->WriteUInt32(0); // UserSN
 	msg->WriteUInt8(0);
 	msg->WriteUInt8(0);
-	socket->Send(msg);
+	socket->Send(msg, true);
 }
 
 void CPacketManager::SendOption(IExtendedSocket* socket, vector<unsigned char>& config)
