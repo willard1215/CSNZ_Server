@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\KeyValues\src\keyvalues.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\KeyValues\include\keyvalues.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\KeyValues\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{77C45BF8-C950-3E6A-9208-ABB4FDFED5B6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{27EEDCE4-26A1-3163-AECE-FFD1F7BB7AD8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

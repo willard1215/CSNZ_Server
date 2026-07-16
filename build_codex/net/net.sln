@@ -1,0 +1,71 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ALL_BUILD", "ALL_BUILD.vcxproj", "{52E1B49B-4DEA-3886-A83C-52D12338D708}"
+	ProjectSection(ProjectDependencies) = postProject
+		{73EAD26F-54CB-3A79-B8ED-3DF694B40251} = {73EAD26F-54CB-3A79-B8ED-3DF694B40251}
+		{A4A5F755-C174-3FB9-8C54-07C9FFD008E5} = {A4A5F755-C174-3FB9-8C54-07C9FFD008E5}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "INSTALL", "INSTALL.vcxproj", "{BAC6B168-2344-3EAE-AB21-B1840AB929E2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{52E1B49B-4DEA-3886-A83C-52D12338D708} = {52E1B49B-4DEA-3886-A83C-52D12338D708}
+		{73EAD26F-54CB-3A79-B8ED-3DF694B40251} = {73EAD26F-54CB-3A79-B8ED-3DF694B40251}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZERO_CHECK", "..\ZERO_CHECK.vcxproj", "{73EAD26F-54CB-3A79-B8ED-3DF694B40251}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "net", "net.vcxproj", "{A4A5F755-C174-3FB9-8C54-07C9FFD008E5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{73EAD26F-54CB-3A79-B8ED-3DF694B40251} = {73EAD26F-54CB-3A79-B8ED-3DF694B40251}
+		{0B1A1C84-684E-3372-B65A-87163C82A103} = {0B1A1C84-684E-3372-B65A-87163C82A103}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wolfssl", "..\thirdparty\wolfssl\wolfssl.vcxproj", "{0B1A1C84-684E-3372-B65A-87163C82A103}"
+	ProjectSection(ProjectDependencies) = postProject
+		{73EAD26F-54CB-3A79-B8ED-3DF694B40251} = {73EAD26F-54CB-3A79-B8ED-3DF694B40251}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+		RelWithDebInfo|Win32 = RelWithDebInfo|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{52E1B49B-4DEA-3886-A83C-52D12338D708}.Debug|Win32.ActiveCfg = Debug|Win32
+		{52E1B49B-4DEA-3886-A83C-52D12338D708}.Debug|Win32.Build.0 = Debug|Win32
+		{52E1B49B-4DEA-3886-A83C-52D12338D708}.Release|Win32.ActiveCfg = Release|Win32
+		{52E1B49B-4DEA-3886-A83C-52D12338D708}.Release|Win32.Build.0 = Release|Win32
+		{52E1B49B-4DEA-3886-A83C-52D12338D708}.RelWithDebInfo|Win32.ActiveCfg = RelWithDebInfo|Win32
+		{52E1B49B-4DEA-3886-A83C-52D12338D708}.RelWithDebInfo|Win32.Build.0 = RelWithDebInfo|Win32
+		{BAC6B168-2344-3EAE-AB21-B1840AB929E2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BAC6B168-2344-3EAE-AB21-B1840AB929E2}.Release|Win32.ActiveCfg = Release|Win32
+		{BAC6B168-2344-3EAE-AB21-B1840AB929E2}.RelWithDebInfo|Win32.ActiveCfg = RelWithDebInfo|Win32
+		{73EAD26F-54CB-3A79-B8ED-3DF694B40251}.Debug|Win32.ActiveCfg = Debug|Win32
+		{73EAD26F-54CB-3A79-B8ED-3DF694B40251}.Debug|Win32.Build.0 = Debug|Win32
+		{73EAD26F-54CB-3A79-B8ED-3DF694B40251}.Release|Win32.ActiveCfg = Release|Win32
+		{73EAD26F-54CB-3A79-B8ED-3DF694B40251}.Release|Win32.Build.0 = Release|Win32
+		{73EAD26F-54CB-3A79-B8ED-3DF694B40251}.RelWithDebInfo|Win32.ActiveCfg = RelWithDebInfo|Win32
+		{73EAD26F-54CB-3A79-B8ED-3DF694B40251}.RelWithDebInfo|Win32.Build.0 = RelWithDebInfo|Win32
+		{A4A5F755-C174-3FB9-8C54-07C9FFD008E5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A4A5F755-C174-3FB9-8C54-07C9FFD008E5}.Debug|Win32.Build.0 = Debug|Win32
+		{A4A5F755-C174-3FB9-8C54-07C9FFD008E5}.Release|Win32.ActiveCfg = Release|Win32
+		{A4A5F755-C174-3FB9-8C54-07C9FFD008E5}.Release|Win32.Build.0 = Release|Win32
+		{A4A5F755-C174-3FB9-8C54-07C9FFD008E5}.RelWithDebInfo|Win32.ActiveCfg = RelWithDebInfo|Win32
+		{A4A5F755-C174-3FB9-8C54-07C9FFD008E5}.RelWithDebInfo|Win32.Build.0 = RelWithDebInfo|Win32
+		{0B1A1C84-684E-3372-B65A-87163C82A103}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0B1A1C84-684E-3372-B65A-87163C82A103}.Debug|Win32.Build.0 = Debug|Win32
+		{0B1A1C84-684E-3372-B65A-87163C82A103}.Release|Win32.ActiveCfg = Release|Win32
+		{0B1A1C84-684E-3372-B65A-87163C82A103}.Release|Win32.Build.0 = Release|Win32
+		{0B1A1C84-684E-3372-B65A-87163C82A103}.RelWithDebInfo|Win32.ActiveCfg = RelWithDebInfo|Win32
+		{0B1A1C84-684E-3372-B65A-87163C82A103}.RelWithDebInfo|Win32.Build.0 = RelWithDebInfo|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2BF80EE2-8A2E-34DC-85CD-3DCDDED97D46}
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

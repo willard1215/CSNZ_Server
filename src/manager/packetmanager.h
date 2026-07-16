@@ -162,6 +162,7 @@ public:
 	void SendMetadataPPSystem(IExtendedSocket* socket);
 	void SendMetadataCodisData(IExtendedSocket* socket);
 	void SendMetadataItem(IExtendedSocket* socket);
+	void SendMetadataVoxelList(IExtendedSocket* socket);
 	void SendMetadataModeEvent(IExtendedSocket* socket);
 	void SendMetadataMileageShop(IExtendedSocket* socket);
 	void SendMetadataEventShop(IExtendedSocket* socket);
@@ -213,6 +214,7 @@ public:
 	void SendRoomCreateAndJoin(IExtendedSocket* socket, IRoom* roomInfo);
 	void SendRoomPlayerJoin(IExtendedSocket* socket, IUser* user, RoomTeamNum num);
 	void SendRoomUpdateSettings(IExtendedSocket* socket, CRoomSettings* newSettings, int low = 0, int lowMid = 0, int highMid = 0, int high = 0);
+	void SendRoomUpdateSettingsRaw(IExtendedSocket* socket, const std::vector<unsigned char>& settingsBlock);
 	void SendRoomSetUserTeam(IExtendedSocket* socket, IUser* user, int teamNum);
 	void SendRoomSetPlayerReady(IExtendedSocket* socket, IUser* user, RoomReadyStatus readyStatus);
 	void SendRoomSetHost(IExtendedSocket* socket, IUser* user);
@@ -230,11 +232,11 @@ public:
 	void SendVoxelRoomList(IExtendedSocket* socket, const std::vector<IRoom*>& rooms);
 
 	void SendHostOnItemUse(IExtendedSocket* socket, int userId, int itemId);
-	void SendHostServerJoin(IExtendedSocket* socket, int ipAddress, int port, int userId);
+	void SendHostServerJoin(IExtendedSocket* socket, int ipAddress, int port, uint64_t sessionToken);
 	void SendHostStop(IExtendedSocket* socket);
 	void SendHostLeaveResultWindow(IExtendedSocket* socket);
 	void SendHostUserInventory(IExtendedSocket* socket, int userId, const std::vector<CUserInventoryItem>& items);
-	void SendHostGameStart(IExtendedSocket* socket, int userId);
+	void SendHostGameStart(IExtendedSocket* socket, int userId, uint64_t sessionToken);
 	void SendHostZBAddon(IExtendedSocket* socket, int userID, const std::vector<int>& addons);
 	void SendHostJoin(IExtendedSocket* socket, IUser* host);
 	void SendHostFlyerFlock(IExtendedSocket* socket, int type);
@@ -361,6 +363,7 @@ private:
 	CBinMetadata* m_pZBCompetitiveZip;
 	CBinMetadata* m_pPPSystemZip;
 	CBinMetadata* m_pItemZip;
+	CBinMetadata* m_pVoxelListZip;
 	CBinMetadata* m_pCodisDataZip;
 	CBinMetadata* m_pWeaponPropZip;
 	CBinMetadata* m_pReinforceItemsExp;

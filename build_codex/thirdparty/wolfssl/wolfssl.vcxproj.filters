@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\hmac.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\hash.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\cpuid.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\kdf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\random.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\sha256.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\rsa.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\sp_int.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\aes.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\sha.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\sha512.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\sha3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\logging.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\wc_port.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\error.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\wc_encrypt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\signature.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\wolfmath.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\memory.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\dh.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\asn.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\coding.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\poly1305.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\arc4.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\md5.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\pwdbased.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\pkcs12.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\chacha.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\chacha20_poly1305.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\integer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\wolfcrypt\src\ecc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\src\internal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\src\wolfio.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\src\keys.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\src\ssl.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\src\ocsp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\src\tls.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\src\tls13.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\wolfssl\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{27EEDCE4-26A1-3163-AECE-FFD1F7BB7AD8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

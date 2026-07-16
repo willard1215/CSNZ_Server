@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\build_codex\CMakeFiles\PROJECTNAME.dir\cmake_pch.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\serverinstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\serverconfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\command.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\common\buffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\common\buildnum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\user\user.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\user\userinventoryitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\user\userloadout.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\room\room.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\room\roomsettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\room\gamematch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\channel\channel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\channel\channelserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\csvtable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\quest\quest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\quest\questevent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\manager\manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\manager\usermanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\manager\userdatabase_sqlite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\manager\channelmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\manager\packetmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\manager\shopmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\manager\itemmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\manager\luckyitemmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\manager\hostmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\manager\dedicatedservermanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\manager\questmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\manager\minigamemanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\manager\clanmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\manager\rankmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\manager\voxelmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\packet\packethelper_fulluserinfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\crashdump.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\common\thread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\common\utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\common\logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\VS_Code_Data\CSNX\CSNZ_Server\build_codex\CMakeFiles\PROJECTNAME.dir\Debug\cmake_pch.hxx">
+      <Filter>Precompile Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\VS_Code_Data\CSNX\CSNZ_Server\build_codex\CMakeFiles\PROJECTNAME.dir\Release\cmake_pch.hxx">
+      <Filter>Precompile Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\VS_Code_Data\CSNX\CSNZ_Server\build_codex\CMakeFiles\PROJECTNAME.dir\RelWithDebInfo\cmake_pch.hxx">
+      <Filter>Precompile Header File</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\json\nlohmann_json.natvis" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Precompile Header File">
+      <UniqueIdentifier>{8BACD8A7-57FD-38AD-B215-D27C32AB800B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{27EEDCE4-26A1-3163-AECE-FFD1F7BB7AD8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -10,9 +10,20 @@
 
 using namespace std;
 
+static uint64_t CreateHostSessionToken(int roomId, int hostUserId)
+{
+	random_device random;
+	uint64_t token = (static_cast<uint64_t>(random()) << 32) |
+		static_cast<uint64_t>(random());
+	token ^= static_cast<uint64_t>(static_cast<uint32_t>(roomId)) << 16;
+	token ^= static_cast<uint64_t>(static_cast<uint32_t>(hostUserId));
+	return token != 0 ? token : 1;
+}
+
 CRoom::CRoom(int roomId, IUser* hostUser, CChannel* channel, CRoomSettings* settings)
 {
 	m_nID = roomId;
+	m_nHostSessionToken = CreateHostSessionToken(roomId, hostUser->GetID());
 	m_pGameMatch = NULL;
 
 	m_pParentChannel = channel;
@@ -836,7 +847,7 @@ void CRoom::SendConnectHost(IUser* user, IUser* host)
 	if (g_pServerConfig->room.connectingMethod)
 	{
 		if (m_pServer)
-			g_PacketManager.SendHostServerJoin(user->GetExtendedSocket(), m_pServer->GetIP(), m_pServer->GetPort(), user->GetID());
+			g_PacketManager.SendHostServerJoin(user->GetExtendedSocket(), m_pServer->GetIP(), m_pServer->GetPort(), m_nHostSessionToken);
 		else
 			g_PacketManager.SendHostJoin(user->GetExtendedSocket(), host);
 	}
@@ -856,16 +867,16 @@ void CRoom::SendStartMatch(IUser* host)
 		if (m_pServer)
 		{
 			g_PacketManager.SendRoomCreateAndJoin(m_pServer->GetSocket(), this);
-			g_PacketManager.SendHostGameStart(m_pServer->GetSocket(), m_pServer->GetPort());
+			g_PacketManager.SendHostGameStart(m_pServer->GetSocket(), host->GetID(), m_nHostSessionToken);
 		}
 		else
 		{
-			g_PacketManager.SendHostGameStart(host->GetExtendedSocket(), host->GetID());
+			g_PacketManager.SendHostGameStart(host->GetExtendedSocket(), host->GetID(), m_nHostSessionToken);
 		}
 	}
 	else
 	{
-		g_PacketManager.SendHostGameStart(host->GetExtendedSocket(), host->GetID());
+		g_PacketManager.SendHostGameStart(host->GetExtendedSocket(), host->GetID(), m_nHostSessionToken);
 	}
 
 }
@@ -1027,6 +1038,11 @@ bool CRoom::FindAndUpdateNewHost()
 
 void CRoom::HostStartGame()
 {
+	// Host 68/0 and client-received 68/5 share one per-match token in the live
+	// stream. Retain this value while every room user connects to the selected
+	// dedicated server.
+	m_nHostSessionToken = CreateHostSessionToken(m_nID, m_pHostUser->GetID());
+
 	// set random map for zb competitive
 	if (m_pSettings->isZbCompetitive)
 	{

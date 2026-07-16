@@ -189,6 +189,8 @@ enum EMetadataPacketType
 	kPacket_Metadata_ReinforceItemsExp = 30,
 	kPacket_Metadata_Unk31 = 31,
 	kPacket_Metadata_Item = 35,
+	kPacket_Metadata_VoxelList = 36,
+	kPacket_Metadata_VoxelItem = 37,
 	kPacket_Metadata_CodisData = 38,
 	kPacket_Metadata_HonorMoneyShop = 39,
 	kPacket_Metadata_ItemExpireTime = 40,

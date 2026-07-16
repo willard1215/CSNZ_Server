@@ -1,0 +1,10 @@
+^D:\VS_CODE_DATA\CSNX\CSNZ_SERVER\SRC\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/VS_Code_Data/CSNX/CSNZ_Server/src -BD:/VS_Code_Data/CSNX/CSNZ_Server/build_codex --check-stamp-file D:/VS_Code_Data/CSNX/CSNZ_Server/build_codex/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

@@ -27,12 +27,27 @@
 #include "gui/igui.h"
 #endif
 
+#include <fstream>
+
 using namespace std;
 
 CServerConfig* g_pServerConfig;
 CCSVTable* g_pItemTable;
 CCSVTable* g_pMapListTable;
 CCSVTable* g_pGameModeListTable;
+
+static bool CsvFileExists(const char* path)
+{
+	std::ifstream stream(path, std::ios::binary);
+	return stream.good();
+}
+
+static CCSVTable* LoadCsvTablePreferLiveMetadata(const char* livePath, const char* fallbackPath)
+{
+	const char* selectedPath = CsvFileExists(livePath) ? livePath : fallbackPath;
+	Logger().Info("CServerInstance::Init(): loading csv table %s\n", selectedPath);
+	return new CCSVTable(selectedPath, rapidcsv::LabelParams(0, 0), rapidcsv::SeparatorParams(), rapidcsv::ConverterParams(true), rapidcsv::LineReaderParams());
+}
 
 CServerInstance::CServerInstance()
 {
@@ -70,8 +85,8 @@ bool CServerInstance::Init()
 	}
 
 	g_pItemTable = new CCSVTable("Data/Item.csv", rapidcsv::LabelParams(0, 0), rapidcsv::SeparatorParams(), rapidcsv::ConverterParams(true), rapidcsv::LineReaderParams(), true);
-	g_pMapListTable = new CCSVTable("Data/MapList.csv", rapidcsv::LabelParams(0, 0), rapidcsv::SeparatorParams(), rapidcsv::ConverterParams(true), rapidcsv::LineReaderParams());
-	g_pGameModeListTable = new CCSVTable("Data/GameModeList.csv", rapidcsv::LabelParams(0, 0), rapidcsv::SeparatorParams(), rapidcsv::ConverterParams(true), rapidcsv::LineReaderParams());
+	g_pMapListTable = LoadCsvTablePreferLiveMetadata("LiveMetadata/MapList.csv", "Data/MapList.csv");
+	g_pGameModeListTable = LoadCsvTablePreferLiveMetadata("LiveMetadata/GameModeList.csv", "Data/GameModeList.csv");
 
 	if (!Manager().InitAll() ||
 		!m_TCPServer.Start(g_pServerConfig->tcpPort, g_pServerConfig->tcpSendBufferSize, g_pServerConfig->ssl) ||

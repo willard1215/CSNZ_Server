@@ -1679,6 +1679,17 @@ bool CChannelManager::OnCloseResultRequest(IUser* user)
 
 bool CChannelManager::OnRoomUpdateSettings(CReceivePacket* msg, IUser* user)
 {
+	// Preserve the exact latest-client settings block.  CRoomSettings knows the
+	// fields needed by server validation, but the current client also sends flag
+	// fields unknown to the legacy writer.  Rebuilding the response drops those
+	// bytes and causes PacketReader Error 65[4].
+	const Buffer& updateBuffer = msg->GetData();
+	const vector<unsigned char>& updateData = updateBuffer.getBuffer();
+	const size_t updateOffset = static_cast<size_t>(updateBuffer.getReadOffset());
+	const vector<unsigned char> rawSettingsBlock = updateOffset <= updateData.size()
+		? vector<unsigned char>(updateData.begin() + updateOffset, updateData.end())
+		: vector<unsigned char>();
+
 	CChannel* currentChannel = user->GetCurrentChannel();
 	if (currentChannel == NULL)
 	{
@@ -1800,7 +1811,7 @@ bool CChannelManager::OnRoomUpdateSettings(CReceivePacket* msg, IUser* user)
 	// inform every user in the room of the changes
 	for (auto u : currentRoom->GetUsers())
 	{
-		currentRoom->SendUpdateRoomSettings(u, roomSettings, newSettings.lowFlag, newSettings.lowMidFlag, newSettings.highMidFlag, newSettings.highFlag);
+		g_PacketManager.SendRoomUpdateSettingsRaw(u->GetExtendedSocket(), rawSettingsBlock);
 	}
 
 	currentChannel->SendUpdateRoomList(currentRoom);

@@ -5,7 +5,14 @@
 #include "main.h"
 #include "common/utils.h"
 
+#include <cstdlib>
 #include <thread>
+
+static bool IsEnvEnabled(const char* name)
+{
+	const char* value = getenv(name);
+	return value && (value[0] == '1' || value[0] == 'y' || value[0] == 'Y' || value[0] == 't' || value[0] == 'T');
+}
 
 CDedicatedServer::CDedicatedServer(IExtendedSocket* socket, int ip, int port)
 {
@@ -91,6 +98,8 @@ bool CDedicatedServerManager::OnPacket(CReceivePacket* msg, IExtendedSocket* soc
 
 		int port = msg->ReadUInt16(); // -port, default is 27015
 		int ip = msg->ReadUInt32(true); // ip from -hostip dedi argument
+		Logger().Info("CDedicatedServerManager::OnPacket(AddServer): socket=%s advertised=%s:%d\n",
+			socket->GetIP().c_str(), ip_to_string(ip).c_str(), port);
 
 		// if IP is not specified by dedi server, use IP from socket
 		if (ip == 0)
@@ -142,10 +151,9 @@ bool CDedicatedServerManager::OnPacket(CReceivePacket* msg, IExtendedSocket* soc
 					Logger().Info("Sending delayed dedicated host metadata\n");
 					g_UserManager.SendMetadata(socket);
 
-					const char* bootstrapEnv = getenv("CSNZ_DEDI_USER_BOOTSTRAP");
-					if (bootstrapEnv && bootstrapEnv[0] == '0')
+					if (!IsEnvEnabled("CSNZ_DEDI_USER_BOOTSTRAP"))
 					{
-						Logger().Info("Skipping dedicated host user bootstrap because CSNZ_DEDI_USER_BOOTSTRAP=0\n");
+						Logger().Info("Skipping dedicated host user bootstrap; set CSNZ_DEDI_USER_BOOTSTRAP=1 only for diagnostics\n");
 						return;
 					}
 
@@ -173,8 +181,9 @@ bool CDedicatedServerManager::OnPacket(CReceivePacket* msg, IExtendedSocket* soc
 							if (g_DedicatedServerManager.GetServerBySocket(socket) == NULL)
 								return;
 
-							Logger().Info("Sending delayed live metadata payloads after lobby bootstrap: item/codis\n");
+							Logger().Info("Sending delayed live metadata payloads after lobby bootstrap: item/voxel/codis\n");
 							g_PacketManager.SendMetadataItem(socket);
+							g_PacketManager.SendMetadataVoxelList(socket);
 							g_PacketManager.SendMetadataCodisData(socket);
 						});
 					}).detach();
@@ -203,10 +212,14 @@ CDedicatedServer* CDedicatedServerManager::GetAvailableServerFromPools(IRoom* ro
 		if (!server->GetRoom())
 		{
 			server->SetRoom(room);
+			Logger().Info("CDedicatedServerManager::GetAvailableServerFromPools: assigned %s:%d to room\n",
+				ip_to_string(server->GetIP()).c_str(), server->GetPort());
 			return server;
 		}
 	}
 
+	Logger().Warn("CDedicatedServerManager::GetAvailableServerFromPools: no free dedicated server available, pool=%d\n",
+		m_vServerPools.size());
 	return NULL;
 }
 
@@ -235,6 +248,8 @@ void CDedicatedServerManager::AddServer(IExtendedSocket* socket, int ip, int por
 
 	CDedicatedServer* server = new CDedicatedServer(socket, ip, port);
 	m_vServerPools.push_back(server);
+	Logger().Info("CDedicatedServerManager::AddServer: added %s:%d socket=%s pool=%d\n",
+		ip_to_string(ip).c_str(), port, socket->GetIP().c_str(), m_vServerPools.size());
 }
 
 CDedicatedServer* CDedicatedServerManager::GetServerBySocket(IExtendedSocket* socket)
@@ -254,6 +269,9 @@ void CDedicatedServerManager::RemoveServer(IExtendedSocket* socket)
 	CDedicatedServer* server = GetServerBySocket(socket);
 	if (!server)
 		return;
+
+	Logger().Warn("CDedicatedServerManager::RemoveServer: removing %s:%d socket=%s poolBefore=%d\n",
+		ip_to_string(server->GetIP()).c_str(), server->GetPort(), socket->GetIP().c_str(), m_vServerPools.size());
 
 	IRoom* room = server->GetRoom();
 	if (room)

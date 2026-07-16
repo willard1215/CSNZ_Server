@@ -940,3 +940,246 @@ chunked=1`. The chunked payload is `resource/item.csv`, which zips to about
   `tools\analyze_official_cso_capture.bat`
   These use Wireshark's `dumpcap.exe`/`tshark.exe` from
   `C:\Program Files\Wireshark` and leave the official client process untouched.
+
+## 2026-07-17: Room Create / Host UI Protocol Work
+
+- Ghidra headless analysis of the current `hw.dll` located the Room packet
+  dispatcher at `FUN_0268a4c0` and the Room/CreateAndJoin handler at
+  `FUN_026259f0`.
+- Confirmed the current subtype-0 prefix:
+  `unknown byte`, `room id`, `host user id`, `uint16 room header`, one-byte
+  header, room settings, user count, then room-user entries.
+- Confirmed each room-user prefix is:
+  `user id`, zero dword, account string, four state bytes, external address and
+  ports, local address and ports, followed by the 64-bit flagged full-user-info
+  block.
+- Corrected the full-user-info room path using the verified live Steam stream
+  in `Packets_sampel/3/Packet_200_ID_65_835.bin` and switched the current room
+  header from the older experimental `0x0082` to live value `0x00CB`.
+- Added `Logs/LastRoomCreate.bin` plaintext diagnostics for byte-for-byte
+  comparison with live samples.
+- Expanded all-flags room settings could show a player but produced many
+  `PacketReader Error 65[0]` messages and did not establish complete host/self
+  UI state.
+- Preserving the current client's sparse NewRoom settings block eliminated all
+  immediate `65[0]` parser errors, but the first runtime test copied the two
+  request-only trailer bytes (`02 00`) as settings. The client consequently
+  read user count `0`: no player row, no host icon, no upper-left self info,
+  and the host saw a Ready button instead of Start.
+- An initial experiment excluded both final NewRoom bytes; the correction below
+  documents why only the last byte may be excluded.
+- Release builds completed successfully throughout these iterations. Integrated
+  server and dedicated registration remained healthy.
+
+### Current validation target
+
+1. Rebuild/restart and create a room.
+2. Confirm one player row, host icon, and upper-left self information.
+3. Confirm the host button changes from Ready to Start and that Room subtype 4
+   reaches `OnGameStartRequest`.
+4. Then validate Host packet 68 against the continuous live session in
+   `Packets_sampel/3` for dedicated-server connection and in-game purchasing.
+
+### 2026-07-17 boundary correction after crash
+
+- The first trailer-removal test excluded both final bytes (`02 00`). Room
+  creation then crashed the client at `00:32:29` with repeated `65[0]` reads
+  extending beyond the packet into unrelated metadata memory.
+- The observed behavior proves `02` is still consumed by the current room
+  settings parser. Removing it caused the explicit user count to be consumed as
+  that setting and shifted the following user entry by one byte.
+- Corrected preservation to remove only the final `00` request-only byte:
+  keep the terminal settings value `02`, then append CreateAndJoin user count
+  `01`, then the aligned user entry.
+- The integrated processes were stopped immediately after the crash report.
+
+### 2026-07-17 second boundary crash and safe rollback
+
+- A follow-up test kept terminal `02` and removed only the final `00`. This also
+  crashed during Room/CreateAndJoin parsing at `00:35:23`; the launcher process
+  exited and `Error.log` again showed reads beyond packet memory.
+- Therefore neither a one-byte nor two-byte trim is valid. Terminal bytes will
+  not be inferred further from runtime trial and error.
+- Rolled `rawCreateSettings` back to preserving the complete NewRoom request
+  body. This is the last non-crashing diagnostic state: it has no player/self
+  UI because the client resolves user count as zero, but it does not overrun.
+- The integrated stack remains stopped. The next change must come from Ghidra's
+  exact sparse settings reader for masks `000007C9 / 00002100 / 0 / 0`, not
+  another boundary guess.
+
+### 2026-07-17 Ghidra sparse-mask resolution
+
+- Dumped the 128-bit room-setting field mask table used by current `hw.dll`
+  `FUN_0268ecf0`.
+- For sparse create masks `000007C9 / 00002100 / 0 / 0`, confirmed response
+  reads are two strings, then low fields of sizes `1, 2, 1, 1, 2`, followed by:
+    - lowMid bit 8: one byte (`02` in the captured NewRoom request)
+    - lowMid bit 13: ten bytes (`uint16 + uint32 + uint32`)
+- The client-authored NewRoom request contains only one trailing zero for that
+  ten-byte response field. This explains both previous outcomes: full copying
+  consumed user data as the missing nine bytes; trimming shifted even earlier
+  and crashed.
+- `SendRoomCreateAndJoin` now preserves the complete sparse request and appends
+  exactly nine zero bytes when lowMid bit 13 is set, then writes user count and
+  the room-user entry.
+
+### 2026-07-17 runtime validation of Ghidra-derived padding
+
+- Release build succeeded and the integrated stack was started.
+- Room creation at `00:40:16` sent 51 preserved settings bytes plus the exact
+  nine-byte response remainder (`settingsBytes=60`, `usersOffset=78`).
+- Client logged `S_ROOM_ENTER(1)` with no `PacketReader Error 65[0]`.
+- Client, `CSNZ_Server`, and `CSOHLDS` all remained alive and responsive after
+  room creation. This resolves the immediate room-create crash and settings to
+  user-list boundary overrun.
+- Visual confirmation is still required for player row, host icon, upper-left
+  self information, and Start-versus-Ready button state.
+
+### 2026-07-17 exact user-count alignment correction
+
+- User reported the stable build still showed no player, no upper-left self
+  info, participant count 0, a Ready button, and the insufficient-ready-player
+  notice.
+- Plaintext dump proved the nine-byte completion left one extra zero directly
+  before explicit user count `01`.
+- Ghidra order for the sparse body is: two strings; sizes `1,2,1,1,2`; lowMid
+  bit 8 one byte (`00`); then lowMid bit 13 ten bytes. The request already
+  contributes the first two bit-13 bytes (`02 00`), so only eight zero bytes
+  are missing.
+- Changed the response completion from nine to eight bytes. Expected boundary
+  is now: ten-byte bit-13 field, `01` user count, `01 00 00 00` local user id.
+- Upper-left self information was absent already in the lobby and is tracked as
+  a separate login/lobby full-user-info bootstrap issue.
+
+### 2026-07-17 create_room capture and local-host identity correction
+
+- Added the user-supplied continuous live capture in
+  `Packets_sampel/create_room` as the primary reference for creating Zombie
+  Scenario / Hidden Truth. `Packet_199_ID_65_841.bin` is the live
+  Room/CreateAndJoin response; it confirms one user and the same 466-byte
+  current full-user-info schema as `Packets_sampel/3`.
+- The eight-byte sparse-setting completion places user count `01`, user id,
+  member prefix, and `FEDFFFFF/00000005` full-user flags at the expected
+  boundaries. The 00:45 runtime remained alive, but `Error.log` showed the
+  member/full-user reader eventually reaching packet end, and the client sent
+  Ready toggles instead of acting as host.
+- Ghidra `FUN_0268a4c0` proves the `uint16` immediately before the `0x05`
+  settings-header byte is passed as CreateAndJoin `param_2[3]`.
+  `FUN_026259f0` compares that value with the current client's user id to set
+  local-host state. It is a session-local player id (`0x00CB` and `0x00E1` in
+  the two live captures), not the previously hard-coded `0x00CB` constant.
+- `SendRoomCreateAndJoin` now writes the actual host user id in that field.
+  The room full-user template now comes from the new `create_room` capture
+  (flags `0x177`, dynamic-name tail `0x1BD`).
+- Release build succeeded. The integrated stack was restarted with server PID
+  29204, launcher PID 76128, and dedicated PID 75572. Manual room creation is
+  required to verify player row, host icon, participant count, and Start button.
+- Lobby upper-left self information remains a separate login/bootstrap packet
+  issue and is not claimed fixed by this room-host change.
+
+### 2026-07-17 host-state validation and compact profile correction
+
+- User validation confirmed room creation, visible player name, host icon,
+  participant count 1, and the Game Start button. The session-local host-id
+  correction is therefore verified.
+- Remaining observations were a missing player level and, after two mode/map
+  changes, an unsupported-family-battle confirmation dialog.
+- Runtime logs still contained `PacketReader Error 65[0]` after CreateAndJoin
+  even though the essential row/host state survived. They also showed
+  `65[4]` overreads after raw settings updates. The lobby path explicitly sent
+  `Lobby(153) users=0`, so the client never received its initial self/level
+  profile.
+- Parsed `Packets_sampel/create_room/Packet_184_ID_153_1095.bin`. Its current
+  compact full-user flags are `4000300A/00000003`, carrying three game-name
+  strings, level, clan data, tournament, low-bit-30 bytes, and high-bit-0 data.
+- Replaced the large copied room profile with this exact compact dynamic
+  serializer and now sends one compact self entry in Lobby(153). This targets
+  the room level, upper-left lobby self information, and the `65[0]` overread.
+- Compact NewRoom responses now explicitly add highMid family-battle bit 6
+  with value zero when the request highMid mask is empty. This prevents stale
+  client family-battle state from leaking into later mode changes while keeping
+  the settings/user-count boundary aligned.
+- Release build succeeded and the integrated stack was restarted: server PID
+  74744, launcher PID 14352, dedicated PID 76376. Visual/runtime retest is
+  pending.
+
+### 2026-07-17 compact-profile retest and lobby rollback
+
+- User confirmed the compact room profile restores the player level. The
+  upper-left lobby self panel remained empty, while the host icon appeared but
+  the client sent Ready toggles and could not open host map controls.
+- Server-side logs confirm the user is still the authoritative room host, but
+  the client sent subtype 3 Ready repeatedly. This regression began only after
+  Lobby(153) started carrying the synthetic self entry.
+- The same run completed four CreateAndJoin parses with `S_ROOM_ENTER` and no
+  `PacketReader Error 65[0]` or `65[4]`; all CSNZ/launcher/CSOHLDS processes
+  remained alive. The reported one-off crash was not reproduced or identified
+  in this run.
+- Removed the ineffective Lobby(153) synthetic self entry and restored
+  `users=0` to preserve the login-established local host identity. Retained the
+  compact room FullUserInfo (working level and clean parser) and the explicit
+  family-battle reset.
+- Release build succeeded and the integrated stack was restarted: server PID
+  67040, launcher PID 64752, dedicated PID 50192. Host authority, level, and
+  repeated mode/map changes require one more visual retest.
+- Upper-left self information remains unresolved and must be implemented via
+  the actual login/local-profile bootstrap packet rather than Lobby(153).
+
+### 2026-07-17 Ghidra MCP hw.dll payload audit
+
+- Connected to the active `hw.dll` Ghidra project through Ghidra MCP and
+  cross-checked the decoders against `Packets_sampel/create_room` and
+  `Packets_sampel/3`. The consolidated schemas are documented in
+  `docs/hw_dll_packet_payloads.md`.
+- Confirmed decoder entry points: Room 65 `FUN_0268a4c0`, Host 68
+  `FUN_02664f20`, UserStart 150 `FUN_026a36b0`, Lobby 153 `FUN_02673490`,
+  UserUpdateInfo 157 `FUN_026a1840`, and FullUserInfo `FUN_026bd6c0`.
+- Corrected the previous Room 65 interpretation: local host authority is set
+  by comparing the response's `uint32 hostUserId` with the local member user
+  id. The following `uint16` is a distinct room/session slot and is not the
+  host-authority field. The live capture contains host id `0x00DD43E1` and
+  slot `0x00E1`.
+- Confirmed the direct Host 68/101 parser defect: every inventory item ends
+  with an unconditional `uint32` after its parts array, while
+  `SendHostUserInventory` currently omits it. This accounts for the observed
+  `PacketReader Error 68[101]`.
+- Confirmed UserStart 150 field order, but the current sender zeros
+  country/region/UserSN and does not provide the live Steam account id.
+  UserUpdateInfo 157 is `userId + FullUserInfo`; the current zero flags carry
+  no data capable of populating the upper-left self profile.
+- Confirmed Host 68/0 as `uint32 + uint8 + uint8 + uint64 token` and the
+  client-received 68/5 as `IPv4 + port + uint64 token`. The live token is
+  dynamic and shared by the observed 68/0 and opposite-direction 68/5 flow;
+  current constants/user-id substitution are not protocol-correct.
+- No server implementation was changed during this audit. Next changes should
+  begin with the exact 68/101 boundary fix, followed by the compact 157 self
+  bootstrap and the shared Host session-token path, each with a release build
+  and runtime test.
+
+### 2026-07-17 hw.dll payload fixes implemented and built
+
+- `SendHostUserInventory` now writes the unconditional trailing `uint32` that
+  `FUN_026669b0` consumes after every item's parts array. The existing
+  `CUserInventoryItem::m_nLockStatus` is used for this field, eliminating the
+  known structural cause of `PacketReader Error 68[101]`.
+- `SendUserUpdateInfoMinimal` no longer sends an empty 64-bit flag mask. It now
+  sends the mapped compact `4000300A/00000003` FullUserInfo with the local game
+  name, level, clan, tournament, and mapped trailing fields. This targets the
+  missing upper-left self profile without reintroducing a synthetic Lobby 153
+  member.
+- Added a nonzero per-match Host session token to `CRoom`. Host 68/0 and the
+  client-received dedicated-connect 68/5 now share that token. Removed the
+  fixed `5555` and the previous user-id-as-token behavior.
+- Corrected the dedicated Host 68/0 call to send the actual host user id. The
+  preceding implementation passed the dedicated port as `userId`.
+- Corrected the Room 65 source comment: host authority comes from the
+  `uint32 hostUserId`; the following `uint16` is a separate, not-yet-mapped
+  room/session slot. Its current compatibility value was intentionally left
+  unchanged because the live slot allocator is not yet identified.
+- Win32 Release build succeeded and produced `bin/Release/CSNZ_Server.exe`.
+  A direct server smoke test loaded all metadata, bound TLS port 30002, and
+  remained stable. A second headless server + CSOHLDS test kept both processes
+  alive for 12 seconds and completed dedicated metadata registration/streaming.
+- No client UI automation was used. Actual room start must now verify that the
+  upper-left self profile appears, 68/101 no longer reports a reader error,
+  and 68/0 plus 68/5 log the same token before dedicated game entry.

@@ -1,0 +1,17 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/VS_Code_Data/CSNX/CSNZ_Server/build_codex/cmake_install.cmake",
+		"D:/VS_Code_Data/CSNX/CSNZ_Server/build_codex/thirdparty/cmake_install.cmake",
+		"D:/VS_Code_Data/CSNX/CSNZ_Server/build_codex/thirdparty/KeyValues/cmake_install.cmake",
+		"D:/VS_Code_Data/CSNX/CSNZ_Server/build_codex/thirdparty/json/cmake_install.cmake",
+		"D:/VS_Code_Data/CSNX/CSNZ_Server/build_codex/thirdparty/wolfssl/cmake_install.cmake",
+		"D:/VS_Code_Data/CSNX/CSNZ_Server/build_codex/thirdparty/SQLiteCpp/cmake_install.cmake",
+		"D:/VS_Code_Data/CSNX/CSNZ_Server/build_codex/thirdparty/SQLiteCpp/sqlite3/cmake_install.cmake",
+		"D:/VS_Code_Data/CSNX/CSNZ_Server/build_codex/thirdparty/zip/cmake_install.cmake",
+		"D:/VS_Code_Data/CSNX/CSNZ_Server/build_codex/net/cmake_install.cmake",
+		"D:/VS_Code_Data/CSNX/CSNZ_Server/build_codex/test/cmake_install.cmake",
+		"D:/VS_Code_Data/CSNX/CSNZ_Server/build_codex/test/net/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

@@ -841,7 +841,9 @@ void CUserManager::SendLoginPacket(IUser* user, const CUserCharacter& character,
 	}
 
 	if (includeMetadata)
-		g_PacketManager.SendUserUpdateInfo(socket, user, loginCharacter);
+	{
+		Logger().Info("Skipping legacy full UserUpdateInfo(157) for latest client\n");
+	}
 
 	if (!includeMetadata)
 	{
@@ -849,9 +851,7 @@ void CUserManager::SendLoginPacket(IUser* user, const CUserCharacter& character,
 		return;
 	}
 
-	g_PacketManager.SendGameMatchInfo(socket);
-	g_PacketManager.SendGameMatchUnk(socket);
-	g_PacketManager.SendGameMatchUnk9(socket);
+	Logger().Info("Skipping legacy GameMatch(99) bootstrap packets for latest client\n");
 
 	if (g_pServerConfig->mainMenuSkinEvent > 0)
 		g_PacketManager.SendEventMainMenuSkin(socket, g_pServerConfig->mainMenuSkinEvent);
@@ -1006,6 +1006,11 @@ void CUserManager::SendMetadata(IExtendedSocket* socket)
 	{
 		logMetadata(kPacket_Metadata_Item, "resource/item.csv");
 		g_PacketManager.SendMetadataItem(socket);
+		if (legacyMetadataIDs)
+		{
+			logMetadata(kPacket_Metadata_VoxelList, "voxel/voxel_list.csv");
+			g_PacketManager.SendMetadataVoxelList(socket);
+		}
 	}
 	if (flag & kMetadataFlag_CodisData)
 	{
@@ -1148,7 +1153,13 @@ static bool ReplayLatestLoginSample(IExtendedSocket* socket)
 		return false;
 
 	int minIndex = 6;
-	int maxIndex = INT_MAX;
+	// Packets 128..131 are the large live metadata refresh set.  The server now
+	// generates those records directly from LiveMetadata/MetadataArtifacts, so
+	// keep replay to the pre-refresh bootstrap range by default.  Packet 134 is
+	// a legacy GuideQuest(120) payload that the current client rejects.
+	// Diagnostics can still opt into later captures through
+	// CSNZ_LOGIN_SAMPLE_MAX_INDEX.
+	int maxIndex = 127;
 	if (const char* envMin = getenv("CSNZ_LOGIN_SAMPLE_MIN_INDEX"))
 		minIndex = max(0, atoi(envMin));
 	if (const char* envMax = getenv("CSNZ_LOGIN_SAMPLE_MAX_INDEX"))
@@ -1179,10 +1190,15 @@ static bool ReplayLatestLoginSample(IExtendedSocket* socket)
 		if (find == INVALID_HANDLE_VALUE)
 			continue;
 
+		// Sample 79 is a 471-byte legacy full UserUpdateInfo(157) payload whose
+		// first subtype byte is 173.  The latest client repeatedly overruns that
+		// layout and raises its runtime error path, while samples 117/118 use the
+		// short current-compatible 157 forms.
 		do
 		{
 			int index = -1;
-			if (sscanf(data.cFileName, "Packet_%d_ID_%*d_%*d.bin", &index) == 1 && index >= minIndex && index <= maxIndex)
+			if (sscanf(data.cFileName, "Packet_%d_ID_%*d_%*d.bin", &index) == 1 &&
+				index >= minIndex && index <= maxIndex && index != 79)
 				packets.push_back({ index, root + "\\" + data.cFileName });
 		} while (FindNextFileA(find, &data));
 

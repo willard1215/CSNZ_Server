@@ -79,6 +79,10 @@ public:
 	bool CheckNewSettings(IUser* user, CRoomSettings* roomSettings);
 
 public:
+	// Exact current-client settings block received with Room/NewRoom.  It is
+	// used for the creator's CreateAndJoin response so the client reads the
+	// user-count boundary with the same schema it used to write the request.
+	std::vector<unsigned char> rawCreateSettings;
 	int lowFlag;
 	int lowMidFlag;
 	int highMidFlag;

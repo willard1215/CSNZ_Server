@@ -11,6 +11,68 @@
 
 using namespace std;
 
+static size_t RoomSettingsRemaining(const Buffer& buffer)
+{
+	const auto& data = buffer.getBuffer();
+	const auto offset = buffer.getReadOffset();
+	return offset < data.size() ? data.size() - static_cast<size_t>(offset) : 0;
+}
+
+static bool RoomSettingsCanRead(const Buffer& buffer, size_t bytes)
+{
+	return RoomSettingsRemaining(buffer) >= bytes;
+}
+
+static string ReadRoomSettingsCStringSafe(Buffer& buffer)
+{
+	const auto& data = buffer.getBuffer();
+	const auto start = static_cast<size_t>(buffer.getReadOffset());
+
+	if (start >= data.size())
+	{
+		buffer.setReadOffset(data.size());
+		return "";
+	}
+
+	size_t end = start;
+	while (end < data.size() && data[end] != '\0')
+		end++;
+
+	string result(reinterpret_cast<const char*>(&data[start]), end - start);
+	buffer.setReadOffset(end < data.size() ? end + 1 : data.size());
+	return result;
+}
+
+static unsigned char ReadRoomSettingsUInt8Safe(Buffer& buffer)
+{
+	return RoomSettingsCanRead(buffer, 1) ? buffer.readUInt8() : 0;
+}
+
+static unsigned short ReadRoomSettingsUInt16Safe(Buffer& buffer)
+{
+	return RoomSettingsCanRead(buffer, 2) ? buffer.readUInt16_LE() : 0;
+}
+
+static unsigned int ReadRoomSettingsUInt32Safe(Buffer& buffer)
+{
+	return RoomSettingsCanRead(buffer, 4) ? buffer.readUInt32_LE() : 0;
+}
+
+static bool LooksLikeCompactNewRoomSettings(const Buffer& buffer, int lowFlag, int lowMidFlag, int highMidFlag, int highFlag)
+{
+	const int requiredLow = ROOM_LOW_ROOMNAME | ROOM_LOW_PASSWORD | ROOM_LOW_GAMEMODEID |
+		ROOM_LOW_MAPID | ROOM_LOW_MAXPLAYERS | ROOM_LOW_WINLIMIT | ROOM_LOW_KILLLIMIT;
+
+	if ((lowFlag & requiredLow) != requiredLow)
+		return false;
+
+	if (highMidFlag != 0 || highFlag != 0)
+		return false;
+
+	const size_t remaining = RoomSettingsRemaining(buffer);
+	return remaining > 0 && remaining <= 256;
+}
+
 CRoomSettings::CRoomSettings()
 {
 	Init();
@@ -20,11 +82,59 @@ CRoomSettings::CRoomSettings(Buffer& inPacket) // unfinished
 {
 	Init();
 
+	const size_t rawSettingsBegin = static_cast<size_t>(inPacket.getReadOffset());
+	const vector<unsigned char>& rawPacket = inPacket.getBuffer();
+	// Preserve the whole client-authored block until Ghidra establishes the
+	// exact response boundary. Trimming one or two terminal bytes caused the
+	// current client to parse beyond the packet and crash. The full block is a
+	// safe diagnostic fallback: it enters the room without a parser overrun,
+	// although the trailing zero currently makes the visible user count zero.
+	const size_t rawSettingsEnd = rawPacket.size();
+	if (rawSettingsBegin < rawSettingsEnd)
+		rawCreateSettings.assign(rawPacket.begin() + rawSettingsBegin, rawPacket.begin() + rawSettingsEnd);
+
 	// TODO: implement 128-bit bitwise operations...
 	lowFlag = inPacket.readUInt32_LE();
 	lowMidFlag = inPacket.readUInt32_LE();
 	highMidFlag = inPacket.readUInt32_LE();
 	highFlag = inPacket.readUInt32_LE();
+
+	if (LooksLikeCompactNewRoomSettings(inPacket, lowFlag, lowMidFlag, highMidFlag, highFlag))
+	{
+		password = ReadRoomSettingsCStringSafe(inPacket);
+		roomName = ReadRoomSettingsCStringSafe(inPacket);
+
+		if (roomName.empty() && !password.empty())
+		{
+			roomName = password;
+			password = "";
+		}
+
+		gameModeId = ReadRoomSettingsUInt8Safe(inPacket);
+		mapId = ReadRoomSettingsUInt16Safe(inPacket);
+		maxPlayers = ReadRoomSettingsUInt8Safe(inPacket);
+		winLimit = ReadRoomSettingsUInt8Safe(inPacket);
+		killLimit = ReadRoomSettingsUInt16Safe(inPacket);
+
+		if (lowMidFlag & ROOM_LOWMID_RANDOMMAP)
+			randomMap = ReadRoomSettingsUInt8Safe(inPacket);
+
+		if (lowMidFlag & ROOM_LOWMID_ZSDIFFICULTY)
+		{
+			zsDifficulty = ReadRoomSettingsUInt8Safe(inPacket);
+			unk56 = ReadRoomSettingsUInt32Safe(inPacket);
+			unk57 = ReadRoomSettingsUInt32Safe(inPacket);
+		}
+
+		if (maxPlayers <= 0)
+			maxPlayers = GetGameModeDefaultSetting(gameModeId, "max_player");
+
+		if (maxPlayers <= 0)
+			maxPlayers = 32;
+
+		familyBattle = 0;
+		return;
+	}
 
 	if (lowFlag & ROOM_LOW_ROOMNAME) {
 		roomName = inPacket.readStr().c_str();
@@ -2339,6 +2449,23 @@ bool CRoomSettings::CheckSettings(IUser* user)
 
 		lowFlag |= ROOM_LOW_KILLLIMIT;
 		killLimit = 0;
+	}
+
+	if (g_pGameModeListTable->GetRowIdx(to_string(gameModeId)) < 0)
+	{
+		Logger().Warn("User '%s' tried to create a new room with unknown gameModeId: %d; falling back to Zombie Scenario\n", user->GetLogName(), gameModeId);
+		gameModeId = 15;
+		lowFlag |= ROOM_LOW_GAMEMODEID;
+	}
+
+	if (mapId != 254 && g_pMapListTable->GetRowIdx(to_string(mapId)) < 0)
+	{
+		const int fallbackMapId = 98; // #cso_deadend / zs_deadend, current latest-client personal map fallback.
+		Logger().Warn("User '%s' tried to create a new room with unknown mapId: %d; falling back to mapId: %d\n", user->GetLogName(), mapId, fallbackMapId);
+		mapId = fallbackMapId;
+		mapId2 = fallbackMapId;
+		lowFlag |= ROOM_LOW_MAPID;
+		lowMidFlag |= ROOM_LOWMID_MAPID2;
 	}
 
 	if (g_pServerConfig->room.validateSettings)

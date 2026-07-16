@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include "interface/iroom.h"
 #include "roomsettings.h"
 #include "net/receivepacket.h"
@@ -113,6 +114,7 @@ private:
 	std::vector<int> m_FamilyBattleUsers;
 
 	CDedicatedServer* m_pServer;
+	uint64_t m_nHostSessionToken;
 
 	int m_nID;
 	RoomStatus m_Status;

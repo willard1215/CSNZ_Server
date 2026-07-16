@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2F28439C-9607-3A53-AE08-8F2E3DB9073C}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
+    <Platform>Win32</Platform>
+    <ProjectName>SQLiteCpp</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\VS_Code_Data\CSNX\CSNZ_Server\build_codex\thirdparty\SQLiteCpp\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">SQLiteCpp.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">SQLiteCpp</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\VS_Code_Data\CSNX\CSNZ_Server\build_codex\thirdparty\SQLiteCpp\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">SQLiteCpp.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">SQLiteCpp</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\VS_Code_Data\CSNX\CSNZ_Server\build_codex\thirdparty\SQLiteCpp\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">SQLiteCpp.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">SQLiteCpp</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include;D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\sqlite3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BufferSecurityCheck></BufferSecurityCheck>
+      <CallingConvention></CallingConvention>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FloatingPointModel></FloatingPointModel>
+      <ForceConformanceInForLoopScope></ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RemoveUnreferencedCodeData></RemoveUnreferencedCodeData>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatWChar_tAsBuiltInType></TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;SQLITE_ENABLE_COLUMN_METADATA;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;SQLITE_ENABLE_COLUMN_METADATA;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include;D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\sqlite3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include;D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\sqlite3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include;D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\sqlite3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck></BufferSecurityCheck>
+      <CallingConvention></CallingConvention>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FloatingPointModel></FloatingPointModel>
+      <ForceConformanceInForLoopScope></ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RemoveUnreferencedCodeData></RemoveUnreferencedCodeData>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatWChar_tAsBuiltInType></TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;SQLITE_ENABLE_COLUMN_METADATA;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;SQLITE_ENABLE_COLUMN_METADATA;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include;D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\sqlite3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include;D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\sqlite3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include;D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\sqlite3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck></BufferSecurityCheck>
+      <CallingConvention></CallingConvention>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FloatingPointModel></FloatingPointModel>
+      <ForceConformanceInForLoopScope></ForceConformanceInForLoopScope>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RemoveUnreferencedCodeData></RemoveUnreferencedCodeData>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <TreatWChar_tAsBuiltInType></TreatWChar_tAsBuiltInType>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;SQLITE_ENABLE_COLUMN_METADATA;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;SQLITE_ENABLE_COLUMN_METADATA;_CRT_SECURE_NO_WARNINGS;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include;D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\sqlite3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include;D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\sqlite3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule D:/VS_Code_Data/CSNX/CSNZ_Server/src/thirdparty/SQLiteCpp/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/VS_Code_Data/CSNX/CSNZ_Server/src -BD:/VS_Code_Data/CSNX/CSNZ_Server/build_codex --check-stamp-file D:/VS_Code_Data/CSNX/CSNZ_Server/build_codex/thirdparty/SQLiteCpp/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Program Files\CMake\share\cmake-4.3\Modules\BasicConfigVersion-AnyNewerVersion.cmake.in;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakePackageConfigHelpers.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindPythonInterp.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\GNUInstallDirs.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Internal\CMakeCLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Linker\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\WriteBasicConfigVersionFile.cmake;D:\VS_Code_Data\CSNX\CSNZ_Server\build_codex\CMakeFiles\4.3.4\CMakeCCompiler.cmake;D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\cmake\SQLiteCppConfig.cmake.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\VS_Code_Data\CSNX\CSNZ_Server\build_codex\thirdparty\SQLiteCpp\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule D:/VS_Code_Data/CSNX/CSNZ_Server/src/thirdparty/SQLiteCpp/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/VS_Code_Data/CSNX/CSNZ_Server/src -BD:/VS_Code_Data/CSNX/CSNZ_Server/build_codex --check-stamp-file D:/VS_Code_Data/CSNX/CSNZ_Server/build_codex/thirdparty/SQLiteCpp/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Program Files\CMake\share\cmake-4.3\Modules\BasicConfigVersion-AnyNewerVersion.cmake.in;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakePackageConfigHelpers.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindPythonInterp.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\GNUInstallDirs.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Internal\CMakeCLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Linker\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\WriteBasicConfigVersionFile.cmake;D:\VS_Code_Data\CSNX\CSNZ_Server\build_codex\CMakeFiles\4.3.4\CMakeCCompiler.cmake;D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\cmake\SQLiteCppConfig.cmake.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\VS_Code_Data\CSNX\CSNZ_Server\build_codex\thirdparty\SQLiteCpp\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule D:/VS_Code_Data/CSNX/CSNZ_Server/src/thirdparty/SQLiteCpp/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/VS_Code_Data/CSNX/CSNZ_Server/src -BD:/VS_Code_Data/CSNX/CSNZ_Server/build_codex --check-stamp-file D:/VS_Code_Data/CSNX/CSNZ_Server/build_codex/thirdparty/SQLiteCpp/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Program Files\CMake\share\cmake-4.3\Modules\BasicConfigVersion-AnyNewerVersion.cmake.in;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\CMakePackageConfigHelpers.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\FindPythonInterp.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\GNUInstallDirs.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Internal\CMakeCLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Linker\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.3\Modules\WriteBasicConfigVersionFile.cmake;D:\VS_Code_Data\CSNX\CSNZ_Server\build_codex\CMakeFiles\4.3.4\CMakeCCompiler.cmake;D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\cmake\SQLiteCppConfig.cmake.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\VS_Code_Data\CSNX\CSNZ_Server\build_codex\thirdparty\SQLiteCpp\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\src\Backup.cpp" />
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\src\Column.cpp" />
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\src\Database.cpp" />
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\src\Exception.cpp" />
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\src\Savepoint.cpp" />
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\src\Statement.cpp" />
+    <ClCompile Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\src\Transaction.cpp" />
+    <ClInclude Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\SQLiteCpp.h" />
+    <ClInclude Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\Assertion.h" />
+    <ClInclude Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\Backup.h" />
+    <ClInclude Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\Column.h" />
+    <ClInclude Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\Database.h" />
+    <ClInclude Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\Exception.h" />
+    <ClInclude Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\Savepoint.h" />
+    <ClInclude Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\Statement.h" />
+    <ClInclude Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\Transaction.h" />
+    <ClInclude Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\VariadicBind.h" />
+    <ClInclude Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\include\SQLiteCpp\ExecuteMany.h" />
+    <None Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\README.md">
+    </None>
+    <None Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\LICENSE.txt">
+    </None>
+    <None Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\CHANGELOG.md">
+    </None>
+    <None Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\TODO.txt">
+    </None>
+    <None Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\.editorconfig">
+    </None>
+    <None Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\.gitbugtraq">
+    </None>
+    <None Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\.github\workflows\cmake.yml">
+    </None>
+    <None Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\.github\workflows\cmake_subdir_example.yml">
+    </None>
+    <None Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\.github\workflows\meson.yml">
+    </None>
+    <None Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\.gitignore">
+    </None>
+    <None Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\.gitmodules">
+    </None>
+    <None Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\.travis.yml">
+    </None>
+    <None Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\appveyor.yml">
+    </None>
+    <None Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\build.bat">
+    </None>
+    <None Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\build.sh">
+    </None>
+    <None Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\cpplint.py">
+    </None>
+    <None Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\Doxyfile">
+    </None>
+    <None Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\cmake\FindSQLite3.cmake">
+    </None>
+    <ClInclude Include="D:\VS_Code_Data\CSNX\CSNZ_Server\src\thirdparty\SQLiteCpp\cmake\SQLiteCppConfig.cmake.in" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="D:\VS_Code_Data\CSNX\CSNZ_Server\build_codex\ZERO_CHECK.vcxproj">
+      <Project>{73EAD26F-54CB-3A79-B8ED-3DF694B40251}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\VS_Code_Data\CSNX\CSNZ_Server\build_codex\thirdparty\SQLiteCpp\sqlite3\sqlite3.vcxproj">
+      <Project>{B28230C0-D687-3592-B807-58A9108D56FF}</Project>
+      <Name>sqlite3</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

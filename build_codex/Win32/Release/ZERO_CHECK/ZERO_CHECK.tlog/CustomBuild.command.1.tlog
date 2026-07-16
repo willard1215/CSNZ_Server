@@ -1,0 +1,10 @@
+^D:\VS_CODE_DATA\CSNX\CSNZ_SERVER\BUILD_CODEX\CMAKEFILES\DF342C1E4E6F5F0C1F2D997B153C9866\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/VS_Code_Data/CSNX/CSNZ_Server/src -BD:/VS_Code_Data/CSNX/CSNZ_Server/build_codex --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/VS_Code_Data/CSNX/CSNZ_Server/build_codex/PROJECTNAME.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
