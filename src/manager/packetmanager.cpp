@@ -3717,12 +3717,15 @@ void CPacketManager::SendHostServerJoin(IExtendedSocket* socket, int ipAddress, 
 	msg->BuildHeader();
 	msg->WriteUInt8(HostPacketType::HostServerJoin);
 	const string endpoint = ip_to_string(ipAddress);
-	msg->WriteString(endpoint);
-	msg->WriteUInt16(port);
+	// Current hw.dll Packet_Host::Decode(68/5) stores the first decoded field at
+	// +0x20 and immediately passes it to inet_ntoa(), then uses +0x24 as the
+	// port and +0x28/+0x2c as the session token. Sending a string here makes the
+	// client interpret the ASCII bytes "127." as an IPv4 address.
 	msg->WriteUInt32(ipAddress, false);
+	msg->WriteUInt16(port);
 	msg->WriteUInt64(sessionToken);
-	Logger().Info("TX Host(68/5) dedicated connect: endpoint=%s port=%d ip=%s token=%llu\n",
-		endpoint.c_str(), port, endpoint.c_str(), static_cast<unsigned long long>(sessionToken));
+	Logger().Info("TX Host(68/5) dedicated connect: ip=%s port=%d token=%llu\n",
+		endpoint.c_str(), port, static_cast<unsigned long long>(sessionToken));
 	socket->Send(msg);
 }
 

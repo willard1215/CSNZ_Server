@@ -874,7 +874,16 @@ void CRoom::SendStartMatch(IUser* host)
 		if (m_pServer)
 		{
 			g_PacketManager.SendRoomCreateAndJoin(m_pServer->GetSocket(), this);
-			g_PacketManager.SendHostGameStart(m_pServer->GetSocket(), host->GetID(), m_nHostSessionToken);
+			// hw.dll's current dedicated bootstrap consumes the same Host sequence
+			// as the joining client: 68/114, 68/0, 68/12 and 68/13.  Sending only
+			// 68/0 starts the map, but leaves no usable game-user entry when the
+			// subsequent connectionless `connect` command resolves its OID/name.
+			g_PacketManager.SendHostDedicatedPrepare(m_pServer->GetSocket(), host->GetID(), m_nHostSessionToken);
+			// Host Start can rebuild the dedicated-side game-user registry. Replay
+			// the host entry afterwards so SV_ConnectClient's OID lookup
+			// (FUN_026bc090 -> FUN_026b96f0) resolves a non-empty game name.
+			g_PacketManager.SendRoomPlayerJoin(m_pServer->GetSocket(), host, host->GetRoomData()->m_Team);
+			g_PacketManager.SendRoomSetUserTeam(m_pServer->GetSocket(), host, host->GetRoomData()->m_Team);
 			g_PacketManager.SendHostDedicatedPrepare(host->GetExtendedSocket(), host->GetID(), m_nHostSessionToken);
 		}
 		else

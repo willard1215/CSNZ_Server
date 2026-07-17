@@ -1321,3 +1321,136 @@ chunked=1`. The chunked payload is `resource/item.csv`, which zips to about
   `CSNZ_Server.exe`; stop that process, replace/rebuild the normal executable,
   and confirm that logs contain `RequestTutorial: type=9 ... refreshing` and
   a following `TX UserUpdateInfo(157)`.
+
+### 2026-07-18 complete256-based dedicated asset package
+
+- Rebased the deployed dedicated support archive on
+  `Counter-Strike Online/Data/fixtrike.complete256_20260717.nar` instead of
+  the earlier 153-entry minimal repack.
+- The 256-entry archive already contains the dedicated weapon models,
+  including `models/v_dediweapon.mdl`. The only missing runtime compatibility
+  set identified from the prior dedicated-server asset failure was the
+  soldier-zombie player alias set.
+- Added only four compatibility paths, copied from the existing
+  `speed_zombi_*` dedicated assets:
+  `soldierzombi_host-dedi.mdl`, `soldierzombi_host-dedi1.seq`,
+  `soldierzombi_origin-dedi.mdl`, and `soldierzombi_origin-dedi1.seq`.
+- Deployed the resulting 260-entry `fixtrike.nar` to both
+  `HLDS_CSNZ/Docs/fixtrike.nar` and
+  `Counter-Strike Online/Data/fixtrike.nar`. SHA-256:
+  `B14F70055D738366ADA831E958A2349DFF142763CD1660F5323BC6F218EF9832`.
+- Headless server + CSOHLDS smoke test kept both processes alive for 18
+  seconds. CSOHLDS connected over TLS, parsed the dedicated metadata stream,
+  and `Counter-Strike Online/Bin/FatalError.log` was not updated past the old
+  `2026-07-17 02:04:03` `models/v_dediweapon.mdl not found` entry.
+
+### 2026-07-18 live client + dedicated room-start test
+
+- Ran the integrated local stack with the actual client, `CSNZ_Server`, and
+  `CSOHLDS`.
+- First room-start attempt reached dedicated `Host Start` for Zombie Scenario
+  `#CSO_nowayout1(403)` but CSOHLDS terminated with
+  `Mod_NumForName: models/player/pass26s2normal_host-dedi.mdl not found`.
+- Rebuilt the deployed complete256-based `fixtrike.nar` by adding only the
+  four missing `pass26s2normal_*` aliases from the existing
+  `y25s1normal_*` dedicated assets. The archive now has 264 entries, size
+  `179,567,001` bytes, SHA-256
+  `59E836617D19AC9D84D2468C9AB9B3F3305E14E36F820D56755B7001452EECF0`, and is
+  deployed to both `HLDS_CSNZ/Docs/fixtrike.nar` and
+  `Counter-Strike Online/Data/fixtrike.nar`.
+- A second live room test showed the creator could still regress to the Ready
+  action after room addon initialization. `CSNZ_Server` now re-sends the raw
+  latest-client room settings block immediately before reasserting Room/SetHost
+  on both the host addon-init path and the host-ready resync path.
+- Release build succeeded via `build_codex` target after the host-state fix.
+- A third live room test progressed further: the button emitted the game-start
+  request, the server assigned `127.0.0.1:27015`, sent the Host(68) dedicated
+  handoff, and the client entered `Join HostServer`.
+- The current blocker is now below the lobby/room protocol: the client repeats
+  `getchallenge IP(loopback -> 0.0.0.0:27005)` and reports connection failure.
+  Direct local UDP probes to CSOHLDS `127.0.0.1:27015` for `getchallenge`,
+  `ping`, and A2S_INFO receive no response even though `netstat` shows the
+  CSOHLDS UDP socket bound to `0.0.0.0:27015`.
+- Starting CSOHLDS with an experimental `+map nowayout1` did not make UDP
+  challenge responses work. The next implementation target is therefore
+  `HLDS_CSNZ` bootstrap / engine network activation, not another Room(65) or
+  Host(68) payload tweak.
+
+### 2026-07-18 current hw.dll getchallenge/connect contract and dedicated join fix
+
+- Re-analyzed the currently loaded `hw.dll` through Ghidra MCP on port 8089.
+  The client retry path emits exactly
+  `FF FF FF FF getchallenge steam\n`. The dedicated handler replies with
+  `FF FF FF FF A <challenge> <auth-type>\n`; the current auth type is `2`.
+- The following client request is exactly
+  `FF FF FF FF connect <protocol> <challenge> "<protinfo>" "<userinfo>" <oid1> <oid2> <oid3>\n`.
+  The required protocol value is `0x5600002F`. The dedicated parser requires
+  at least eight tokens, validates the challenge against the source address,
+  and requires the final OID component to match `userinfo["oid"]` and the
+  dedicated server's expected local OID.
+- After those checks, the dedicated parser resolves the OID through its game
+  user registry. A missing/empty resolved name is an immediate rejection.
+  Runtime evidence before the fix was
+  `connect ... OID(1:1:1) NAME()`: challenge, protocol, and OID validation had
+  already succeeded, while the dedicated-side user/name registration had not.
+- Confirmed from the current decoder disassembly that Host(68/5) consumes
+  exactly four binary IPv4 bytes, a 16-bit port, and a 64-bit session token.
+  The older hostname-string packet in `Packets_sampel` belongs to a different
+  client schema and must not be copied into this binary. Packet ID 105 is a
+  post-failure diagnostic/log packet, not a challenge or connect response.
+- `CRoom::SendStartMatch` now sends the full dedicated Host prepare sequence
+  (68/114, 68/0, 68/12, 68/13), then replays the host's Room PlayerJoin/team
+  state after Host Start. Host Start can rebuild the game-user registry; the
+  post-start replay makes the OID lookup resolve `LocalPlayer`.
+- The latest client can encode a host's Ready-labelled button as Room(65/3,
+  payload=2). For the room host only, this request now uses the normal game
+  start validator instead of toggling ready state. Dedicated availability,
+  room state, and the existing start checks are still enforced.
+- Release build succeeded with `cmake --build build_codex --config Release
+  --target PROJECTNAME`. The only compiler warning was the pre-existing C4244
+  conversion warning at `channelmanager.cpp:821`.
+- Actual integrated client/server test succeeded. CSOHLDS logged
+  `getchallenge IP(127.0.0.1:27000 -> 0.0.0.0:27015)` followed by
+  `connect ... OID(1:1:1) NAME(LocalPlayer)`. It then received inventory and
+  gameplay traffic, including Host 101 inventory response and game events
+  10/2/18/14/16/24/11. No new `FatalError.log` entry or room-join failure was
+  produced. This supersedes the earlier suspected UDP activation blocker.
+- Remaining observed warnings are non-blocking: unimplemented Host types 103
+  and 24, Kick type 0, and `FireBomb Option Load Fail - -1`.
+
+### 2026-07-18 real-server port 40024 timing reference
+
+- `dump_hlds.pcapng` was inspected with `tshark` using
+  `udp.port == 40024`. It confirms the same `getchallenge steam`, protocol
+  `0x5600002F` connect, and `B 1` acceptance sequence implemented locally.
+- In the stable gameplay portion, the real dedicated server sends 16.213
+  packets/s with a 62.506 ms median interval, 65.270 ms p99, 78.030 ms
+  maximum, and no gap over 100 ms. The client sends 24.661 packets/s with a
+  40.611 ms median interval and 43.826 ms maximum.
+- The reported local bot stutter and eventual `WARNING: CONNECTION PROBLEM`
+  therefore point to local HLDS frame/UDP servicing stalls, not a change to
+  the CSNZ room handoff. `HLDS_CSNZ/PROGRESS.md` records the detailed pcap
+  phases and the discovered 2.86 GB per-frame trace logging defect.
+
+### 2026-07-18 local dedicated response and crash follow-up
+
+- After fixing HLDS per-frame synchronous tracing, the local dedicated UDP
+  response recovered to 16.74 packets/s with a 59.375 ms median and 60.055 ms
+  p99 interval. The first connection immediately resolves
+  `OID(1:1:1) NAME(LocalPlayer)`. Therefore the bot stutter/response-rate
+  portion is fixed and is not caused by the room handoff packets.
+- `Packets_sampel/3` confirms the real game-start bootstrap order
+  68/114, 68/0, 68/12, 68/13 followed by a client endpoint 68/114 and 68/5.
+  The real 68/5 sample contains a DNS hostname, port, and session token. The
+  current numeric loopback endpoint nevertheless reaches local
+  `getchallenge`, `connect`, and normal gameplay UDP, so it is not the cause
+  of the later failure.
+- The dedicated sends normal Host game events until it disappears; no normal
+  Host type 5 `OnGameEnd` precedes the disconnect. HLDS exception
+  instrumentation identified a fatal `0xC0000005` at runtime address
+  `0x2D753953`, occurring after `*_ent_dedi.json` and
+  `BoostingPoints_Dedi_*.csv` initialization. `WARNING: CONNECTION PROBLEM`
+  and client packet ID 105 are consequences after that crash, not its cause.
+- No CSNZ server packet change was made in this follow-up. Next work is to use
+  the newly added module/RVA exception diagnostics and Ghidra to repair the
+  malformed dynamic-object/model load path in the responsible game DLL.

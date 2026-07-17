@@ -1864,8 +1864,11 @@ bool CUserManager::OnAddonPacket(CReceivePacket* msg, IExtendedSocket* socket)
 	if (room != NULL && roomUser != NULL && room->GetHostUser() == user && !roomUser->m_HostInitResyncSent)
 	{
 		roomUser->m_HostInitResyncSent = true;
-		Logger().Info("User '%s' completed room addon initialization; reasserting room host state\n",
+		Logger().Info("User '%s' completed room addon initialization; resending room settings and host state\n",
 			user->GetLogName());
+		CRoomSettings* roomSettings = room->GetSettings();
+		if (roomSettings != NULL && !roomSettings->rawCreateSettings.empty())
+			g_PacketManager.SendRoomUpdateSettingsRaw(socket, roomSettings->rawCreateSettings);
 		g_PacketManager.SendRoomSetHost(socket, user);
 	}
 

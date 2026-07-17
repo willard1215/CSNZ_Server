@@ -1541,13 +1541,14 @@ bool CChannelManager::OnToggleReadyRequest(IUser* user)
 
 	if (room->GetHostUser() == user)
 	{
-		// A host can send subtype 3 when its local room role was initialized
-		// late. Do not answer with SetPlayerReady(NO), which keeps the Ready UI;
-		// reassert the authoritative host instead.
-		Logger().Info("User '%s' sent ready request as room host; resynchronizing host state\n",
+		// The current Steam client can keep the Ready-labelled control even
+		// after the room has acknowledged this user as host. Its click is then
+		// encoded as Room(65/3, payload=2), not Room(65/4). Route that host-only
+		// form through the normal start validator so it cannot toggle readiness
+		// or bypass dedicated-pool/family-battle checks.
+		Logger().Info("User '%s' sent current-client host ready/start request; routing to game start\n",
 			user->GetLogName());
-		g_PacketManager.SendRoomSetHost(user->GetExtendedSocket(), user);
-		return true;
+		return OnGameStartRequest(user);
 	}
 
 	RoomReadyStatus readyStatus = room->ToggleUserReadyStatus(user);
