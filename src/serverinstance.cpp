@@ -28,6 +28,7 @@
 #endif
 
 #include <fstream>
+#include <memory>
 
 using namespace std;
 
@@ -64,6 +65,8 @@ CServerInstance::CServerInstance()
 
 CServerInstance::~CServerInstance()
 {
+	m_TCPServer.Stop(true);
+	m_UDPServer.Stop();
 	Manager().ShutdownAll();
 
 	delete g_pItemTable;
@@ -206,7 +209,11 @@ void CServerInstance::OnTCPConnectionClosed(IExtendedSocket* socket)
 
 void CServerInstance::OnTCPMessage(IExtendedSocket* socket, CReceivePacket* msg)
 {
-	g_Events.AddEventTCPPacket(socket, std::bind(&CServerInstance::OnPackets, this, socket, msg));
+	std::shared_ptr<CReceivePacket> packet(msg);
+	g_Events.AddEventTCPPacket(socket, [this, socket, packet]()
+	{
+		OnPackets(socket, packet.get());
+	});
 }
 
 void CServerInstance::OnTCPError(int errorCode)
@@ -461,6 +468,35 @@ void CServerInstance::OnPackets(IExtendedSocket* s, CReceivePacket* msg)
 	case PacketId::League:
 		g_UserManager.OnLeaguePacket(msg, s);
 		break;
+	case PacketId::ClientCheck:
+		// Packet_80_ID_66_10.bin is the server challenge.  Current hw.dll parses
+		// it as uint64 challenge + uint8 flag, then sends a hardware report back
+		// as ClientCheck(66).  Replying to that report with the challenge again
+		// creates an endless 66 -> 66 loop and starves normal lobby/UI traffic.
+		Logger().Info("Latest client check report received; challenge already completed\n");
+		break;
+	case PacketId::GuideQuest:
+		Logger().Info("Latest guide quest request ignored until the current request-specific layout is mapped\n");
+		break;
+	case PacketId::UserStartStep:
+		Logger().Info("Latest user start-step request; replaying captured completion ack\n");
+		g_PacketManager.SendPacketFromFile(s, "..\\Packets_sampel\\2\\Packet_146_ID_123_2.bin");
+		break;
+	case PacketId::VipSystem:
+		Logger().Info("Latest VIP system request; replaying captured VIP state\n");
+		g_PacketManager.SendPacketFromFile(s, "..\\Packets_sampel\\2\\Packet_122_ID_167_162.bin");
+		g_PacketManager.SendPacketFromFile(s, "..\\Packets_sampel\\2\\Packet_123_ID_167_14.bin");
+		g_PacketManager.SendPacketFromFile(s, "..\\Packets_sampel\\2\\Packet_124_ID_167_4.bin");
+		g_PacketManager.SendPacketFromFile(s, "..\\Packets_sampel\\2\\Packet_138_ID_167_882.bin");
+		break;
+	case PacketId::Expedition:
+		Logger().Info("Latest expedition request; replaying captured expedition state\n");
+		g_PacketManager.SendPacketFromFile(s, "..\\Packets_sampel\\2\\Packet_139_ID_177_35.bin");
+		g_PacketManager.SendPacketFromFile(s, "..\\Packets_sampel\\2\\Packet_140_ID_177_4.bin");
+		break;
+	case PacketId::ClanTotalWar:
+		Logger().Info("Latest clan total war request ignored: no captured response required\n");
+		break;
 	case PacketId::Kick:
 		g_UserManager.OnKickPacket(msg, s);
 		break;
@@ -472,7 +508,6 @@ void CServerInstance::OnPackets(IExtendedSocket* s, CReceivePacket* msg)
 		break;
 	}
 
-	delete msg;
 }
 
 void CServerInstance::OnSecondTick()

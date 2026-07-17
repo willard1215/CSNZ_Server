@@ -69,6 +69,9 @@ CDedicatedServerManager::CDedicatedServerManager() : CBaseManager("DedicatedServ
 
 CDedicatedServerManager::~CDedicatedServerManager()
 {
+	for (CDedicatedServer* server : m_vServerPools)
+		delete server;
+	m_vServerPools.clear();
 }
 
 /**

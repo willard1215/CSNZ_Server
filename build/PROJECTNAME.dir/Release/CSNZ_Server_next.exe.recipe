@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>D:\project\CSONLINE\CSNZ_Server\build\Release\CSNZ_Server_next</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\project\CSONLINE\CSNZ_Server\bin\Release\CSNZ_Server_next.exe</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles />
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>

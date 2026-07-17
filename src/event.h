@@ -17,7 +17,8 @@ public:
 
 	virtual void Execute()
 	{
-		m_Func();
+		std::function<void()> func = std::move(m_Func);
+		func();
 	}
 
 	EventFunctionType GetType()
@@ -69,6 +70,10 @@ public:
 	{
 		if (m_pCurrentEvent)
 			delete m_pCurrentEvent;
+
+		for (IEvent* event : m_Events)
+			delete event;
+		m_Events.clear();
 	}
 
 	/**
@@ -104,6 +109,7 @@ public:
 	 */
 	void RemoveEventsBySocket(IExtendedSocket* socket)
 	{
+		m_Mutex.Enter();
 		m_Events.erase(std::remove_if(m_Events.begin(), m_Events.end(),
 			[socket](IEvent* ev)
 			{
@@ -120,6 +126,7 @@ public:
 				return false;
 			}
 		), m_Events.end());
+		m_Mutex.Leave();
 	}
 
 	/**

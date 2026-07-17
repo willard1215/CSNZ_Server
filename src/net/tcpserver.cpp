@@ -24,6 +24,7 @@ CTCPServer::CTCPServer() : m_ListenThread(ListenThread, this)
  	m_nNextClientIndex = 0;
 	m_nResult = 0;
 	m_pCTX = NULL;
+	m_bWolfSSLInitialized = false;
 
 #ifdef WIN32
 	WSADATA wsaData;
@@ -41,6 +42,9 @@ CTCPServer::CTCPServer() : m_ListenThread(ListenThread, this)
 CTCPServer::~CTCPServer()
 {
 	Stop();
+#ifdef WIN32
+	WSACleanup();
+#endif
 }
 
 /** 
@@ -59,6 +63,7 @@ bool CTCPServer::Start(const string& port, int tcpSendBufferSize, bool ssl)
 	
 	// Initialize wolfSSL
 	wolfSSL_Init();
+	m_bWolfSSLInitialized = true;
 
 	if (ssl)
 		InitSSLContext();
@@ -95,7 +100,9 @@ bool CTCPServer::Start(const string& port, int tcpSendBufferSize, bool ssl)
 	if (m_nResult == SOCKET_ERROR)
 	{
 		Logger().Fatal("ioctlsocket() failed with error: %d\n%s\n", GetNetworkError(), WSAGetLastErrorString());
+		freeaddrinfo(result);
 		closesocket(m_Socket);
+		m_Socket = INVALID_SOCKET;
 		return false;
 	}
 
@@ -106,6 +113,7 @@ bool CTCPServer::Start(const string& port, int tcpSendBufferSize, bool ssl)
 		Logger().Fatal("bind failed with error: %d\n%s\n", GetNetworkError(), WSAGetLastErrorString());
 		freeaddrinfo(result);
 		closesocket(m_Socket);
+		m_Socket = INVALID_SOCKET;
 		return false;
 	}
 
@@ -117,6 +125,7 @@ bool CTCPServer::Start(const string& port, int tcpSendBufferSize, bool ssl)
 	{
 		Logger().Fatal("listen() failed with error: %d\n%s\n", GetNetworkError(), WSAGetLastErrorString());
 		closesocket(m_Socket);
+		m_Socket = INVALID_SOCKET;
 		return false;
 	}
 
@@ -139,6 +148,7 @@ bool CTCPServer::Start(const string& port, int tcpSendBufferSize, bool ssl)
 	{
 		Logger().Fatal("setsockopt failed with error %d\n%s\n", GetNetworkError(), WSAGetLastErrorString());
 		closesocket(m_Socket);
+		m_Socket = INVALID_SOCKET;
 		return false;
 	}
 
@@ -158,31 +168,41 @@ bool CTCPServer::Start(const string& port, int tcpSendBufferSize, bool ssl)
 /** 
  * Stop the server
  */
-void CTCPServer::Stop()
+void CTCPServer::Stop(bool notifyListeners)
 {
 	if (IsRunning())
 	{
 		m_bIsRunning = false;
 
 		m_ListenThread.Join();
+	}
 
-		for (auto client : m_Clients)
-		{
-			delete client;
-		}
+	for (auto client : m_Clients)
+	{
+		if (notifyListeners && m_pListener)
+			m_pListener->OnTCPConnectionClosed(client);
+		delete client;
+	}
+	m_Clients.clear();
 
-		m_fds.clear();
+	m_fds.clear();
 
+	if (m_Socket != INVALID_SOCKET)
+	{
 		closesocket(m_Socket);
+		m_Socket = INVALID_SOCKET;
+	}
 
-		if (m_pCTX)
-		{
-			// Free the wolfSSL context object
-			wolfSSL_CTX_free(m_pCTX);
-		}
+	if (m_pCTX)
+	{
+		wolfSSL_CTX_free(m_pCTX);
+		m_pCTX = NULL;
+	}
 
-		// Cleanup the wolfSSL environment
+	if (m_bWolfSSLInitialized)
+	{
 		wolfSSL_Cleanup();
+		m_bWolfSSLInitialized = false;
 	}
 }
 
@@ -370,6 +390,7 @@ void CTCPServer::InitSSLContext()
 	if (wolfSSL_CTX_use_certificate_file(m_pCTX, CERT_FILE, WOLFSSL_FILETYPE_PEM) != WOLFSSL_SUCCESS)
 	{
 		Logger().Error("wolfSSL_CTX_use_certificate_file() failed to load %s, please check the file. Continuing without SSL...\n", CERT_FILE);
+		wolfSSL_CTX_free(m_pCTX);
 		m_pCTX = NULL;
 		m_bSSL = false;
 		return;
@@ -379,6 +400,7 @@ void CTCPServer::InitSSLContext()
 	if (wolfSSL_CTX_use_PrivateKey_file(m_pCTX, KEY_FILE, WOLFSSL_FILETYPE_PEM) != WOLFSSL_SUCCESS)
 	{
 		Logger().Error("wolfSSL_CTX_use_PrivateKey_file() failed to load %s, please check the file. Continuing without SSL...\n", KEY_FILE);
+		wolfSSL_CTX_free(m_pCTX);
 		m_pCTX = NULL;
 		m_bSSL = false;
 		return;

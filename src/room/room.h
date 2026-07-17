@@ -18,12 +18,14 @@ public:
 		m_pUser = user;
 		m_Team = team;
 		m_Ready = ready;
+		m_HostInitResyncSent = false;
 	}
 
 	IUser* m_pUser;
 	RoomTeamNum m_Team;
 	RoomReadyStatus m_Ready;
 	bool m_bIsIngame;
+	bool m_HostInitResyncSent;
 };
 
 class CRoom : public IRoom
@@ -60,6 +62,7 @@ public:
 	void OnUserRemoved(IUser* user);
 	void SendRemovedUser(IUser* deletedUser);
 	void UpdateHost(IUser* newHost);
+	void UpdateHost(IUser* newHost, bool notifyUsers);
 	void HostStartGame();
 	void UserGameJoin(IUser* user);
 	void EndGame(bool forcedEnd);

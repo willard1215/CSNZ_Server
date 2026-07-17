@@ -104,14 +104,18 @@ bool CRoom::HasUser(IUser* user)
 
 void CRoom::AddUser(IUser* user)
 {
+	const bool isFirstUser = m_Users.empty();
 	m_Users.push_back(user);
-	if (m_Users.size() == 1)
-	{
-		UpdateHost(user); // call this to update event items room settings
-	}
-
 	user->SetRoomData(new CRoomUser(user, RoomTeamNum::CounterTerrorist, RoomReadyStatus::READY_STATUS_NO));
 	user->SetStatus(UserStatus::STATUS_INROOM);
+
+	if (isFirstUser)
+	{
+		// The client does not have a room model until CreateAndJoin arrives, so a
+		// SetHost packet sent here is ignored. Initialize server-side host state
+		// only; SendJoinNewRoom sends the authoritative packets in parseable order.
+		UpdateHost(user, false);
+	}
 }
 
 void CRoom::RemoveUser(IUser* targetUser)
@@ -847,7 +851,10 @@ void CRoom::SendConnectHost(IUser* user, IUser* host)
 	if (g_pServerConfig->room.connectingMethod)
 	{
 		if (m_pServer)
+		{
+			g_PacketManager.SendHostDedicatedHandshake(user->GetExtendedSocket());
 			g_PacketManager.SendHostServerJoin(user->GetExtendedSocket(), m_pServer->GetIP(), m_pServer->GetPort(), m_nHostSessionToken);
+		}
 		else
 			g_PacketManager.SendHostJoin(user->GetExtendedSocket(), host);
 	}
@@ -868,6 +875,7 @@ void CRoom::SendStartMatch(IUser* host)
 		{
 			g_PacketManager.SendRoomCreateAndJoin(m_pServer->GetSocket(), this);
 			g_PacketManager.SendHostGameStart(m_pServer->GetSocket(), host->GetID(), m_nHostSessionToken);
+			g_PacketManager.SendHostDedicatedPrepare(host->GetExtendedSocket(), host->GetID(), m_nHostSessionToken);
 		}
 		else
 		{
@@ -979,11 +987,28 @@ void CRoom::SendRemovedUser(IUser* deletedUser)
 // TODO: remove unnecessary send calls or group it into one
 void CRoom::UpdateHost(IUser* newHost)
 {
+	UpdateHost(newHost, true);
+}
+
+void CRoom::UpdateHost(IUser* newHost, bool notifyUsers)
+{
 	m_pHostUser = newHost;
 
-	for (auto u : m_Users)
+	if (newHost->GetRoomData())
 	{
-		g_PacketManager.SendRoomSetHost(u->GetExtendedSocket(), newHost);
+		newHost->GetRoomData()->m_Ready = RoomReadyStatus::READY_STATUS_NO;
+	}
+
+	if (notifyUsers)
+	{
+		for (auto u : m_Users)
+		{
+			// SetHost must be the last role-changing packet. Sending Ready after it
+			// makes the current client render the host as a normal ready player.
+			g_PacketManager.SendRoomSetPlayerReady(u->GetExtendedSocket(), newHost,
+				RoomReadyStatus::READY_STATUS_NO);
+			g_PacketManager.SendRoomSetHost(u->GetExtendedSocket(), newHost);
+		}
 	}
 
 	CheckForHostItems();

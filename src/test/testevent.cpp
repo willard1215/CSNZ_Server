@@ -2,6 +2,7 @@
 #include "../event.h"
 #include <thread>
 #include <atomic>
+#include <memory>
 
 using namespace std;
 
@@ -48,4 +49,46 @@ TEST_CASE("Events - test events")
 	t.join();
 
 	CHECK(counter == 2);
+}
+
+TEST_CASE("Events - release captured resources")
+{
+	SUBCASE("after execution")
+	{
+		CEvents events;
+		auto resource = make_shared<int>(1);
+		weak_ptr<int> weakResource = resource;
+		events.AddEventFunction([resource]() {});
+		resource.reset();
+
+		IEvent* event = events.GetNextEvent();
+		REQUIRE(event != nullptr);
+		event->Execute();
+		CHECK(weakResource.expired());
+	}
+
+	SUBCASE("when the queue is destroyed")
+	{
+		weak_ptr<int> weakResource;
+		{
+			CEvents events;
+			auto resource = make_shared<int>(1);
+			weakResource = resource;
+			events.AddEventFunction([resource]() {});
+		}
+		CHECK(weakResource.expired());
+	}
+
+	SUBCASE("when socket events are cancelled")
+	{
+		CEvents events;
+		auto resource = make_shared<int>(1);
+		weak_ptr<int> weakResource = resource;
+		IExtendedSocket* socket = reinterpret_cast<IExtendedSocket*>(1);
+		events.AddEventTCPPacket(socket, [resource]() {});
+		resource.reset();
+
+		events.RemoveEventsBySocket(socket);
+		CHECK(weakResource.expired());
+	}
 }

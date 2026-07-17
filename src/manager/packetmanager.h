@@ -204,6 +204,7 @@ public:
 	void SendRoomListRemove(IExtendedSocket* socket, int roomID);
 
 	void SendShopUpdate(IExtendedSocket* socket, const std::vector<Product>& products);
+	void SendShopRequestUpdateReply(IExtendedSocket* socket);
 	void SendShopBuyProductReply(IExtendedSocket* socket, int replyCode);
 	void SendShopReply(IExtendedSocket* socket, int replyCode);
 	void SendShopRecommendedProducts(IExtendedSocket* socket, const std::vector<std::vector<int>>& products);
@@ -237,6 +238,8 @@ public:
 	void SendHostLeaveResultWindow(IExtendedSocket* socket);
 	void SendHostUserInventory(IExtendedSocket* socket, int userId, const std::vector<CUserInventoryItem>& items);
 	void SendHostGameStart(IExtendedSocket* socket, int userId, uint64_t sessionToken);
+	void SendHostDedicatedPrepare(IExtendedSocket* socket, int userId, uint64_t sessionToken);
+	void SendHostDedicatedHandshake(IExtendedSocket* socket);
 	void SendHostZBAddon(IExtendedSocket* socket, int userID, const std::vector<int>& addons);
 	void SendHostJoin(IExtendedSocket* socket, IUser* host);
 	void SendHostFlyerFlock(IExtendedSocket* socket, int type);

@@ -1,0 +1,6 @@
+start=20260716_115818
+client=25984
+clientAlive=True
+server=7680
+serverAlive=True
+log=profile_lobby_20260716_115818.stdout.txt

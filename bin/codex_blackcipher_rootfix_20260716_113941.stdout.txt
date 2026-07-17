@@ -1,0 +1,104 @@
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/MapList.csv.zip raw ZIP payload (13737 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using MetadataArtifacts/resource/MapModeV2/ModeList.csv
+[07/16/26 11:39:41] [INFO]  [Shop] Loaded 86 products.
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using MetadataArtifacts/resource/itemBox.csv
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/weaponparts.csv.zip raw ZIP payload (1429 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using MetadataArtifacts/MileageShop.csv
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/MatchOption.csv.zip raw ZIP payload (437 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/progress_unlock.csv.zip raw ZIP payload (3148 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/GameModeList.csv.zip raw ZIP payload (1855 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ReinforceMaxLv.csv.zip raw ZIP payload (1046 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ReinforceMaxEXP.csv.zip raw ZIP payload (424 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ItemExpireTime.csv.zip raw ZIP payload (1869 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/HonorMoneyShop.csv.zip raw ZIP payload (1245 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/scenariotx_common.zip.zip raw ZIP payload (9589 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/scenariotx_dedi.json.zip raw ZIP payload (2814 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/shopitemlist_dedi.json.zip raw ZIP payload (3835 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/EpicPieceShop.csv.zip raw ZIP payload (935 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ZBCompetitive.json.zip raw ZIP payload (501 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ppsystem.json.zip raw ZIP payload (991 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/Item.csv.zip raw ZIP payload (69737 bytes, chunked)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/CodisData.csv.zip raw ZIP payload (5830 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/WeaponProp.json.zip raw ZIP payload (182 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ModeEvent.csv.zip raw ZIP payload (1470 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using MetadataArtifacts/resource/CPShop/EventShop.csv
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/FamilyTotalWarMap.csv.zip raw ZIP payload (580 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/FamilyTotalWar.json.zip raw ZIP payload (832 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/WeaponAscend.csv.zip raw ZIP payload (451 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/PerkParam.csv.zip raw ZIP payload (1152 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/Synthesis.csv.zip raw ZIP payload (393 bytes)
+[07/16/26 11:39:41] [INFO]  CPacketManager::LoadBinaryMetadata: using LiveMetadata/ZCoinShop.csv.zip raw ZIP payload (2186 bytes)
+[07/16/26 11:39:41] [INFO]  TCP listen active: socket=448, configuredPort=30002, boundPort=30002, ssl=1
+[07/16/26 11:39:41] [INFO]  Server starts listening. Server developers: Jusic, Hardee, NekoMeow, Smilex_Gamer, xRiseless. Thx to Ochii for CSO2 server.
+For more information visit discord.gg/EvUAY6D
+[07/16/26 11:39:41] [INFO]  Server build: 2640, Private Release
+[07/16/26 11:39:41] [INFO]  Memory usage: 17.05mb. Connected users: 0. Logged in users: 0. Connected dedicated servers: 0.
+[07/16/26 11:40:00] [INFO]  TCP connected marker sent to client (127.0.0.1): result=17, size=17
+[07/16/26 11:40:00] [INFO]  TLS handshake completed with client (127.0.0.1)
+[07/16/26 11:40:00] [INFO]  Client (0, 127.0.0.1) has been connected to the server
+[07/16/26 11:40:00] [INFO]  Memory usage: 17.45mb. Connected users: 1. Logged in users: 0. Connected dedicated servers: 0.
+[07/16/26 11:40:00] [INFO]  RX packet from 127.0.0.1: seq=1, size=16, id=0, hex=55 01 0C 00 00 43 1A 00 B7 45 58 6A 30 D0 EA 3F
+[07/16/26 11:40:00] [INFO]  Latest local client detected after version packet, starting local login bootstrap
+[07/16/26 11:40:00] [INFO]  TX packet to 127.0.0.1: seq=1, size=6, id=0, hex=55 01 02 00 00 00
+[07/16/26 11:40:00] [INFO]  User logged in (IP: 127.0.0.1, UID: 1, Username: localuser)
+[07/16/26 11:40:00] [INFO]  TX packet to 127.0.0.1: seq=2, size=18, id=1, hex=55 02 0E 00 01 00 53 5F 52 45 50 4C 59 5F 4F 4B 00 00
+[07/16/26 11:40:00] [INFO]  TX packet to 127.0.0.1: seq=3, size=9, id=17, hex=55 03 05 00 11 A7 00 00 00
+[07/16/26 11:40:00] [INFO]  TX packet to 127.0.0.1: seq=4, size=40, id=150, hex=55 04 24 00 96 01 00 00 00 6C 6F 63 61 6C 75 73 65 72 00 4C 6F 63 61 6C 50 6C 61 79 65 72 00 01 00 00 00 00 00 00 00 00
+[07/16/26 11:40:00] [INFO]  CExtendedSocket::SetupCrypt(127.0.0.1): generated local non-zero crypt material for empty HWID
+[07/16/26 11:40:00] [INFO]  CExtendedSocket::SetupCrypt(127.0.0.1): using sample crypt material
+[07/16/26 11:40:00] [INFO]  TX packet to 127.0.0.1: seq=5, size=71, id=7, hex=55 05 43 00 07 00 02 B5 71 F2 24 AC 51 8B 69 08 03 A8 82 9C 3C 92 D8 84 33 F8 1A D1 30 45 92 8B 15 45 6B F4 A3 8C B4 97 62 97 48 B7 F5 0C 3B 12 D6 43 D0 DC DC AE 20 60 2F 0F 43 67 01 00 00 20 ...
+[07/16/26 11:40:01] [INFO]  TX encrypted packet to 127.0.0.1: plainSeq=6, plainSize=71, plainId=7, encryptedHex=8F 48 D8 C4 4B 08 E5 B9 A4 23 66 F3 4E C3 4E A6 22 D3 68 28 93 F6 55 3C D0 69 04 94 8E 3F 43 D6 E5 02 14 32 B0 7B 0B 32 9D B4 0E 87 01 30 55 AB 74 90 B0 B6 79 C0 8A 9B 6E 2D 94 B1 D4 E0 27 68 ...
+[07/16/26 11:40:01] [INFO]  TX packet to 127.0.0.1: seq=6, size=71, id=7, hex=55 06 43 00 07 01 02 B5 71 F2 24 AC 51 8B 69 08 03 A8 82 9C 3C 92 D8 84 33 F8 1A D1 30 45 92 8B 15 45 6B F4 A3 8C B4 97 62 97 48 B7 F5 0C 3B 12 D6 43 D0 DC DC AE 20 60 2F 0F 43 67 01 00 00 20 ...
+[07/16/26 11:40:01] [INFO]  Latest login crypt bootstrap sent; delayMs=1200, encrypted output enabled while waiting for client acknowledgement
+[07/16/26 11:40:01] [INFO]  Waiting for latest client crypt acknowledgement before login bootstrap
+[07/16/26 11:40:01] [WARN]  CUserManager::OnVersionPacket: the server may not support the client build: 16.07.26 (supported build: 06.07.26)
+[07/16/26 11:40:01] [INFO]  RX packet from 127.0.0.1: seq=2, size=57, id=3, hex=55 02 35 00 03 00 01 00 00 65 56 47 31 6C 58 41 6C 61 49 7E 6B 50 4A 5F 66 50 67 62 55 41 6D 55 00 BC FC E7 C9 7E 75 E3 3C CD BE 00 00 00 00 33 0E 00 00 00 00 7F 00 00 01
+[07/16/26 11:40:01] [INFO]  Client (127.0.0.1) sent login packet
+[07/16/26 11:40:01] [INFO]  Client (127.0.0.1) login packet parsed as latest layout: steamID='', passportSize=1, locale='eVG1lXAlaI~kPJ_fPgbUAmU', pcBang=0, ip=1.0.0.127
+[07/16/26 11:40:01] [INFO]  Latest client Login(3) received after crypt bootstrap
+[07/16/26 11:40:01] [INFO]  Sending latest metadata on login socket after Login(3)
+[07/16/26 11:40:01] [INFO]  CSNZ_METADATA_FILTER active: 255
+[07/16/26 11:40:01] [INFO]  TX metadata hash probe: id=32
+[07/16/26 11:40:01] [INFO]  TX metadata hash probe: id=35
+[07/16/26 11:40:01] [INFO]  Initial metadata sent; waiting to map the asset post-metadata transition
+[07/16/26 11:40:01] [INFO]  TX encrypted packet to 127.0.0.1: plainSeq=7, plainSize=23, plainId=91, encryptedHex=40 DC 5D 2E 50 59 0C EF 44 48 52 3A FA 75 DE 49 79 0C 4C 7D F6 0F 1C
+[07/16/26 11:40:01] [INFO]  TX packet to 127.0.0.1: seq=7, size=23, id=91, hex=55 07 13 00 5B FF 20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[07/16/26 11:40:01] [INFO]  TX encrypted packet to 127.0.0.1: plainSeq=8, plainSize=23, plainId=91, encryptedHex=07 E9 74 29 3C 60 5F 2E 85 21 ED 1E 73 6B 7C 18 18 F6 22 9F 45 A9 82
+[07/16/26 11:40:02] [INFO]  TX packet to 127.0.0.1: seq=8, size=23, id=91, hex=55 08 13 00 5B FF 23 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[07/16/26 11:40:09] [INFO]  RX packet from 127.0.0.1: seq=3, size=16, id=0, hex=55 03 0C 00 00 43 1A 00 B7 45 58 6A 30 D0 EA 3F
+[07/16/26 11:40:10] [INFO]  RX packet from 127.0.0.1: seq=4, size=5, id=12, hex=55 04 01 00 0C
+[07/16/26 11:40:10] [INFO]  Client (127.0.0.1) crypt acknowledgement received
+[07/16/26 11:40:10] [INFO]  Waiting for latest client Login(3) after crypt acknowledgement
+[07/16/26 11:40:10] [INFO]  RX packet from 127.0.0.1: seq=5, size=6, id=91, hex=55 05 02 00 5B 20
+[07/16/26 11:40:10] [WARN]  Unimplemented packet: 91
+[07/16/26 11:40:10] [INFO]  RX packet from 127.0.0.1: seq=6, size=6, id=91, hex=55 06 02 00 5B 23
+[07/16/26 11:40:10] [WARN]  Unimplemented packet: 91
+[07/16/26 11:40:10] [INFO]  OnUDPMessage(0) - userID: 1, portID: 0, localAddr: -1062726655 (192.168.20.1), localPort: 27015, tries: 0
+[07/16/26 11:40:10] [INFO]  OnUDPMessage(0) - userID: 1, portID: 1, localAddr: -1062726655 (192.168.20.1), localPort: 27005, tries: 1
+[07/16/26 11:40:10] [INFO]  RX packet from 127.0.0.1: seq=7, size=15, id=70, hex=55 07 0B 00 46 02 00 C0 A8 14 01 01 00 00 00
+[07/16/26 11:40:10] [INFO]  CUserManager::OnUdpPacket: received latest type 2: portID: 0, localAddr: 192.168.20.1, host: 1, unk: 0
+[07/16/26 11:40:10] [INFO]  TX UDPHostData latest candidate=1: host=1 userID=1 ip=127.0.0.1 port=27015
+[07/16/26 11:40:10] [INFO]  CUserManager::OnUdpPacket: skipping legacy GameMatch bootstrap for latest client
+[07/16/26 11:40:10] [INFO]  User '1, localuser' joined channel 'Channel server 1-1'
+[07/16/26 11:40:10] [INFO]  TX GameMatchRoomList(151) minimal full list: rooms=0
+[07/16/26 11:40:10] [INFO]  TX Lobby(153) join: users=1
+[07/16/26 11:40:10] [INFO]  User '1, localuser' joined channel and room list was sent by channel join
+[07/16/26 11:40:10] [INFO]  TX encrypted packet to 127.0.0.1: plainSeq=9, plainSize=17, plainId=70, encryptedHex=F9 FA 8D 35 F5 B7 EF B3 87 BE 11 08 C8 63 4D 95 FC
+[07/16/26 11:40:10] [INFO]  TX packet to 127.0.0.1: seq=9, size=17, id=70, hex=55 09 0D 00 46 01 00 01 00 00 00 7F 00 00 01 69 87
+[07/16/26 11:40:10] [INFO]  TX encrypted packet to 127.0.0.1: plainSeq=10, plainSize=20, plainId=151, encryptedHex=F0 6A 44 A7 AB 1C EA 47 7C B6 93 34 20 69 18 C7 F5 32 A0 5E
+[07/16/26 11:40:10] [INFO]  TX packet to 127.0.0.1: seq=10, size=20, id=151, hex=55 0A 10 00 97 00 04 FF FF 00 00 01 00 00 00 02 00 01 00 00
+[07/16/26 11:40:10] [INFO]  TX encrypted packet to 127.0.0.1: plainSeq=11, plainSize=46, plainId=153, encryptedHex=C3 F2 B2 13 10 D7 4C EC CC 20 14 AC FC F0 81 B7 59 C3 5E 41 E4 E7 04 B3 6F BE 8A E2 E3 5D D1 7B 86 71 3A 41 CA E5 EF E9 97 54 8C ED 0C 09
+[07/16/26 11:40:10] [INFO]  TX packet to 127.0.0.1: seq=11, size=46, id=153, hex=55 0B 2A 00 99 00 01 00 01 00 00 00 6C 6F 63 61 6C 75 73 65 72 00 02 00 00 08 00 00 00 00 4C 6F 63 61 6C 50 6C 61 79 65 72 00 01 00 00 00
+[07/16/26 11:40:13] [INFO]  RX packet from 127.0.0.1: seq=8, size=5, id=98, hex=55 08 01 00 62
+[07/16/26 11:40:13] [WARN]  Unimplemented packet: 98
+[07/16/26 11:40:14] [INFO]  RX packet from 127.0.0.1: seq=9, size=6, id=126, hex=55 09 02 00 7E 06
+[07/16/26 11:40:14] [WARN]  Unimplemented packet: 126
+[07/16/26 11:40:20] [INFO]  RX packet from 127.0.0.1: seq=10, size=7, id=69, hex=55 0A 03 00 45 09 00
+[07/16/26 11:40:20] [WARN]  CUserManager::OnUpdateInfoPacket: unknown request 9
+[07/16/26 11:40:20] [INFO]  RX packet from 127.0.0.1: seq=11, size=6, id=72, hex=55 0B 02 00 48 03
+[07/16/26 11:40:20] [INFO]  RX packet from 127.0.0.1: seq=12, size=6, id=69, hex=55 0C 02 00 45 0C
+[07/16/26 11:40:21] [INFO]  RX packet from 127.0.0.1: seq=13, size=7, id=69, hex=55 0D 03 00 45 09 01
+[07/16/26 11:40:21] [WARN]  CUserManager::OnUpdateInfoPacket: unknown request 9
+[07/16/26 11:40:21] [INFO]  RX packet from 127.0.0.1: seq=14, size=6, id=72, hex=55 0E 02 00 48 0F
+[07/16/26 11:40:21] [INFO]  RX packet from 127.0.0.1: seq=15, size=6, id=72, hex=55 0F 02 00 48 10
+[07/16/26 11

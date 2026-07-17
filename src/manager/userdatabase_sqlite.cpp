@@ -39,6 +39,8 @@ catch (exception& e)
 
 CUserDatabaseSQLite::~CUserDatabaseSQLite()
 {
+	delete m_pTransaction;
+	m_pTransaction = NULL;
 }
 
 bool CUserDatabaseSQLite::Init()
@@ -130,6 +132,7 @@ bool CUserDatabaseSQLite::ExecuteScript(string scriptPath)
 	FILE* file = fopen(scriptPath.c_str(), OBFUSCATE("rb"));
 	if (!file)
 		return false;
+	char* buffer = NULL;
 
 	try
 	{
@@ -143,7 +146,7 @@ bool CUserDatabaseSQLite::ExecuteScript(string scriptPath)
 		
 		rewind(file);
 
-		char* buffer = (char*)malloc(sizeof(char) * lSize + 1);
+		buffer = (char*)malloc(sizeof(char) * lSize + 1);
 		if (buffer == NULL)
 		{
 			fclose(file);
@@ -155,6 +158,7 @@ bool CUserDatabaseSQLite::ExecuteScript(string scriptPath)
 		size_t result = fread(buffer, 1, lSize, file);
 		if (result != lSize)
 		{
+			free(buffer);
 			fclose(file);
 			return false;
 		}
@@ -169,11 +173,14 @@ bool CUserDatabaseSQLite::ExecuteScript(string scriptPath)
 		}
 
 		transaction.commit();
+		free(buffer);
+		buffer = NULL;
 	}
 	catch (exception& e)
 	{
 		Logger().Error(OBFUSCATE("CUserDatabaseSQLite::ExecuteScript(%s): database internal error: %s, %d\n"), scriptPath.c_str(), e.what(), m_Database.getErrorCode());
 
+		free(buffer);
 		fclose(file);
 		return false;
 	}
@@ -207,6 +214,7 @@ bool CUserDatabaseSQLite::ExecuteOnce()
 	size_t result = fread(buffer, 1, lSize, file);
 	if (result != lSize)
 	{
+		free(buffer);
 		fclose(file);
 		Logger().Error(OBFUSCATE("CUserDatabaseSQLite::ExecuteOnce: failed to read file\n"));
 		return false;
@@ -220,6 +228,7 @@ bool CUserDatabaseSQLite::ExecuteOnce()
 		token = strtok(NULL, "\n");
 	}
 
+	free(buffer);
 	fclose(file);
 
 #ifdef WIN32

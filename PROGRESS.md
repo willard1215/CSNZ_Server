@@ -1183,3 +1183,141 @@ chunked=1`. The chunked payload is `resource/item.csv`, which zips to about
 - No client UI automation was used. Actual room start must now verify that the
   upper-left self profile appears, 68/101 no longer reports a reader error,
   and 68/0 plus 68/5 log the same token before dedicated game entry.
+
+### 2026-07-17 remote sync and resource lifetime audit
+
+- Fast-forwarded the tracked server baseline to `fork/main` commit
+  `9ff8c30`. The pre-sync tracked work remains recoverable in
+  `stash@{0}`; existing untracked diagnostics were left untouched.
+- Added a virtual event destructor and deterministic queue cleanup. Packet
+  events now retain receive packets with shared ownership, including socket
+  cancellation paths.
+- Closed joined/reused thread handles and added complete TCP, UDP, wolfSSL,
+  client, channel-server, and dedicated-server shutdown cleanup.
+- Fixed leaked SQLite script buffers and active transactions, plus packet-file
+  handles and array deletion in `SendPacketFromFile`.
+- Win32 Release server build and core tests succeeded (7 cases, 44 assertions).
+  The current remote network test still fails its first send/receive scenario
+  before teardown; this remains a separate network behavior regression.
+
+### 2026-07-17 room host and dedicated handoff patch
+
+- Corrected the current-client Host 68/5 payload to the server-to-client dump
+  shape: endpoint string, port, IPv4, and the shared 64-bit match token.
+- Added the captured client preparation order (68/114, 68/0, 68/12, 68/13)
+  before the final 68/114 and 68/5 dedicated endpoint handoff.
+- Room creation now follows CreateAndJoin with an explicit Room/SetHost for the
+  creator. This makes host authority deterministic when the client otherwise
+  presents the Ready action despite the matching host id in CreateAndJoin.
+- Asset smoke testing also identified two deployment prerequisites: mount
+  `HLDS_CSNZ/Docs/fixtrike.nar` under `asset/Data` and provide the bundled
+  `v_dediweapon.mdl` under `asset/models`.
+
+### 2026-07-17 room start follow-up
+
+- Compared `Packets_sampel/create_room` with the local room flow. The sample
+  folder covers Room/CreateAndJoin and Room/UpdateSettings, but it does not
+  include the later Host 68 dedicated handoff packets.
+- Ghidra-backed host-state analysis showed that the client decides whether to
+  show Start or Ready by comparing the Room/CreateAndJoin `hostUserId` and the
+  later Room/SetHost user id with the local user id. The server now avoids
+  broadcasting a Ready=NO response for host ready requests and sends SetHost as
+  the final role-changing packet.
+- Fixed a room-setting split during game start. The client CreateAndJoin path
+  already preserved the current-client raw room settings block, but the
+  dedicated-server CreateAndJoin path rebuilt settings from `CRoomSettings`.
+  This made the client and CSOHLDS disagree about the selected map. Both
+  targets now receive the same preserved raw settings block.
+- Release build succeeded after this change and the core test executable passed
+  all 7 cases / 44 assertions.
+- Runtime verification with asset clients confirmed that the dedicated server
+  now parses the same map as the client (`#CSO_nowayout1(403)` in the observed
+  run). The remaining blocker is CSOHLDS terminating with
+  `Mod_NumForName: models/v_dediweapon.mdl not found` when the game starts.
+- Deployed the bundled MDL under multiple asset lookup candidates:
+  `asset/Bin/models`, `asset/Bin/cstrike/models`,
+  `asset/Bin/cstrike-online/models`, `asset/Bin/valve/models`, and also as
+  both `v_dediweapon.mdl` and `p_dediweapon.mdl`. The next room-start test
+  should confirm whether this is sufficient or whether the HLDS precache path
+  itself must be patched.
+
+### 2026-07-17 room creator host-state follow-up
+
+- User testing showed that after creating a room, the creator still saw the
+  Ready button. Pressing it caused the server to re-send Room/SetHost and the
+  client displayed the host-change notice.
+- Rechecked `Packets_sampel/create_room`: the captured sequence is a large
+  Room/CreateAndJoin, then Addon `73 00 00`, then a Room/UpdateSettings
+  follow-up. The previous local flow sent Room/SetHost immediately after
+  CreateAndJoin, before the client finished room UI initialization.
+- Changed the server flow so `CRoom::SendJoinNewRoom` only sends
+  CreateAndJoin. On the first Addon packet received from the room host, the
+  server now sends Room/UpdateSettings followed by Room/SetHost, once per room
+  user. This better matches the captured post-create timing and avoids repeated
+  host-change messages.
+- Rebuilt `bin/Release/CSNZ_Server.exe` successfully after stopping the old
+  running server process that had locked the output file. Core tests passed
+  again: 7 test cases / 44 assertions.
+
+### 2026-07-17 latest-client shop connection wait fix
+
+- Ghidra analysis of asset `hw.dll` `Packet_Shop` (`FUN_026962f0`) confirmed
+  that subtype 3 replies contain a success byte and, on success, a `uint16`
+  result count. The live sample `Packet_228_ID_72_5.bin` is exactly
+  `48 03 01 00 00`.
+- The server previously ignored inbound Shop/3, leaving the shop UI waiting
+  behind the `CSO_Trying_To_Connect_A_Server` popup. It now returns the exact
+  successful empty-result response.
+- `Packet_UpdateInfo` analysis showed server-to-client cases 2, 3, 7, 11, and
+  16 only. Client notifications 69/9 and 69/12 are therefore not answered with
+  invented payloads; 69/12 remains the known inventory-button notification.
+- Runtime verification observed RX `48 03` immediately followed by TX
+  `48 03 01 00 00`. The client stayed connected and proceeded through room
+  creation and game-start requests.
+- Also stopped the accidental ClientCheck loop: ID 66 from the client is the
+  report generated after the one server challenge, not a request for another
+  challenge. The new run sends one challenge and receives one report.
+- A separate blocker remains after handoff: CSOHLDS disconnected roughly two
+  seconds after the game-start sequence. This is independent of the resolved
+  shop response wait and is the next dedicated-server diagnostic target.
+
+### 2026-07-17 local identity and room-host regression
+
+- After the remote sync, `SendLobbyJoin` inserted a local Lobby(153) member
+  without the current SUID. That incomplete identity could be treated as a
+  remote member, producing Ready instead of Start. An empty Lobby snapshot
+  preserved host state but left menus blocked before they emitted requests.
+- Ghidra `FUN_026bd6c0` shows low FullUserInfo bit 27 is a four-byte session
+  user/SUID field. The compact profile omitted it, so the UI could not reliably
+  associate nickname/level data with the login-established local user.
+- Added bit 27 and the current user id to the compact FullUserInfo used by
+  UserUpdateInfo(157), room users, and lobby joins. The resulting login packet
+  is 78 bytes and parses without `PacketReader Error 157[1]`. Lobby(153) now
+  includes one self entry carrying the same UID/SUID pair.
+- A diagnostic attempt to reuse the older 471-byte Steam full-profile sample
+  was rejected: current asset `hw.dll` consumed 151 additional bytes and
+  overread the packet. That experiment was removed rather than padding an
+  obsolete schema.
+- Release target `PROJECTNAME` builds successfully. Integrated runtime reached
+  login, metadata, Lobby(153), room creation, `S_ROOM_ENTER(1)`, shop requests
+  72/15 and 72/16, successful Shop/3, game start, and dedicated assignment.
+  This proves the former menu popup now advances far enough to send and receive
+  its server requests. The next blocker was a dedicated model file and is
+  tracked in `HLDS_CSNZ/PROGRESS.md`.
+# 2026-07-17 latest UpdateInfo(69/9) loading-modal fix
+
+- The latest runtime reached login and lobby initialization, but opening the
+  shop/inventory path sent `UpdateInfo(69/9)` with state `0` and `1`. The
+  server discarded both as `unknown request 9`, leaving the client's
+  `서버에 연결 중입니다` modal active.
+- `Packets_sampel/create_room` shows the older equivalent transition as
+  `69/7 00 01`, immediately followed by `UserUpdateInfo(157)`. The asset
+  client has moved that request subtype from 7 to 9.
+- Added `RequestUpdateTutorialLatest = 9` and made both subtype 7 and subtype
+  9 refresh the current compact `UserUpdateInfo(157)` profile.
+- Release compilation/link verification succeeded as
+  `bin/Release/CSNZ_Server_next.exe` (2,619,904 bytes, built 19:01:56).
+  The normal output remained locked by the administrator-owned running
+  `CSNZ_Server.exe`; stop that process, replace/rebuild the normal executable,
+  and confirm that logs contain `RequestTutorial: type=9 ... refreshing` and
+  a following `TX UserUpdateInfo(157)`.

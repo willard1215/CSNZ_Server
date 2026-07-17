@@ -14,7 +14,7 @@
 |---:|---|---|---|
 | 65 | Room / 0 | 방 정보, `u32 hostUserId`, 방 설정, 멤버 목록 | 큰 틀은 일치. `u16 roomSlot`을 user ID로 취급한 주석/구현은 잘못됨 |
 | 68 | Host / 0 | `u32 userId + u8 category + u8 flags + u64 sessionToken` | 방 단위 동적 토큰으로 수정, 런타임 방 시작 확인 필요 |
-| 68 | Host / 5 | `u32 IPv4 + u16 port + u64 sessionToken` | 68/0과 같은 방 토큰을 보내도록 수정 |
+| 68 | Host / 5 | `string endpoint + u16 port + u32 IPv4 + u64 sessionToken` | 실서버 수신 덤프와 같은 endpoint 형식으로 수정 |
 | 68 | Host / 101 | 소유자, 아이템 배열, 아이템마다 마지막 `u32` | `m_nLockStatus`를 마지막 `u32`로 추가, 런타임 요청 확인 필요 |
 | 150 | UserStart | 로컬 계정/캐릭터/지역/UserSN 초기화 | 순서는 일치하지만 계정 식별자와 지역/UserSN 값이 불완전 |
 | 153 | Lobby | 로비 사용자 목록 증감 | 자기 프로필 초기화 용도가 아님 |
@@ -227,20 +227,16 @@ u64 sessionToken
 ### subtype 5 (클라이언트 수신 dedicated connect)
 
 ```text
-u32 IPv4
-u16 port
-u64 sessionToken
+string endpoint
+u16    port
+u32    IPv4
+u64    sessionToken
 ```
 
-클라이언트 소비 코드 `FUN_026a7b30`은 이 IP/port로 연결을 시작하고 토큰을
-호스트 연결 상태에 사용한다. 현재 `SendHostServerJoin`은 마지막 `u64`에
-user ID를 기록하므로 의미가 맞지 않는다.
-
-`Packets_sampel/3/Packet_212_ID_68_40.bin`은 subtype 5이지만
-`string hostname + u16 port + u32 + u64 token` 형태다. 이는 위 클라이언트
-수신 디코더와 구조가 맞지 않으므로 반대 방향 패킷으로 추론된다. 그 패킷의
-마지막 token은 subtype 0의 token과 동일하다. 방향 판정은 스키마 불일치와
-토큰 상관관계에 근거한 추론이며 함수 디코더로 직접 확정된 것은 아니다.
+`Packets_sampel`은 `Hook_HWSocket_ReadPacket`이 저장한 서버→클라이언트
+수신 덤프다. 따라서 `Packet_212_ID_68_40.bin`의 문자열형 endpoint가 현재
+클라이언트가 실제로 소비하는 형식이다. 뒤의 IPv4는 endpoint가 해석된 주소와
+같고, 마지막 token은 앞선 subtype 0과 동일하다.
 
 ### subtype 101 (SetInventory)
 

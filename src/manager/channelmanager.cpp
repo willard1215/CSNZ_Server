@@ -27,6 +27,9 @@ CChannelManager::CChannelManager() : CBaseManager("ChannelManager")
 
 CChannelManager::~CChannelManager()
 {
+	for (CChannelServer* server : channelServers)
+		delete server;
+	channelServers.clear();
 }
 
 bool CChannelManager::Init()
@@ -1534,6 +1537,17 @@ bool CChannelManager::OnToggleReadyRequest(IUser* user)
 	{
 		Logger().Warn("User '%s' tried to toggle ready status without being in a room\n", user->GetLogName());
 		return false;
+	}
+
+	if (room->GetHostUser() == user)
+	{
+		// A host can send subtype 3 when its local room role was initialized
+		// late. Do not answer with SetPlayerReady(NO), which keeps the Ready UI;
+		// reassert the authoritative host instead.
+		Logger().Info("User '%s' sent ready request as room host; resynchronizing host state\n",
+			user->GetLogName());
+		g_PacketManager.SendRoomSetHost(user->GetExtendedSocket(), user);
+		return true;
 	}
 
 	RoomReadyStatus readyStatus = room->ToggleUserReadyStatus(user);

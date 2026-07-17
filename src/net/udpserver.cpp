@@ -42,6 +42,9 @@ CUDPServer::CUDPServer() : m_ListenThread(ListenThread, this)
 CUDPServer::~CUDPServer()
 {
 	Stop();
+#ifdef WIN32
+	WSACleanup();
+#endif
 }
 
 /**
@@ -86,6 +89,7 @@ bool CUDPServer::Start(const string& port)
 		Logger().Fatal("ioctlsocket() failed with error: %d\n%s\n", GetNetworkError(), WSAGetLastErrorString());
 		freeaddrinfo(result);
 		closesocket(m_Socket);
+		m_Socket = INVALID_SOCKET;
 		return false;
 	}
 
@@ -95,6 +99,7 @@ bool CUDPServer::Start(const string& port)
 		Logger().Fatal("bind failed with error: %d\n%s\n", GetNetworkError(), WSAGetLastErrorString());
 		freeaddrinfo(result);
 		closesocket(m_Socket);
+		m_Socket = INVALID_SOCKET;
 		return false;
 	}
 
@@ -126,6 +131,7 @@ void CUDPServer::Stop()
 		m_ListenThread.Join();
 
 		closesocket(m_Socket);
+		m_Socket = INVALID_SOCKET;
 	}
 }
 

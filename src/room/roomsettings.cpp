@@ -84,11 +84,9 @@ CRoomSettings::CRoomSettings(Buffer& inPacket) // unfinished
 
 	const size_t rawSettingsBegin = static_cast<size_t>(inPacket.getReadOffset());
 	const vector<unsigned char>& rawPacket = inPacket.getBuffer();
-	// Preserve the whole client-authored block until Ghidra establishes the
-	// exact response boundary. Trimming one or two terminal bytes caused the
-	// current client to parse beyond the packet and crash. The full block is a
-	// safe diagnostic fallback: it enters the room without a parser overrun,
-	// although the trailing zero currently makes the visible user count zero.
+	// Preserve the client-authored block as a fallback. Compact NewRoom parsing
+	// below tightens this to the consumed settings boundary so CreateAndJoin can
+	// place userCount at the offset expected by the latest room parser.
 	const size_t rawSettingsEnd = rawPacket.size();
 	if (rawSettingsBegin < rawSettingsEnd)
 		rawCreateSettings.assign(rawPacket.begin() + rawSettingsBegin, rawPacket.begin() + rawSettingsEnd);
@@ -133,6 +131,9 @@ CRoomSettings::CRoomSettings(Buffer& inPacket) // unfinished
 			maxPlayers = 32;
 
 		familyBattle = 0;
+		const size_t rawConsumedEnd = static_cast<size_t>(inPacket.getReadOffset());
+		if (rawSettingsBegin < rawConsumedEnd && rawConsumedEnd <= rawPacket.size())
+			rawCreateSettings.assign(rawPacket.begin() + rawSettingsBegin, rawPacket.begin() + rawConsumedEnd);
 		return;
 	}
 

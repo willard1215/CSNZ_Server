@@ -22,7 +22,7 @@ public:
 	~CTCPServer();
 	
 	bool Start(const std::string& port, int tcpSendBufferSize, bool ssl);
-	void Stop();
+	void Stop(bool notifyListeners = false);
 	void Listen();
 	void InitSSLContext();
 
@@ -49,4 +49,5 @@ private:
 
 	std::vector<WSAPOLLFD> m_fds;
 	WOLFSSL_CTX* m_pCTX;
+	bool m_bWolfSSLInitialized;
 };

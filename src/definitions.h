@@ -154,6 +154,7 @@ enum HostPacketType
 	OnUpdateScore = 10,
 	OnGameEvent = 11,
 	SetZBAddons = 11,
+	DedicatedUserState = 12,
 	OnUserWeapon = 13, // Or OnUpdateWeapon? not very sure what to name :D
 	OnUpdateClass = 14,
 	OnUserSpawn = 16, // Spawn Location
@@ -162,6 +163,7 @@ enum HostPacketType
 	UseScenItem = 100,
 	SetInventory = 101,
 	FlyerFlock = 102,
+	DedicatedHandshake = 114,
 };
 
 enum EMetadataPacketType
@@ -495,6 +497,7 @@ enum UpdateInfoPacketType
 	RequestUpdateNickname = 2,
 	RequestUpdateLocation = 4,
 	RequestUpdateTutorial = 7,
+	RequestUpdateTutorialLatest = 9,
 	RequestUpdateChatColor = 15,
 };
 

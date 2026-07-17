@@ -13,6 +13,7 @@ enum class EventFunctionType
 class IEvent
 {
 public:
+	virtual ~IEvent() = default;
 	virtual void Execute() = 0;
 	virtual EventFunctionType GetType() = 0;
 };

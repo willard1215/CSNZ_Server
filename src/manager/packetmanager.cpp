@@ -1870,21 +1870,43 @@ void CPacketManager::SendItemGachapon(IExtendedSocket* socket, int gachaponItem)
 
 void CPacketManager::SendLobbyJoin(IExtendedSocket* socket, CChannel* channel)
 {
-	// Latest hw.dll Packet_Lobby subtype 0 accepts:
-	// uint8 subtype, uint16 userCount, then userId/string/full-user-info entries.
-	// Keep the entry minimal so the latest full-user-info parser only touches
-	// confirmed low flags.
+	// Lobby initialization is not complete until the current client receives its
+	// own member entry. The compact FullUserInfo now includes low bit 27/SUID,
+	// allowing hw.dll to associate this row with the login-established local user
+	// instead of treating it as a second remote member.
 	CSendPacket* msg = CreatePacket(socket, PacketId::Lobby);
 	msg->BuildHeader();
 
 	msg->WriteUInt8(LobbyPacketType::Join);
-	msg->WriteUInt16(0);
 
-	// A synthetic self entry does not populate the upper-left profile and it
-	// changes the current-client identity used by Room/CreateAndJoin host
-	// authority. Keep lobby membership empty until the separate local-profile
-	// bootstrap packet is mapped; room user info is sent independently.
-	Logger().Info("TX Lobby(153) join: users=0 (preserve local host identity)\n");
+	IUser* self = NULL;
+	if (channel)
+	{
+		for (auto user : channel->GetUsers())
+		{
+			if (user && user->GetExtendedSocket() == socket)
+			{
+				self = user;
+				break;
+			}
+		}
+	}
+
+	if (!self)
+	{
+		msg->WriteUInt16(0);
+		Logger().Warn("TX Lobby(153) join: users=0 (self not found)\n");
+		socket->Send(msg);
+		return;
+	}
+
+	msg->WriteUInt16(1);
+	msg->WriteUInt32(self->GetID());
+	msg->WriteString(self->GetUsername());
+	CUserCharacter character = GetLatestRoomUserCharacter(self);
+	WriteLatestRoomFullUserInfo(msg, self, character);
+
+	Logger().Info("TX Lobby(153) join: users=1 local self=%d with SUID\n", self->GetID());
 	socket->Send(msg);
 }
 
@@ -1892,7 +1914,7 @@ void CPacketManager::SendLobbyUserJoin(IExtendedSocket* socket, IUser* joinedUse
 {
 	// The latest client accepts the same minimal full-user-info shape used by
 	// SendLobbyJoin. Keep this narrow until the full current schema is mapped.
-	Logger().Info("TX Lobby(153) user-join minimal: user=%d\n", joinedUser->GetID());
+	Logger().Info("TX Lobby(153) user-join compact: user=%d\n", joinedUser->GetID());
 	CSendPacket* msg = CreatePacket(socket, PacketId::Lobby);
 	msg->BuildHeader();
 
@@ -1900,10 +1922,8 @@ void CPacketManager::SendLobbyUserJoin(IExtendedSocket* socket, IUser* joinedUse
 	msg->WriteUInt32(joinedUser->GetID());
 	msg->WriteString(joinedUser->GetUsername());
 
-	CUserCharacter character = joinedUser->GetCharacter(UFLAG_LOW_GAMENAME | UFLAG_LOW_UNK27, 0);
-
-	CPacketHelper_FullUserInfo fullUserInfo;
-	fullUserInfo.Build(msg->m_OutStream, joinedUser->GetID(), character);
+	CUserCharacter character = GetLatestRoomUserCharacter(joinedUser);
+	WriteLatestRoomFullUserInfo(msg, joinedUser, character);
 
 	socket->Send(msg);
 	return;
@@ -2198,6 +2218,20 @@ void CPacketManager::SendShopUpdate(IExtendedSocket* socket, const vector<Produc
 	socket->Send(msg);
 }
 
+void CPacketManager::SendShopRequestUpdateReply(IExtendedSocket* socket)
+{
+	CSendPacket* msg = CreatePacket(socket, PacketId::Shop);
+	msg->BuildHeader();
+
+	// Latest Packet_Shop subtype 3: success byte followed by a uint16 result count.
+	// The live-server empty response is exactly: 48 03 01 00 00.
+	msg->WriteUInt8(ShopPacketType::RequestUpdate);
+	msg->WriteUInt8(1);
+	msg->WriteUInt16(0);
+
+	socket->Send(msg);
+}
+
 void CPacketManager::SendShopReply(IExtendedSocket* socket, int replyCode)
 {
 	string replyMsg;
@@ -2355,12 +2389,12 @@ void CPacketManager::SendUserUpdateInfoMinimal(IExtendedSocket* socket, IUser* u
 	msg->WriteUInt32(user->GetID());
 
 	// hw.dll FUN_026a1840 decodes UserUpdateInfo as userId followed by
-	// FullUserInfo. A zero mask carries no fields for the local profile UI, so
-	// use the compact live shape mapped by FUN_026bd6c0.
+	// FullUserInfo. Use the compact current-client shape, including its SUID,
+	// to associate this profile with the login-established local user.
 	CUserCharacter character = GetLatestRoomUserCharacter(user);
 	WriteLatestRoomFullUserInfo(msg, user, character);
 
-	Logger().Info("TX UserUpdateInfo(157) compact self profile: user=%d level=%d\n",
+	Logger().Info("TX UserUpdateInfo(157) compact self profile with SUID: user=%d level=%d\n",
 		user->GetID(), character.level);
 	socket->Send(msg);
 }
@@ -2867,7 +2901,7 @@ static bool WriteLatestRoomFullUserInfo(CSendPacket* msg, IUser* user, const CUs
 	// current client's compact, self-contained user-info shape. It includes the
 	// fields needed by lobby/room UI without the large optional live profile
 	// block that caused the local synthetic user to overrun at packet end.
-	msg->WriteUInt32(0x4000300Au); // game name, level, clan, tournament, bit 30
+	msg->WriteUInt32(0x4800300Au); // game name, level, clan, tournament, SUID, bit 30
 	msg->WriteUInt32(0x00000003u); // chat color plus current no-payload bit 33
 
 	const string gameName = character.gameName.empty() ? user->GetUsername() : character.gameName;
@@ -2882,6 +2916,9 @@ static bool WriteLatestRoomFullUserInfo(CSendPacket* msg, IUser* user, const CUs
 	msg->WriteUInt8(0);
 	msg->WriteUInt8(0);
 	msg->WriteUInt8(character.tournament);
+	// Low bit 27 is the session user/SUID consumed by current hw.dll before
+	// bit 30. Without it the UI cannot associate this profile with local self.
+	msg->WriteUInt32(user->GetID());
 	// Low bit 30 is two bytes in hw.dll FUN_026bd6c0.
 	msg->WriteUInt8(0);
 	msg->WriteUInt8(0);
@@ -2892,9 +2929,9 @@ static bool WriteLatestRoomFullUserInfo(CSendPacket* msg, IUser* user, const CUs
 
 static bool WriteLatestSampleRoomCreateAndJoin(CSendPacket* msg, IRoom* roomInfo)
 {
-	FILE* f = fopen("../Packets_sampel/1/Packet_254_ID_65_680.bin", "rb");
+	FILE* f = fopen("../Packets_sampel/create_room/Packet_199_ID_65_841.bin", "rb");
 	if (!f)
-		f = fopen("Packets_sampel/1/Packet_254_ID_65_680.bin", "rb");
+		f = fopen("Packets_sampel/create_room/Packet_199_ID_65_841.bin", "rb");
 
 	if (!f)
 		return false;
@@ -2932,7 +2969,7 @@ static bool WriteLatestSampleRoomCreateAndJoin(CSendPacket* msg, IRoom* roomInfo
 
 	patchUInt32(3, roomID);
 
-	const unsigned char sampleUserID[4] = { 0xCF, 0x9D, 0x6E, 0x00 };
+	const unsigned char sampleUserID[4] = { 0xE1, 0x43, 0xDD, 0x00 };
 	for (size_t i = 0; i + 4 <= sample.size(); i++)
 	{
 		if (sample[i] == sampleUserID[0] && sample[i + 1] == sampleUserID[1] &&
@@ -2978,26 +3015,9 @@ void CPacketManager::SendRoomCreateAndJoin(IExtendedSocket* socket, IRoom* roomI
 
 	CRoomSettings* roomSettings = roomInfo->GetSettings();
 	const size_t settingsBegin = msg->m_OutStream.getBuffer().size();
-	if (!roomSettings->rawCreateSettings.empty() &&
-		g_DedicatedServerManager.GetServerBySocket(socket) == NULL)
+	if (!roomSettings->rawCreateSettings.empty())
 	{
 		vector<unsigned char> responseSettings = roomSettings->rawCreateSettings;
-		bool appendFamilyBattleReset = false;
-		if (responseSettings.size() >= 12)
-		{
-			const unsigned int highMidMask = static_cast<unsigned int>(responseSettings[8]) |
-				(static_cast<unsigned int>(responseSettings[9]) << 8) |
-				(static_cast<unsigned int>(responseSettings[10]) << 16) |
-				(static_cast<unsigned int>(responseSettings[11]) << 24);
-			// Current compact NewRoom requests omit the family-battle field. Make
-			// the response explicitly clear it so a stale client UI value does not
-			// trigger the unsupported-family-mode confirmation on later changes.
-			if (highMidMask == 0)
-			{
-				responseSettings[8] = static_cast<unsigned char>(ROOM_HIGHMID_FAMILYBATTLE);
-				appendFamilyBattleReset = true;
-			}
-		}
 		msg->WriteData(responseSettings.data(), responseSettings.size());
 
 		// Ghidra FUN_0268ecf0 shows that sparse lowMid bit 13 in the response
@@ -3018,10 +3038,9 @@ void CPacketManager::SendRoomCreateAndJoin(IExtendedSocket* socket, IRoom* roomI
 				msg->WriteData((void*)responseFieldRemainder, sizeof(responseFieldRemainder));
 			}
 		}
-		if (appendFamilyBattleReset)
-			msg->WriteUInt8(0);
-		Logger().Info("TX Room CreateAndJoin using preserved current-client settings: bytes=%u\n",
-			static_cast<unsigned int>(roomSettings->rawCreateSettings.size()));
+		Logger().Info("TX Room CreateAndJoin using preserved current-client settings: bytes=%u, target=%s\n",
+			static_cast<unsigned int>(roomSettings->rawCreateSettings.size()),
+			g_DedicatedServerManager.GetServerBySocket(socket) ? "dedicated" : "client");
 	}
 	else
 	{
@@ -3697,11 +3716,13 @@ void CPacketManager::SendHostServerJoin(IExtendedSocket* socket, int ipAddress, 
 	CSendPacket* msg = CreatePacket(socket, PacketId::Host);
 	msg->BuildHeader();
 	msg->WriteUInt8(HostPacketType::HostServerJoin);
-	msg->WriteUInt32(ipAddress, false);
+	const string endpoint = ip_to_string(ipAddress);
+	msg->WriteString(endpoint);
 	msg->WriteUInt16(port);
+	msg->WriteUInt32(ipAddress, false);
 	msg->WriteUInt64(sessionToken);
-	Logger().Info("TX Host(68/5) dedicated connect: ip=%s port=%d token=%llu\n",
-		ip_to_string(ipAddress).c_str(), port, static_cast<unsigned long long>(sessionToken));
+	Logger().Info("TX Host(68/5) dedicated connect: endpoint=%s port=%d ip=%s token=%llu\n",
+		endpoint.c_str(), port, endpoint.c_str(), static_cast<unsigned long long>(sessionToken));
 	socket->Send(msg);
 }
 
@@ -3770,12 +3791,47 @@ void CPacketManager::SendHostGameStart(IExtendedSocket* socket, int userId, uint
 	msg->WriteUInt8(HostPacketType::GameStart);
 	msg->WriteUInt32(userId);
 	msg->WriteUInt8(0); // server category /// @todo investigate
-	msg->WriteUInt8(0); // enable nexon analytics(it write every step on the map like kill event etc)
+	msg->WriteUInt8(1); // live dedicated sequence enables host event reporting
 	msg->WriteUInt64(sessionToken);
 
 	Logger().Info("TX Host(68/0) game start: user=%d token=%llu\n",
 		userId, static_cast<unsigned long long>(sessionToken));
 	socket->Send(msg);
+}
+
+void CPacketManager::SendHostDedicatedHandshake(IExtendedSocket* socket)
+{
+	CSendPacket* msg = CreatePacket(socket, PacketId::Host);
+	msg->BuildHeader();
+	msg->WriteUInt8(HostPacketType::DedicatedHandshake);
+	msg->WriteUInt16(0);
+	socket->Send(msg);
+}
+
+void CPacketManager::SendHostDedicatedPrepare(IExtendedSocket* socket, int userId, uint64_t sessionToken)
+{
+	// Packets_sampel/3 records this exact client bootstrap order before the
+	// endpoint packet: 68/114, 68/0, 68/12 and 68/13.
+	SendHostDedicatedHandshake(socket);
+	SendHostGameStart(socket, userId, sessionToken);
+
+	CSendPacket* userState = CreatePacket(socket, PacketId::Host);
+	userState->BuildHeader();
+	userState->WriteUInt8(HostPacketType::DedicatedUserState);
+	userState->WriteUInt8(0);
+	userState->WriteUInt32(userId);
+	userState->WriteUInt32(0);
+	socket->Send(userState);
+
+	CSendPacket* weaponState = CreatePacket(socket, PacketId::Host);
+	weaponState->BuildHeader();
+	weaponState->WriteUInt8(HostPacketType::OnUserWeapon);
+	weaponState->WriteUInt32(userId);
+	weaponState->WriteUInt16(0);
+	socket->Send(weaponState);
+
+	Logger().Info("TX Host dedicated prepare: user=%d token=%llu sequence=114,0,12,13\n",
+		userId, static_cast<unsigned long long>(sessionToken));
 }
 
 void CPacketManager::SendHostZBAddon(IExtendedSocket* socket, int userID, const vector<int>& addons)
@@ -7533,15 +7589,20 @@ void CPacketManager::SendPacketFromFile(IExtendedSocket* socket, const std::stri
 	rewind(file);
 
 	if (!len || len > PACKET_MAX_SIZE)
+	{
+		fclose(file);
 		return;
+	}
 
 	unsigned char* buf = new unsigned char[len];
 
 	if (fread(buf, 1, len, file) != len)
 	{
-		delete buf;
+		delete[] buf;
+		fclose(file);
 		return;
 	}
+	fclose(file);
 
 	CSendPacket* msg = CreatePacket(socket, buf[0]);
 	msg->BuildHeader();
@@ -7550,7 +7611,7 @@ void CPacketManager::SendPacketFromFile(IExtendedSocket* socket, const std::stri
 
 	socket->Send(msg);
 
-	delete buf;
+	delete[] buf;
 }
 
 void CPacketManager::SendKickPacket(IExtendedSocket* socket, int userID)

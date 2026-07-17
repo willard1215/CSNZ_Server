@@ -814,7 +814,11 @@ void CUserManager::SendLoginPacket(IUser* user, const CUserCharacter& character,
 	}
 
 	if (includeMetadata)
+	{
 		SendMetadata(socket);
+		Logger().Info("Latest login bootstrap: sending compact self profile after metadata\n");
+		g_PacketManager.SendUserUpdateInfoMinimal(socket, user);
+	}
 	else
 	{
 		Logger().Info("Latest host bootstrap: sending minimal UserUpdateInfo(157) for latest full-user flags\n");
@@ -841,9 +845,7 @@ void CUserManager::SendLoginPacket(IUser* user, const CUserCharacter& character,
 	}
 
 	if (includeMetadata)
-	{
 		Logger().Info("Skipping legacy full UserUpdateInfo(157) for latest client\n");
-	}
 
 	if (!includeMetadata)
 	{
@@ -1190,15 +1192,17 @@ static bool ReplayLatestLoginSample(IExtendedSocket* socket)
 		if (find == INVALID_HANDLE_VALUE)
 			continue;
 
-		// Sample 79 is a 471-byte legacy full UserUpdateInfo(157) payload whose
-		// first subtype byte is 173.  The latest client repeatedly overruns that
-		// layout and raises its runtime error path, while samples 117/118 use the
-		// short current-compatible 157 forms.
+		// UserUpdateInfo samples 79/117/118 contain the live server's captured
+		// user id. Replaying them before the local self profile makes the latest
+		// client bind UI/profile state to the wrong user, so send the server-built
+		// local UserUpdateInfo after metadata instead. Packet 105 is a compact
+		// LobbyJoin/List(153) sample with zero users; it fights the generated
+		// self lobby packet and can trip the latest reader.
 		do
 		{
 			int index = -1;
 			if (sscanf(data.cFileName, "Packet_%d_ID_%*d_%*d.bin", &index) == 1 &&
-				index >= minIndex && index <= maxIndex && index != 79)
+				index >= minIndex && index <= maxIndex && index != 79 && index != 105 && index != 117 && index != 118)
 				packets.push_back({ index, root + "\\" + data.cFileName });
 		} while (FindNextFileA(find, &data));
 
@@ -1390,10 +1394,17 @@ bool CUserManager::OnUpdateInfoPacket(CReceivePacket* msg, IExtendedSocket* sock
 		break;
 	}
 	case UpdateInfoPacketType::RequestUpdateTutorial:
+	case UpdateInfoPacketType::RequestUpdateTutorialLatest:
 	{
 		int tutorial = msg->ReadUInt8();
-		Logger().Info("RequestTutorial: %d\n", tutorial);
+		Logger().Info("RequestTutorial: type=%d state=%d; refreshing current user profile\n",
+			msgType, tutorial);
 
+		// Steam samples use UpdateInfo(69/7) for this transition and answer
+		// with UserUpdateInfo(157). The current asset client moved the request
+		// subtype to 9 and keeps its loading modal open until the refreshed
+		// local profile arrives.
+		g_PacketManager.SendUserUpdateInfoMinimal(socket, user);
 		break;
 	}
 	case UpdateInfoPacketType::RequestUpdateChatColor:
@@ -1817,14 +1828,13 @@ bool CUserManager::OnMessengerPacket(CReceivePacket* msg, IExtendedSocket* socke
 	{
 	case 1: // send user info
 	{
-		/// @todo handle errors
 		string gameName = msg->ReadString();
 
-		int userID = g_UserDatabase.IsUserExists(gameName, false);
-
-		CUserCharacter character = user->GetCharacter(UFLAG_LOW_ALL, UFLAG_HIGH_ALL);
-
-		g_PacketManager.SendMessengerUserInfo(socket, userID, character);
+		// The legacy Messenger(93)/1 reply appends the old FullUserInfo layout,
+		// which the latest hw.dll rejects with PacketReader Error 93[1].
+		// This request is informational and not required for room ownership or
+		// dedicated handoff, so ignore it until the current layout is mapped.
+		Logger().Info("Latest messenger user-info request ignored: name=%s\n", gameName.c_str());
 		break;
 	}
 	default:
@@ -1848,6 +1858,16 @@ bool CUserManager::OnAddonPacket(CReceivePacket* msg, IExtendedSocket* socket)
 	// update addon list on client side
 	if (!addons.empty())
 		g_PacketManager.SendAddonPacket(socket, addons);
+
+	IRoom* room = user->GetCurrentRoom();
+	CRoomUser* roomUser = user->GetRoomData();
+	if (room != NULL && roomUser != NULL && room->GetHostUser() == user && !roomUser->m_HostInitResyncSent)
+	{
+		roomUser->m_HostInitResyncSent = true;
+		Logger().Info("User '%s' completed room addon initialization; reasserting room host state\n",
+			user->GetLogName());
+		g_PacketManager.SendRoomSetHost(socket, user);
+	}
 
 	return true;
 }

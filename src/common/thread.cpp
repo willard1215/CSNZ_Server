@@ -22,7 +22,8 @@ CThread::CThread(const Handler& function, void* data)
 CThread::~CThread()
 {
 #ifdef WIN32
-    CloseHandle(m_hHandle);
+	if (m_hHandle)
+		CloseHandle(m_hHandle);
 #endif
 }
 
@@ -35,7 +36,12 @@ bool CThread::Start()
     }
 
 #ifdef WIN32
-    m_hHandle = CreateThread(0, 0, reinterpret_cast<LPTHREAD_START_ROUTINE>(m_Object), m_pData, 0, &m_ID);
+	if (m_hHandle)
+	{
+		CloseHandle(m_hHandle);
+		m_hHandle = 0;
+	}
+	m_hHandle = CreateThread(0, 0, reinterpret_cast<LPTHREAD_START_ROUTINE>(m_Object), m_pData, 0, &m_ID);
     if (m_hHandle == 0)
     {
         return false;
@@ -65,12 +71,20 @@ void CThread::Join()
         return;
 
 #ifdef WIN32
-    DWORD dwResult = WaitForSingleObject(m_hHandle, INFINITE);
-    if (dwResult == WAIT_FAILED)
-        printf("CThread::Join: dwResult == WAIT_FAILED\n");
+	DWORD dwResult = WaitForSingleObject(m_hHandle, INFINITE);
+	if (dwResult == WAIT_FAILED)
+		printf("CThread::Join: dwResult == WAIT_FAILED\n");
+	else
+	{
+		CloseHandle(m_hHandle);
+		m_hHandle = 0;
+		m_ID = 0;
+	}
 #else
-    if (pthread_join(m_ID, NULL) != 0)
-        printf("CThread::Join: pthread_join != 0\n");
+	if (pthread_join(m_ID, NULL) != 0)
+		printf("CThread::Join: pthread_join != 0\n");
+	else
+		m_ID = 0;
 #endif
 }
 
